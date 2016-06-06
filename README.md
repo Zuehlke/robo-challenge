@@ -16,6 +16,6 @@ To get started using Lego Mindstorms and [ev3dev](ev3dev.org), please read
 We created several example programs for different programming languages:
 
 * [Python](framework/python)
-* [JavaScript](framkework/javascript)
+* [JavaScript](framework/javascript)
 * [Java](framework/java)
 * [Bash](framework/bash)
