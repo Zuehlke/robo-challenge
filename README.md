@@ -4,7 +4,7 @@ This is the official repository for the Robo Challenge Hackathon.
 
 ## The Challenge
 
-You find detaild information regarding the challenge [here](challenges/sumo.md).
+You find detailed information regarding the challenge [here](challenges/sumo.md).
 
 ## Quickstart
 
