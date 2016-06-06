@@ -38,7 +38,7 @@ The shebang should point to your intepreter (python, node, etc.) The following e
 chomod a+x your_script
 ```
 
-For java or other compiled language create a executable shell script which calls your program.
+For java or other compiled languages create a executable shell script as warpper.
 
 ```
 #/bin/bash
