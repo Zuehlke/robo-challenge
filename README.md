@@ -8,7 +8,7 @@ You find detailed information regarding the challenge [here](challenges/sumo.md)
 
 ## Quickstart
 
-To get started using Lego Mindstorms and [ev3dev](ev3dev.org), please read
+To get started using Lego Mindstorms and [ev3dev](http://www.ev3dev.org), please read
 [setup.md](setup.md).
 
 ## Frameworks
