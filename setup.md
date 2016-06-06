@@ -15,7 +15,7 @@ The default settings are:
 * password: _maker_
 
 ## Choose your language
-You should use one of the official [language bindings](https://github.com/ev3dev/ev3dev-lang) or recommend [libraries](http://www.ev3dev.org/docs/libraries/).
+You should use one of the official [language bindings](https://github.com/ev3dev/ev3dev-lang) or recommended [libraries](http://www.ev3dev.org/docs/libraries/).
 
 We have already provded some basic examples to get you started very quickly. 
 * [Python](framework/python)
@@ -24,7 +24,7 @@ We have already provded some basic examples to get you started very quickly.
 * [Bash](framework/bash)
 
 ## Deployment 
-You should consider a easy soultion to deploy your code to the ev3 brick. A good solution ist to create a git repository on your ev3 brick with a git hoock. 
+You should consider an easy solution to deploy your code to the ev3 brick. A good solution ist to create a git repository on your ev3 brick with a [git hook](https://git-scm.com/docs/githooks). 
 - see http://www.ev3dev.org/docs/tutorials/setting-up-python-pycharm/
 
 
