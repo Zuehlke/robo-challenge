@@ -29,7 +29,7 @@ You should consider an easy solution to deploy your code to the ev3 brick. A goo
 
 
 ## Start you engine (or program)
-In development mode you can start your program over SHH (cable or wifi) but during the challenges you must start your program from the ev3 file browser menu. To start your program form the file browser your program must be executable. 
+In development mode you can start your program over SHH (cable or wifi) but during the challenges you must start your program from the ev3 file browser menu. To start your program from the file browser your program must be executable. 
 
 To make your a script executable just use the _chmod_ command and add [shebang[(https://en.wikipedia.org/wiki/Shebang_(Unix)) at the top of your script. 
 The shebang should point to your intepreter (python, node, etc.) The following example should work
