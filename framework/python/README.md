@@ -3,7 +3,7 @@ This Python code example is based on the [Python language bindings for ev3dev](h
 Feel free to change and adapt the code to your needs to compete in the robot challenges.
 
 ### Example code
-For more code examples have a look at the examples:
+Here are some python code examples:
 - [sumo.py](sumo.py)
 - [explorer.py](explorer.py)
 - [test.py](test.py)
