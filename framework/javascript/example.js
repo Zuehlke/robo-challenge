@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 var ev3dev = require('ev3dev-lang');
-var fs = require('fs');
 
 //var motor0 = "/sys/class/tacho-motor/motor0/";
 //var motor1 = "/sys/class/tacho-motor/motor1/";
