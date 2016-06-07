@@ -15,6 +15,7 @@ The default settings are:
 * username: _robot_
 * password: _maker_
 
+
 ### Choose your language
 You should use one of the official [language bindings](https://github.com/ev3dev/ev3dev-lang) or recommended [libraries](http://www.ev3dev.org/docs/libraries/).
 
