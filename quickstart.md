@@ -17,32 +17,33 @@ The default settings are:
 
 
 ### Choose your language
-You should use one of the official [language bindings](https://github.com/ev3dev/ev3dev-lang) or recommended [libraries](http://www.ev3dev.org/docs/libraries/).
+You should use one of the official [language bindings](https://github.com/ev3dev/ev3dev-lang) or a recommended [libraries](http://www.ev3dev.org/docs/libraries/). 
+The official language binidings should implement the language binding [specification](http://ev3dev-lang.readthedocs.io).
 
-We have already provded some basic examples to get you started very quickly. 
+We have already provided some basic examples to get you started very quickly. 
 * [Python](framework/python)
 * [JavaScript](framework/javascript)
 * [Java](framework/java)
 * [Bash](framework/bash)
 
+
 ### Development & Deployment 
-You should consider an easy solution to deploy your code to the ev3 brick. A good solution ist to create a git repository on your ev3 brick with a [git hook](https://git-scm.com/docs/githooks) for automatic deployment. So you can develop your code and push changes easily to your ev3 brick. 
+You should consider an easy solution to deploy your code to the ev3 brick. A good solution ist to create a git repository on your ev3 brick with a [git hook](https://git-scm.com/docs/githooks) for automatic deployment. So you can push changes easily to your ev3 brick. 
  
- A good example for a Python development environment can be found here
- - http://www.ev3dev.org/docs/tutorials/setting-up-python-pycharm/
+ A good example for a Python development environment can be found [here](http://www.ev3dev.org/docs/tutorials/setting-up-python-pycharm/).
 
 
 ### Start you engine (or program)
 In development mode you can start your program over SSH (cable or wifi) but during the challenges you must start your program from the ev3 file browser menu. To achive that your program must be executable. 
 
-To make your a script executable just use the _chmod_ command and add [shebang](https://bash.cyberciti.biz/guide/Shebang) at the top of your script. 
+To make your script executable just use the _chmod_ command and add [shebang](https://bash.cyberciti.biz/guide/Shebang) at the top of your script. 
 The shebang should point to your intepreter (Python, Node, etc.). 
 
 ```
 chomod a+x your_script
 ```
 
-For Java or other compiled languages create a executable shell script as warpper.
+For Java or other compiled languages create a executable shell script as wrapper.
 
 ```
 #/bin/bash
@@ -69,8 +70,7 @@ The education kit has the following motors:
 All motors must be connected to the alphabetic ev3 ports (A,B,C or D). 
 
 ### Sound
-To play sound on your ev3dev see
-- https://github.com/ev3dev/ev3dev/wiki/Using-Sound
+How to speak or play sound with your ev3dev is described [here](https://github.com/ev3dev/ev3dev/wiki/Using-Sound).
 
 ### Useful links
 * Basic Linux commands - http://www.comptechdoc.org/os/linux/usersguide/linux_ugbasics.html
