@@ -17,13 +17,15 @@ The default settings are:
 
 
 ### Choose your language
-You should use one of the official [language bindings](https://github.com/ev3dev/ev3dev-lang) or recommended [libraries](http://www.ev3dev.org/docs/libraries/).
+You should use one of the official [language bindings](https://github.com/ev3dev/ev3dev-lang) or a recommended [libraries](http://www.ev3dev.org/docs/libraries/). 
+The official language binidings should implement the language binding [specification](http://ev3dev-lang.readthedocs.io).
 
 We have already provided some basic examples to get you started very quickly. 
 * [Python](framework/python)
 * [JavaScript](framework/javascript)
 * [Java](framework/java)
 * [Bash](framework/bash)
+
 
 ### Development & Deployment 
 You should consider an easy solution to deploy your code to the ev3 brick. A good solution ist to create a git repository on your ev3 brick with a [git hook](https://git-scm.com/docs/githooks) for automatic deployment. So you can push changes easily to your ev3 brick. 
