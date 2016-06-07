@@ -1,5 +1,5 @@
 # Quickstart
-Welcome to the Zuehlke Robo Challenge. You have received the following components for the robo challenge:
+Welcome to the Robo Challenge Hackathon. You have received the following components for the robo challenge:
 * Lego Mindstorms Education Kit. ([What are the difference between education and retail kit](http://robotsquare.com/2013/11/25/difference-between-ev3-home-edition-and-education-ev3/))
 * Wifi dongle
 * SD card with pre-installed [ev3dev](http://www.ev3dev.org) (Debian Linux-based operating system)
