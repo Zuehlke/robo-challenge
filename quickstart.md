@@ -15,7 +15,7 @@ The default settings are:
 * username: _robot_
 * password: _maker_
 
-To chnage the password use the _passwd_ command.
+To change the password use the _passwd_ command.
 ```
 passwd robot
 ```
