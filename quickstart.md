@@ -1,5 +1,5 @@
 # Quickstart
-Welcome to the Robo Challenge Hackathon. You have received the following components for the robo challenge:
+Welcome to the Zühlke RoboChallenge. You have received the following components for the challenge:
 * Lego Mindstorms Education Kit. ([What are the difference between education and retail kit](http://robotsquare.com/2013/11/25/difference-between-ev3-home-edition-and-education-ev3/))
 * Wifi dongle
 * SD card with pre-installed [ev3dev](http://www.ev3dev.org) (Debian Linux-based operating system)
@@ -9,28 +9,40 @@ The [ev3dev tutorial](http://www.ev3dev.org/docs/getting-started/) is a good way
 
 
 ### Connecting to the ev3 brick
-Step 4 describes how you can connect to your ev3 brick. The easiest way is to connect with SSH over USB cable or wifi network. (Hint: when you enabled your wifi connection you should change your password)
+Step 5 describes how you can connect to your ev3 brick. The easiest way is to connect with SSH over USB cable or wifi network. (Hint: when you enabled your wifi connection you should change your password)
 
 The default settings are:
 * username: _robot_
 * password: _maker_
 
+To chnage the password use the _passwd_ command.
+```
+passwd robot
+```
 
 ### Choose your language
 You should use one of the official [language bindings](https://github.com/ev3dev/ev3dev-lang) or a recommended [libraries](http://www.ev3dev.org/docs/libraries/). 
 The official language binidings should implement the language binding [specification](http://ev3dev-lang.readthedocs.io).
 
 We have already provided some basic examples to get you started very quickly. 
-* [Python](framework/python)
-* [JavaScript](framework/javascript)
+* [Python](framework/python) (recommended)
+* [JavaScript](framework/javascript) (recommended)
 * [Java](framework/java)
 * [Bash](framework/bash)
 
 
 ### Development & Deployment 
-You should consider an easy solution to deploy your code to the ev3 brick. A good solution ist to create a git repository on your ev3 brick with a [git hook](https://git-scm.com/docs/githooks) for automatic deployment. So you can push changes easily to your ev3 brick. 
- 
- A good example for a Python development environment can be found [here](http://www.ev3dev.org/docs/tutorials/setting-up-python-pycharm/).
+You should consider an easy solution to test and deploy your code to the ev3 brick. 
+
+Tools which you can use to connect to your ev3 brick. 
+- __ssh__ command (Linux & Mac), http://linuxcommand.org/man_pages/ssh1.html
+- http://www.putty.org/ (Windows)
+
+
+Tools for transfering files to your ev3 brick.
+- __scp__ command (Linux & Mac), http://linux.die.net/man/1/scp
+- https://cyberduck.io/ (Mac)
+- https://winscp.net/eng/index.php (Windows)
 
 
 ### Start you engine (or program)

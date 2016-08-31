@@ -1,6 +1,6 @@
-# robo-challenge
+# Zühlke RoboChallenge
 
-This is the official repository for the Robo Challenge Hackathon.
+This is the official repository for the Zühlke RoboChallenge Hackathon.
 
 ## The Challenge
 
@@ -13,10 +13,10 @@ To get started using Lego Mindstorms and [ev3dev](http://www.ev3dev.org), please
 
 ## Frameworks
 
-We created several example programs for different programming languages:
+We created several example programs for the different programming languages:
 
+* [JavaScript](framework/javascript)
 * [Python](framework/python)
 * [C++](framework/cplusplus)
-* [JavaScript](framework/javascript)
 * [Java](framework/java)
 * [Bash](framework/bash)
