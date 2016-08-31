@@ -5,8 +5,8 @@ The Node.js example is based on the [ev3dev-lang-js](https://github.com/WasabiFa
 ## API Documentation
 The online documentation can be found here: 
 
-- http://wasabifan.github.io/ev3dev-lang-js/
-- http://ev3dev-lang.readthedocs.io/en/latest/
+- Node.js Language Binding: http://wasabifan.github.io/ev3dev-lang-js/
+- ev3dev language bindings: http://ev3dev-lang.readthedocs.io/en/latest/
 
 ## Setup
 In order to use ev3dev-lang-js on the ev3, ev3dev-lang-js has to be installed via npm: npm install ev3dev-lang.
