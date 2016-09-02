@@ -1,6 +1,8 @@
 
 # Zühlke RoboChallenge
-This is the official repository for the Zühlke RoboChallenge Hackathon. https://www.zuehlke.com/ch/de/robochallenge/
+This is the official repository for the Zühlke RoboChallenge Hackathon.
+
+- https://www.zuehlke.com/ch/de/robochallenge/
 
 ![header](robots.gif)
 
