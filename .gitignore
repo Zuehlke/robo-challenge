@@ -2,6 +2,8 @@
 .DS_Store
 
 # JetBrains IDE
+.idea/*
+/.idea/
 .idea/workspace.xml
 
 # node
