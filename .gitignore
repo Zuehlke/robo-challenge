@@ -2,9 +2,10 @@
 .DS_Store
 
 # JetBrains IDE
-.idea/*
-/.idea/
+.idea/
+*.iml
 .idea/workspace.xml
+.idea/libraries
 
 # node
 node_modules
