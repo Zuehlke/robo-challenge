@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import time
@@ -76,8 +76,8 @@ def run():
     # game loop
     while True:
         time.sleep(sleep_timeout_sec)
-        print('color: %s' % str(color_sensor.value()))
-        print('utrasonic: %s' % str(ultrasonic_sensor.value()))
+        print('color value: %s' % str(color_sensor.value()))
+        print('ultrasonic value: %s' % str(ultrasonic_sensor.value()))
 
         if ultrasonic_sensor.value() < 70:
 

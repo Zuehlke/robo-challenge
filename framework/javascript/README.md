@@ -8,9 +8,12 @@ The online documentation can be found here:
 - Node.js Language Binding: http://wasabifan.github.io/ev3dev-lang-js/
 - ev3dev language bindings: http://ev3dev-lang.readthedocs.io/en/latest/
 
-## Setup
+## Setting Up the EV3 Brick
 In order to use ev3dev-lang-js on the ev3, ev3dev-lang-js has to be installed via npm: npm install ev3dev-lang.
 
-### Basic Robot Example
+## Development Environment
+tbd
+
+## Basic Robot Example
 An example program that is written in JavaScript and that uses the ev3dev-lang-js lib can be found in example.js 
 - [example.js](example.js)
