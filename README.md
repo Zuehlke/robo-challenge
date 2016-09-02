@@ -1,3 +1,5 @@
+
+![header](robots.gif)
 # Zühlke RoboChallenge
 
 This is the official repository for the Zühlke RoboChallenge Hackathon.
