@@ -2,7 +2,7 @@
 .DS_Store
 
 # JetBrains IDE
-*.idea/*
+.idea/workspace.xml
 
 # node
 node_modules

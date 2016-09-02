@@ -65,7 +65,7 @@ def turn():
     motor_left.stop()
     time.sleep(1)
     motor_left.run_direct()
-
+    
 
 def run():
     print('run robot, run!')
