@@ -2,7 +2,7 @@
 .DS_Store
 
 # JetBrains IDE
-.idea/*
+*.idea/*
 
 # node
 node_modules
