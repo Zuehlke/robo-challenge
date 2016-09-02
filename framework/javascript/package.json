@@ -1,0 +1,13 @@
+{
+  "name": "ev3-example-robot",
+  "version": "1.0.0",
+  "description": "example ev3 robot",
+  "main": "robot.js",
+  "dependencies": {
+    "ev3dev-lang": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
