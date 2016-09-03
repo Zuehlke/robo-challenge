@@ -122,9 +122,10 @@ def run_loop():
 
             new_pos = motor_right.position - 200
             timeout = time.time()
+
             while motor_right.position - new_pos > 10:
-                # wait until robot has reached the new position or timeout (milliseconds) has expired
-                if time.time() - timeout > 5000:
+                # wait until robot has reached the new position or timeout (seconds) has expired
+                if time.time() - timeout > 5:
                     break
 
             # turn
