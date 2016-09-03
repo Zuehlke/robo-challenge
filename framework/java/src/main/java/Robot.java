@@ -1,13 +1,13 @@
 import ev3dev.hardware.motor.EV3LargeRegulatedMotor;
 import ev3dev.hardware.port.MotorPort;
 import ev3dev.hardware.port.SensorPort;
-import ev3dev.hardware.sensor.SensorMode;
-import ev3dev.hardware.sensor.SensorModes;
 import ev3dev.hardware.sensor.ev3.EV3ColorSensor;
 import ev3dev.hardware.sensor.ev3.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
+import lejos.utility.Delay;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +17,7 @@ public class Robot {
 
 
     // default sleep timeout in sec
-    private static final double DEFAULT_SLEEP_TIMEOUT_IN_SEC = 0.1;
+    private static final int DEFAULT_SLEEP_TIMEOUT_IN_MSEC = 100;
 
     // default speed
     private static final int DEFAULT_SPEED = 250;
@@ -68,25 +68,25 @@ public class Robot {
     //
 
     public void backward() {
-        for (EV3LargeRegulatedMotor m: motors) {
+        for (EV3LargeRegulatedMotor m : motors) {
             m.backward();
         }
     }
 
     public void forward() {
-        for (EV3LargeRegulatedMotor m: motors) {
+        for (EV3LargeRegulatedMotor m : motors) {
             m.forward();
         }
     }
 
     public void setSpeed(int speed) {
-        for (EV3LargeRegulatedMotor m: motors) {
+        for (EV3LargeRegulatedMotor m : motors) {
             m.setSpeed(speed);
         }
     }
 
     public void brake() {
-        for (EV3LargeRegulatedMotor m: motors) {
+        for (EV3LargeRegulatedMotor m : motors) {
             m.stop();
         }
     }
@@ -102,7 +102,7 @@ public class Robot {
             // turn to new position
 
             // stop when object detected
-            if(getDistance(ultrasonicSensor) < DEFAULT_THRESHOLD_DISTANCE) {
+            if (getDistance(ultrasonicSensor) < DEFAULT_THRESHOLD_DISTANCE) {
                 break;
             }
         }
@@ -125,10 +125,10 @@ public class Robot {
 
         System.out.println("color value: " + getColorReflect(colorSensor));
         System.out.println("ultrasonic value: " + getDistance(ultrasonicSensor));
-        System.out.println("motor positions (r, l): " + rightMotor.getPosition() + ", "  + leftMotor.getPosition());
+        System.out.println("motor positions (r, l): " + rightMotor.getPosition() + ", " + leftMotor.getPosition());
 
         // found obstacle
-        if (ultrasonicSensor.getValue(0) < DEFAULT_THRESHOLD_DISTANCE) {
+        if (getDistance(ultrasonicSensor) < DEFAULT_THRESHOLD_DISTANCE) {
 
             setSpeed(35);
             brake();
@@ -136,11 +136,11 @@ public class Robot {
             // drive backwards
             backward();
 
-            var newPos = motorRight.position - 200;
-            var timeout = new Date();
-            while (motorRight.position - newPos > 10) {
+            float newPos = rightMotor.getPosition() - 200;
+            long timeout = new Date().getTime();
+            while (rightMotor.getPosition() - newPos > 10) {
                 // wait until robot has reached the new position or timeout (milliseconds) has expired
-                if(new Date().getTime() - timeout.getTime() > 5000) break;
+                if (new Date().getTime() - timeout > 5000) break;
             }
 
             // turn
@@ -155,16 +155,44 @@ public class Robot {
 
     private int getDistance(EV3UltrasonicSensor ultrasonicSensor) {
         final SampleProvider sp = ultrasonicSensor.getDistanceMode();
-        float [] sample = new float[sp.sampleSize()];
+        float[] sample = new float[sp.sampleSize()];
         sp.fetchSample(sample, 0);
-        return (int)sample[0];
+        return (int) sample[0];
     }
 
     private int getColorReflect(EV3ColorSensor colorSensor) {
         final SampleProvider sp = colorSensor.getColorIDMode();
-        float [] sample = new float[sp.sampleSize()];
+        float[] sample = new float[sp.sampleSize()];
         sp.fetchSample(sample, 0);
-        return (int)sample[0];
+        return (int) sample[0];
+    }
+
+    public static void main(String [] args) {
+
+        System.out.println("Run robot, run!");
+
+        Robot robot = new Robot();
+
+        attachShutDownHook(robot);
+
+        robot.setSpeed(DEFAULT_SPEED);
+        robot.forward();
+
+        while(true) {
+            robot.runLoop();
+            Delay.msDelay(DEFAULT_SLEEP_TIMEOUT_IN_MSEC);
+        }
+
+    }
+
+    private static void attachShutDownHook(Robot robot) {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                robot.tearDown();
+            }
+        });
+
     }
 
 }
