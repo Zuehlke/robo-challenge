@@ -114,15 +114,18 @@ def run_loop():
         # found obstacle
         if ultrasonic_sensor.value() < DEFAULT_THRESHOLD_DISTANCE:
 
+            set_speed(35)
             brake()
 
             # drive backwards
             backward()
 
             new_pos = motor_right.position - 200
+            timeout = time.time()
             while motor_right.position - new_pos > 10:
-                # wait until robot has reached the new position
-                pass
+                # wait until robot has reached the new position or timeout (milliseconds) has expired
+                if time.time() - timeout > 5000:
+                    break
 
             # turn
             turn()

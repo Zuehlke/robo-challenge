@@ -2,7 +2,7 @@
 
 var ev3dev = require('ev3dev-lang');
 
-var DEFAULT_SLEEP_TIMEOUT_IN_MSEC = 100
+var DEFAULT_SLEEP_TIMEOUT_IN_MSEC = 100;
 
 // default duty_cycle (0 - 100)
 var DEFAULT_DUTY_CYCLE = 60;
@@ -73,13 +73,13 @@ function brake() {
     }
 }
 
-function tunn() {
-    motorLeft.stop()
+function turn() {
+    motorLeft.stop();
     var pos = motorRight.position;
 
     // new absolute position
     var absPos = pos + 500;
-    motorRight.runToAbsolutePosition(absPos)
+    motorRight.runToAbsolutePosition(absPos);
 
     while (Math.abs(motorRight.position - absPos) > 10) {
         // turn to new position
@@ -90,24 +90,10 @@ function tunn() {
         }
     }
 
+    setSpeed(DEFAULT_DUTY_CYCLE);
+    forward();
 
 }
-
-
-
-
-
-
-
-while abs(motor_right.position - abs_pos) > 10:
-# turn
-
-# stop when object detected
-if ultrasonic_sensor.value() < DEFAULT_THRESHOLD_DISTANCE:
-break
-
-set_speed(DEFAULT_DUTY_CYCLE)
-forward()
 
 
 function tearDown() {
@@ -140,12 +126,17 @@ function run_loop() {
     // found obstacle
     if (ultrasonicSensor.getValue(0) < DEFAULT_THRESHOLD_DISTANCE) {
 
-        // drive backwards
+        setSpeed(35);
         brake();
 
+        // drive backwards
+        backward();
+
         var newPos = motorRight.position - 200;
+        var timeout = new Date();
         while (motorRight.position - newPos > 10) {
-            // wait until robot has reached the new position
+            // wait until robot has reached the new position or timeout (milliseconds) has expired
+            if(new Date().getTime() - timeout.getTime() > 5000) break;
         }
 
         // turn
