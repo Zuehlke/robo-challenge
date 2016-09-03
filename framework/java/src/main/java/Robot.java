@@ -175,14 +175,19 @@ public class Robot {
 
         attachShutDownHook(robot);
 
-        robot.setSpeed(DEFAULT_SPEED);
-        robot.forward();
+        try {
 
-        while(true) {
-            robot.runLoop();
-            Delay.msDelay(DEFAULT_SLEEP_TIMEOUT_IN_MSEC);
+            robot.setSpeed(DEFAULT_SPEED);
+            robot.forward();
+
+            while (true) {
+                robot.runLoop();
+                Delay.msDelay(DEFAULT_SLEEP_TIMEOUT_IN_MSEC);
+            }
+
+        } catch (Exception ex) {
+            robot.tearDown();
         }
-
     }
 
     private static void attachShutDownHook(Robot robot) {
