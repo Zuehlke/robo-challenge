@@ -119,9 +119,9 @@ function main() {
 
 function run_loop() {
 
-    console.log("color value: " + colorSensor.getValue(0))
-    console.log("ultrasonic value: " + ultrasonicSensor.getValue(0))
-    console.log("motor positions (r, l): " + motorRight.position + ", "  + motorLeft.position)
+    console.log("color value: " + colorSensor.getValue(0));
+    console.log("ultrasonic value: " + ultrasonicSensor.getValue(0));
+    console.log("motor positions (r, l): " + motorRight.position + ", "  + motorLeft.position);
 
     // found obstacle
     if (ultrasonicSensor.getValue(0) < DEFAULT_THRESHOLD_DISTANCE) {
