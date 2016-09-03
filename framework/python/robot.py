@@ -86,7 +86,7 @@ def turn():
     motor_right.run_to_abs_pos()
 
     while abs(motor_right.position - abs_pos) > 10:
-        # turn
+        # turn to new position
 
         # stop when object detected
         if ultrasonic_sensor.value() < DEFAULT_THRESHOLD_DISTANCE:

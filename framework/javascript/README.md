@@ -12,7 +12,7 @@ The online documentation can be found here:
 In order to use ev3dev-lang-js on the ev3, ev3dev-lang-js has to be installed via npm. 
 
 ```bash
-npm install ev3dev-lang
+npm install ev3dev-lang npm install ev3dev-lang@v0.9.3
 ```
 
 
