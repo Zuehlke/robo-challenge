@@ -1,7 +1,7 @@
 
 # Zühlke RoboChallenge
 This is the official repository for the Zühlke RoboChallenge.
-You can find more information about the event and registration (students only) on the our homepage. 
+You can find more information about the event and registration (students only) on our homepage. 
 
 - 4/5. Nov 2016, Bern (Switzerland), https://www.zuehlke.com/ch/de/robochallenge/ (Information is only avaible in German)
 
