@@ -72,14 +72,19 @@ In the education kit you have the following sensors:
 - 1x EV3 Color Sensor (color reflection)
 - 2x EV3 Touch Sensor
 
-All sensors must be connected to the numbered ev3 ports (1,2,3 or 4). 
+All sensors (INPUT) must be connected to the numbered ev3 ports (1,2,3 or 4). 
 
 ### Motors
+The ev3dev project provides a list of all supported motors with all the 
+settings which can be used. You should only consider the EV3 motors.
+- http://www.ev3dev.org/docs/motors/
+
 The education kit has the following motors:
 - 2x EV3 Large Servo Motor
 - 1x EV3 Medium Servo Motor
 
-All motors must be connected to the alphabetic ev3 ports (A,B,C or D). 
+All motors (OUTPUT) must be connected to the alphabetic ev3 ports (A,B,C or D). 
+
 
 ### Sound
 How to speak or play sound with your ev3dev is described [here](https://github.com/ev3dev/ev3dev/wiki/Using-Sound).
