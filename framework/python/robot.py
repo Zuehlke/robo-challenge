@@ -20,15 +20,15 @@ DEFAULT_THRESHOLD_DISTANCE = 90
 print("Setting up...")
 
 # motors
-motor_right = ev3.LargeMotor('outA')
-print("motorRight connected: %s" % str(motor_right.connected))
+right_motor = ev3.LargeMotor('outA')
+print("motor right connected: %s" % str(right_motor.connected))
 
-motor_left = ev3.LargeMotor('outB')
-print("motorRight connected: %s" % str(motor_right.connected))
+left_motor = ev3.LargeMotor('outB')
+print("motor left connected: %s" % str(right_motor.connected))
 
-motors = [motor_left, motor_right]
-motor_right.reset()
-motor_left.reset()
+motors = [left_motor, right_motor]
+right_motor.reset()
+left_motor.reset()
 
 # sensors
 color_sensor = ev3.ColorSensor()
@@ -49,9 +49,7 @@ def backward():
         duty_cycle = m.duty_cycle_sp
         if duty_cycle > 0:
             m.duty_cycle_sp = duty_cycle * -1
-
-    for m in motors:
-        m.run_direct()
+            m.run_forever()
 
 
 def forward():
@@ -60,9 +58,7 @@ def forward():
         duty_cycle = m.duty_cycle_sp
         if duty_cycle < 0:
             m.duty_cycle_sp = duty_cycle * -1
-
-    for m in motors:
-        m.run_direct()
+            m.run_forever()
 
 
 def set_speed(duty_cycle):
@@ -76,16 +72,16 @@ def brake():
 
 
 def turn():
-    motor_left.stop()
-    pos = motor_right.position
+    left_motor.stop()
+    pos = right_motor.position
 
     # new absolute position
     abs_pos = pos + 500
 
-    motor_right.position_sp = abs_pos
-    motor_right.run_to_abs_pos()
+    right_motor.position_sp = abs_pos
+    right_motor.run_to_abs_pos()
 
-    while abs(motor_right.position - abs_pos) > 10:
+    while abs(right_motor.position - abs_pos) > 10:
         # turn to new position
 
         # stop when object detected
@@ -109,7 +105,7 @@ def run_loop():
         time.sleep(DEFAULT_SLEEP_TIMEOUT_IN_SEC)
         print('color value: %s' % str(color_sensor.value()))
         print('ultrasonic value: %s' % str(ultrasonic_sensor.value()))
-        print('motor positions (r, l): %s, %s' % (str(motor_right.position), str(motor_left.position)))
+        print('motor positions (r, l): %s, %s' % (str(right_motor.position), str(left_motor.position)))
 
         # found obstacle
         if ultrasonic_sensor.value() < DEFAULT_THRESHOLD_DISTANCE:
@@ -120,10 +116,10 @@ def run_loop():
             # drive backwards
             backward()
 
-            new_pos = motor_right.position - 200
+            new_pos = right_motor.position - 200
             timeout = time.time()
 
-            while motor_right.position - new_pos > 10:
+            while right_motor.position - new_pos > 10:
                 # wait until robot has reached the new position or timeout (seconds) has expired
                 if time.time() - timeout > 5:
                     break
