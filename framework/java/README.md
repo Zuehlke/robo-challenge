@@ -1,7 +1,13 @@
-# Java
+# Java (JDK 8)
+## ev3dev-lang-java
+The Java example is based on the [ev3dev-lang-java](https://github.com/ev3dev-lang-java/ev3dev-lang-java/) Java package for the ev3. 
 
-## Setup JRE
 
+## API Documentation
+- You must build the Javadoc by yourself. See https://github.com/ev3dev-lang-java/ev3dev-lang-java
+- ev3dev language bindings: http://ev3dev-lang.readthedocs.io/en/latest/
+
+## Setting Up the EV3 Brick
 First, you need to setup a JVM on the robot. Thankfully, Oracle provides a
 Java embedded version, that runs on a Mindstorms Brick.
 
@@ -16,12 +22,20 @@ Java embedded version, that runs on a Mindstorms Brick.
 5.) set JAVA_HOME path
 
 
-## Setup Java API
 
-There already exists an [API](https://github.com/ev3dev-lang-java/ev3dev-lang-java)
-for Java so you can use it as a dependency in your Java program.
 
-### Maven dependency
+#### Execute the program
+
+After building your program, upload your application as well as the
+ev3-lang-java-0.2-SNAPSHOT.jar to your robot. After that you can execute:
+
+```bash
+java -cp <project-name>-SNAPSHOT.jar:ev3-lang-java-0.2-SNAPSHOT.jar <path-to-class-with-main>
+```
+
+## Development Environment
+
+#### Maven dependency
 
 1) add repository (in <repositories>) to your pom:
 
@@ -39,13 +53,4 @@ for Java so you can use it as a dependency in your Java program.
   <artifactId>ev3dev-lang-java</artifactId>
   <version>v0.2.0</version>
 </dependency>
-```
-
-## Execute the program
-
-After building your program, upload your application as well as the
-ev3-lang-java-0.2-SNAPSHOT.jar to your robot. After that you can execute:
-
-```bash
-java -cp <project-name>-SNAPSHOT.jar:ev3-lang-java-0.2-SNAPSHOT.jar <path-to-class-with-main>
 ```
