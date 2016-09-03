@@ -41,10 +41,10 @@ ultrasonicSensor.mode = "US-DIST-CM";
 //
 function backward() {
     for (var i = 0; i < motors.length; i++) {
-        var duty_cycle = motors[i].dutyCycleSp;
+        var currentDutyCycle = motors[i].dutyCycleSp;
 
-        if (duty_cycle > 0) {
-            motors[i].dutyCycleSp = duty_cycle * -1;
+        if (currentDutyCycle > 0) {
+            motors[i].dutyCycleSp = currentDutyCycle * -1;
         }
         motors[i].runForever();
     }
@@ -52,10 +52,10 @@ function backward() {
 
 function forward() {
     for (var i = 0; i < motors.length; i++) {
-        var duty_cycle = motors[i].dutyCycleSp;
+        var currentDutyCycle = motors[i].dutyCycleSp;
 
-        if (duty_cycle < 0) {
-            motors[i].dutyCycleSp = duty_cycle * -1;
+        if (currentDutyCycle < 0) {
+            motors[i].dutyCycleSp = currentDutyCycle * -1;
         }
         motors[i].runForever();
     }
