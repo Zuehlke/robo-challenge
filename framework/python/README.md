@@ -29,7 +29,7 @@ Now you can switch to your Python environment.
 source activate ev3
 ```
 
-Next you need editor, you could use PyCharm IDE (https://www.jetbrains.com/pycharm/) or a simple editor like Brackets (http://brackets.io).
+Next you need editor, you could use PyCharm Community version (https://www.jetbrains.com/pycharm/) or a simple editor like Brackets (http://brackets.io).
 
 When you want autocomplection in PyCharm you can install the Python ev3 language bindings on your local machine.
 
@@ -39,5 +39,5 @@ pip install -r requirements.txt
 ```
 
 ## Basic Robot Example
-The following code is a simple example of an self-driving robot.
+An example program that is written in Python and that uses the ev3dev-lang-python lib can be found here. 
 - [robot.py](robot.py)

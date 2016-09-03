@@ -12,7 +12,7 @@ The online documentation can be found here:
 In order to use ev3dev-lang-js on the ev3, ev3dev-lang-js has to be installed via npm. 
 
 ```bash
-npm install ev3dev-lang npm install ev3dev-lang@v0.9.3
+npm install ev3dev-lang
 ```
 
 
@@ -31,5 +31,5 @@ npm install
 ```
 
 ## Basic Robot Example
-An example program that is written in JavaScript and that uses the ev3dev-lang-js lib can be found in example.js 
-- [example.js](example.js)
+An example program that is written in JavaScript and that uses the ev3dev-lang-js lib can be found here. 
+- [robot.js](robot.js)
