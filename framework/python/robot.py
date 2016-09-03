@@ -4,9 +4,20 @@
 import time
 import ev3dev.ev3 as ev3
 
-###
-# SETUP
+# default sleep timeout in sec
+DEFAULT_SLEEP_TIMEOUT_IN_SEC = 0.1
+
+# default duty_cycle (0 - 100)
+DEFAULT_DUTY_CYCLE = 60
+
+# default threshold distance
+DEFAULT_THRESHOLD_DISTANCE = 90
+
 ##
+# Setup
+##
+
+print("Setting up...")
 
 # motors
 motor_right = ev3.LargeMotor('outA')
@@ -29,16 +40,9 @@ print("ultrasonic sensor connected: %s" % str(ultrasonic_sensor.connected))
 ultrasonic_sensor.mode = 'US-DIST-CM'
 
 
-# sleep timeout
-sleep_timeout_sec = 0.1
-
-# default duty_cycle (0 - 100)
-default_duty_cycle = 60
-
-# threshold distance
-threshold_distance = 90
-
-
+##
+#  Robot functionality
+##
 def backward():
 
     for m in motors:
@@ -85,57 +89,69 @@ def turn():
         # turn
 
         # stop when object detected
-        if ultrasonic_sensor.value() < threshold_distance:
+        if ultrasonic_sensor.value() < DEFAULT_THRESHOLD_DISTANCE:
             break
 
-    set_speed(default_duty_cycle)
+    set_speed(DEFAULT_DUTY_CYCLE)
     forward()
 
 
 def teardown():
-    print('teardown')
+    print('Tearing down...')
     for m in motors:
         m.stop()
         m.reset()
 
 
-def run():
-    print('run robot, run!')
+def run_loop():
+    # game loop (endless loop)
+    while True:
+        time.sleep(DEFAULT_SLEEP_TIMEOUT_IN_SEC)
+        print('color value: %s' % str(color_sensor.value()))
+        print('ultrasonic value: %s' % str(ultrasonic_sensor.value()))
+        print('motor positions (r, l): %s, %s' % (str(motor_right.position), str(motor_left.position)))
 
-    set_speed(default_duty_cycle)
+        # found obstacle
+        if ultrasonic_sensor.value() < DEFAULT_THRESHOLD_DISTANCE:
+
+            brake()
+
+            # drive backwards
+            backward()
+
+            new_pos = motor_right.position - 200
+            while motor_right.position - new_pos > 10:
+                # wait until robot has reached the new position
+                pass
+
+            # turn
+            turn()
+
+        else:
+            forward()
+
+
+def main():
+    print('Run robot, run!')
+
+    set_speed(DEFAULT_DUTY_CYCLE)
     forward()
 
     try:
-        # game loop (endless loop)
-        while True:
-            time.sleep(sleep_timeout_sec)
-            print('color value: %s' % str(color_sensor.value()))
-            print('ultrasonic value: %s' % str(ultrasonic_sensor.value()))
+        run_loop()
 
-            # found obstacle
-            if ultrasonic_sensor.value() < threshold_distance:
-
-                brake()
-
-                # drive backwards for 0.5 sec
-                backward()
-                time.sleep(0.5)
-
-                # turn
-                turn()
-
-            else:
-                forward()
-
-    # hanlde ctr+c and system exit
+    # doing a cleanup action just before program ends
+    # handle ctr+c and system exit
     except (KeyboardInterrupt, SystemExit):
         teardown()
         raise
 
+    # handle exceptions
     except Exception as e:
         print('ohhhh error!')
         print(e)
         teardown()
-
-# run robot
-run()
+##
+# start the program
+##
+main()
