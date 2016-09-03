@@ -49,7 +49,8 @@ def backward():
         duty_cycle = m.duty_cycle_sp
         if duty_cycle > 0:
             m.duty_cycle_sp = duty_cycle * -1
-            m.run_forever()
+
+        m.run_direct()
 
 
 def forward():
@@ -58,7 +59,8 @@ def forward():
         duty_cycle = m.duty_cycle_sp
         if duty_cycle < 0:
             m.duty_cycle_sp = duty_cycle * -1
-            m.run_forever()
+
+        m.run_direct()
 
 
 def set_speed(duty_cycle):
