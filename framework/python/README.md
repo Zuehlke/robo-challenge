@@ -31,7 +31,7 @@ source activate ev3
 
 Next you need editor, you could use PyCharm Community version (https://www.jetbrains.com/pycharm/) or a simple editor like Brackets (http://brackets.io).
 
-When you want autocomplection in PyCharm you can install the Python ev3 language bindings on your local machine.
+When you want autocompletion in PyCharm you can install the Python ev3 language bindings on your local machine.
 
 ```bash
 cd framework/python

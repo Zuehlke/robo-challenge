@@ -1,41 +1,55 @@
-# Java (JDK 8)
+# Java (Embedded version)
 ## ev3dev-lang-java
 The Java example is based on the [ev3dev-lang-java](https://github.com/ev3dev-lang-java/ev3dev-lang-java/) Java package for the ev3. 
 
 
 ## API Documentation
-- You must build the Javadoc by yourself. See https://github.com/ev3dev-lang-java/ev3dev-lang-java
+- There is no online version available, so you must build the Javadoc by yourself. See https://github.com/ev3dev-lang-java/ev3dev-lang-java
 - ev3dev language bindings: http://ev3dev-lang.readthedocs.io/en/latest/
 
 ## Setting Up the EV3 Brick
-First, you need to setup a JVM on the robot. Thankfully, Oracle provides a
-Java embedded version, that runs on a Mindstorms Brick.
+First, you need to setup up a JVM on the ev3 brick. Thankfully, Oracle provides a
+Java embedded version, that runs on the ev3 brick.
 
-1.) download "Oracle Java SE Embedded version 7 Update 60" from http://www.oracle.com/technetwork/java/embedded/downloads/javase/javaseemeddedev3-1982511.html
+1.) Download "Oracle Java SE Embedded version 7 Update 60" from http://www.oracle.com/technetwork/java/embedded/downloads/javase/javaseemeddedev3-1982511.html
 
-2.) copy ejre-7u60-fcs-b19-linux-arm-sflt-headless-07_may_2014.tar.gz to robot.
+2.) Copy ejre-7u60-b19-ejre-7u60-fcs-b19-linux-arm-sflt-headless-07_may_2014.tar.gz to your ev3 brick.
 
-3.) extract compressed file (tar -xvf ejre-7u60-fcs-b19-linux-arm-sflt-headless-07_may_2014.tar.gz)
-
-4.) remove compressed file
-
-5.) set JAVA_HOME path
-
-
-
-
-#### Execute the program
-
-After building your program, upload your application as well as the
-ev3-lang-java-0.2-SNAPSHOT.jar to your robot. After that you can execute:
-
+3.) Next extract the compressed file.
 ```bash
-java -cp <project-name>-SNAPSHOT.jar:ev3-lang-java-0.2-SNAPSHOT.jar <path-to-class-with-main>
+tar -xvf ejre-7u60-b19-ejre-7u60-fcs-b19-linux-arm-sflt-headless-07_may_2014.tar.gz
 ```
 
-## Development Environment
+4.) Remove compressed file.
 
-#### Maven dependency
+5.) Adapt the PATH and JAVA_HOME variable.
+
+
+
+
+
+
+
+
+## Development Environment
+It's up to you how you want to develop. This section is just a suggestion how you could setting up your Java environment.
+
+First download the latest Java SE (JDK) version (http://www.oracle.com/technetwork/java/javase/downloads/index.html).
+
+Next you need IDE, you could use InteliJ IDEA community version (https://www.jetbrains.com/idea/) or eclipse (https://eclipse.org).
+
+### Build & execute the program
+For a better and easier deployment we have provided you with a Maven [pom.xml](pom.xml) which bundles all required libraries (ev3-lang-java-*.jar, etc.) into one big jar file (ueber jar file). Then you have just to copy one big jar file.
+
+1.) Just build the application with Apache Maven:
+```bash
+mvn clean packge
+```
+
+2.) Then copy the ueber-jar to the ev3 brick.
+
+### Maven settings (pom.xml)
+When you want to build your own Maven project, you have to do the following steps.
 
 1) add repository (in <repositories>) to your pom:
 

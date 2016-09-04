@@ -3,7 +3,7 @@
 This is the official repository for the Zühlke RoboChallenge.
 You can find more information about the event and registration (students only) on our homepage. 
 
-- 4/5. Nov 2016, Bern (Switzerland), https://www.zuehlke.com/ch/de/robochallenge/ (Information is only avaible in German)
+- 4/5. Nov 2016, Bern (Switzerland), https://www.zuehlke.com/ch/de/robochallenge/ (Information is only available in German)
 
 ![header](robots.gif)
 
@@ -13,12 +13,11 @@ You find detailed information regarding the challenge [here](challenges/sumo.md)
 
 ## Quickstart
 
-To get started using Lego Mindstorms and ev3dev (http://www.ev3dev.org), please read
-[quickstart.md](quickstart.md).
+To get started using Lego Mindstorms and ev3dev (http://www.ev3dev.org), please read the
+[Quickstart](quickstart.md) tutorial.
 
 ## Frameworks
+You can find example code for the different frameworks and programming languages in the framework section.
 
-We created several example programs for the different programming languages:
-
-* see [framework](framework)
+* see [Framework](framework) section
 
