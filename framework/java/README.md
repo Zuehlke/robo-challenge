@@ -1,19 +1,19 @@
 # Java (Embedded version)
 ## ev3dev-lang-java
-The Java example is based on the [ev3dev-lang-java](https://github.com/ev3dev-lang-java/ev3dev-lang-java/) Java package for the ev3. 
+The Java example is based on the [ev3dev-lang-java](https://github.com/ev3dev-lang-java/ev3dev-lang-java/) Java package for the EV3. 
 
 
 ## API Documentation
-- There is no online version available, so you must build the Javadoc by yourself. See https://github.com/ev3dev-lang-java/ev3dev-lang-java
+- Java language bindings: http://ev3dev-lang-java.github.io/docs/api/
 - ev3dev language bindings: http://ev3dev-lang.readthedocs.io/en/latest/
 
 ## Setting Up the EV3 Brick
-First, you need to setup up a JVM on the ev3 brick. Thankfully, Oracle provides a
-Java embedded version, that runs on the ev3 brick.
+First, you need to set up up a JVM on the EV3 brick. Thankfully, Oracle provides a
+Java embedded version, that runs on the EV3 brick.
 
 1.) Download "Oracle Java SE Embedded version 7 Update 60" from http://www.oracle.com/technetwork/java/embedded/downloads/javase/javaseemeddedev3-1982511.html
 
-2.) Copy ejre-7u60-b19-ejre-7u60-fcs-b19-linux-arm-sflt-headless-07_may_2014.tar.gz to your ev3 brick.
+2.) Copy ejre-7u60-b19-ejre-7u60-fcs-b19-linux-arm-sflt-headless-07_may_2014.tar.gz to your EV3 brick.
 
 3.) Next extract the compressed file.
 ```bash
@@ -24,12 +24,10 @@ tar -xvf ejre-7u60-b19-ejre-7u60-fcs-b19-linux-arm-sflt-headless-07_may_2014.tar
 
 5.) Adapt the PATH and JAVA_HOME variable.
 
-
-
-
-
-
-
+```bash
+export JAVA_HOME=/home/robot/ejre1.7.0_60
+export PATH=$PATH:$JAVA_HOME/bin
+```
 
 ## Development Environment
 It's up to you how you want to develop. This section is just a suggestion how you could setting up your Java environment.
@@ -43,10 +41,10 @@ For a better and easier deployment we have provided you with a Maven [pom.xml](p
 
 1.) Just build the application with Apache Maven:
 ```bash
-mvn clean packge
+mvn clean package
 ```
 
-2.) Then copy the ueber-jar to the ev3 brick.
+2.) Then copy the ueber-*.jar (_uber-ev3-robot-jdk-1.0-SNAPSHOT.jar_) to the EV3 brick.
 
 ### Maven settings (pom.xml)
 When you want to build your own Maven project, you have to do the following steps.
@@ -67,4 +65,18 @@ When you want to build your own Maven project, you have to do the following step
   <artifactId>ev3dev-lang-java</artifactId>
   <version>v0.2.0</version>
 </dependency>
+```
+
+3) Add the moment we can only use Java 7 and so we have to set the source and target to _1.7_.
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.5.1</version>
+    <configuration>
+        <!-- or whatever version you use -->
+        <source>1.7</source>
+        <target>1.7</target>
+    </configuration>
+</plugin>
 ```

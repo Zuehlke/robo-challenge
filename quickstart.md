@@ -89,6 +89,25 @@ All motors (OUTPUT) must be connected to the alphabetic EV3 ports (A,B,C or D).
 ### Sound
 How to speak or play sound with your ev3dev is described [here](https://github.com/ev3dev/ev3dev/wiki/Using-Sound).
 
+### FAQ
+
+####Why is the motor 'speed_sp' property not working?
+The problem might be that the 'speed_regulation' setting ist set to 'off'. So try to set 'speed_regulation' to 'on'. 
+
+Bash:
+
+```Bash
+echo "on" > speed_regulation
+```
+Python:
+```python
+right_motor.speed_regulation_enabled = 'on'
+```
+JavaScript:
+```javascript
+motorRight.setString("speed_regulation", "on")
+```
+
 ### Useful links
 * Basic Linux commands - http://www.comptechdoc.org/os/linux/usersguide/linux_ugbasics.html
 * Debian Linux reference - https://www.debian.org/doc/manuals/debian-reference/
