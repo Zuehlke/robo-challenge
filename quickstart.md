@@ -91,7 +91,7 @@ How to speak or play sound with your ev3dev is described [here](https://github.c
 
 ### FAQ
 
-####Why is the motor 'speed_sp' property not working?
+#####Why is the motor 'speed_sp' property not working?
 The problem might be that the 'speed_regulation' setting ist set to 'off'. So try to set 'speed_regulation' to 'on'. 
 
 Bash:
