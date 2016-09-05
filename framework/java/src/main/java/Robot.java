@@ -20,7 +20,7 @@ public class Robot {
     private static final int DEFAULT_SLEEP_TIMEOUT_IN_MSEC = 100;
 
     // default speed
-    private static final int DEFAULT_SPEED = 500;
+    private static final int DEFAULT_SPEED = 60;
 
     // default threshold distance
     private static final int DEFAULT_THRESHOLD_DISTANCE = 90;
@@ -48,9 +48,13 @@ public class Robot {
         leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);
         System.out.println("left motor connected: " + leftMotor);
 
+
         leftMotor.resetTachoCount();
         rightMotor.resetTachoCount();
 
+        // workaround: set to duty cycle -> speed regulation = off
+        leftMotor.suspendRegulation();
+        rightMotor.suspendRegulation();
 
         motors.add(rightMotor);
         motors.add(leftMotor);
@@ -84,9 +88,10 @@ public class Robot {
 
     public void setSpeed(int speed) {
         for (EV3LargeRegulatedMotor m : motors) {
+            // possible workaround for speed regulation
+            // m.setStringAttribute("speed_regulation", "on");
             m.setSpeed(speed);
-            // workaround
-            //m.setStringAttribute("speed_regulation", "on");
+
         }
     }
 
@@ -132,11 +137,8 @@ public class Robot {
 
         System.out.println("color value: " + getColorReflect(colorSensor));
         System.out.println("ultrasonic value: " + getDistance(ultrasonicSensor));
-        System.out.println("motor positions (r, l): " + rightMotor.getPosition() + ", " + leftMotor.getPosition());
+        System.out.println("motor positions (r, l): " + getPosition(rightMotor) + ", " + getPosition(leftMotor));
 
-        System.out.println("motor speed (r, l): " + rightMotor.getSpeed() + ", " + leftMotor.getSpeed());
-
-        System.out.println("motor rot (r, l): " + rightMotor.getRotationSpeed() + ", " + leftMotor.getRotationSpeed());
 
         // found obstacle
         if (getDistance(ultrasonicSensor) < DEFAULT_THRESHOLD_DISTANCE) {
@@ -144,12 +146,12 @@ public class Robot {
             brake();
 
             // drive backwards
-            setSpeed(250);
+            setSpeed(30);
             backward();
 
-            float newPos = rightMotor.getPosition() - 200;
+            float newPos = getPosition(rightMotor) - 200;
             long timeout = new Date().getTime();
-            while (rightMotor.getPosition() - newPos > 10) {
+            while (getPosition(rightMotor) - newPos > 10) {
                 // wait until robot has reached the new position or timeout (milliseconds) has expired
                 if (new Date().getTime() - timeout > 5000) break;
             }
@@ -178,22 +180,25 @@ public class Robot {
         return (int) sample[0];
     }
 
+    // workaround: position does not work
+    private int getPosition(EV3LargeRegulatedMotor motor) {
+        return motor.getIntegerAttribute("position");
+    }
+
     public static void main(String[] args){
 
         System.out.println("Run robot, run!");
 
         Robot robot = new Robot();
 
-
-
-
          attachShutDownHook(robot);
 
 
         try {
 
-            robot.forward();
             robot.setSpeed(DEFAULT_SPEED);
+            robot.forward();
+
 
 
             while (true) {
