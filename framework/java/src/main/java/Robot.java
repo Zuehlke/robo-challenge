@@ -20,7 +20,7 @@ public class Robot {
     private static final int DEFAULT_SLEEP_TIMEOUT_IN_MSEC = 100;
 
     // default speed
-    private static final int DEFAULT_SPEED = 250;
+    private static final int DEFAULT_SPEED = 500;
 
     // default threshold distance
     private static final int DEFAULT_THRESHOLD_DISTANCE = 90;
@@ -38,6 +38,7 @@ public class Robot {
         // Setup
         //
 
+
         System.out.println("Setting up...");
 
         // motors
@@ -47,19 +48,19 @@ public class Robot {
         leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);
         System.out.println("left motor connected: " + leftMotor);
 
+        leftMotor.resetTachoCount();
+        rightMotor.resetTachoCount();
+
+
         motors.add(rightMotor);
         motors.add(leftMotor);
-        rightMotor.resetTachoCount();
-        leftMotor.resetTachoCount();
 
         // sensors
         colorSensor = new EV3ColorSensor(SensorPort.S4);
         System.out.println("color sensor connected: " + colorSensor);
-        colorSensor.setCurrentMode("COL-REFLECT");
 
         ultrasonicSensor = new EV3UltrasonicSensor(SensorPort.S2);
         System.out.println("ultrasonic sensor connected: " + ultrasonicSensor);
-        ultrasonicSensor.setCurrentMode("US-DIST-CM");
 
     }
 
@@ -74,16 +75,21 @@ public class Robot {
     }
 
     public void forward() {
+
         for (EV3LargeRegulatedMotor m : motors) {
             m.forward();
+
         }
     }
 
     public void setSpeed(int speed) {
         for (EV3LargeRegulatedMotor m : motors) {
             m.setSpeed(speed);
+            // workaround
+            //m.setStringAttribute("speed_regulation", "on");
         }
     }
+
 
     public void brake() {
         for (EV3LargeRegulatedMotor m : motors) {
@@ -91,7 +97,7 @@ public class Robot {
         }
     }
 
-    public void turn() {
+    public void turn()  {
         leftMotor.stop();
         float pos = rightMotor.getPosition();
 
@@ -118,6 +124,7 @@ public class Robot {
         for (EV3LargeRegulatedMotor m : motors) {
             m.stop();
             m.resetTachoCount();
+
         }
     }
 
@@ -127,13 +134,17 @@ public class Robot {
         System.out.println("ultrasonic value: " + getDistance(ultrasonicSensor));
         System.out.println("motor positions (r, l): " + rightMotor.getPosition() + ", " + leftMotor.getPosition());
 
+        System.out.println("motor speed (r, l): " + rightMotor.getSpeed() + ", " + leftMotor.getSpeed());
+
+        System.out.println("motor rot (r, l): " + rightMotor.getRotationSpeed() + ", " + leftMotor.getRotationSpeed());
+
         // found obstacle
         if (getDistance(ultrasonicSensor) < DEFAULT_THRESHOLD_DISTANCE) {
 
-            setSpeed(35);
             brake();
 
             // drive backwards
+            setSpeed(250);
             backward();
 
             float newPos = rightMotor.getPosition() - 200;
@@ -161,24 +172,29 @@ public class Robot {
     }
 
     private int getColorReflect(EV3ColorSensor colorSensor) {
-        final SampleProvider sp = colorSensor.getColorIDMode();
+        final SampleProvider sp = colorSensor.getRedMode();
         float[] sample = new float[sp.sampleSize()];
         sp.fetchSample(sample, 0);
         return (int) sample[0];
     }
 
-    public static void main(String [] args) {
+    public static void main(String[] args){
 
         System.out.println("Run robot, run!");
 
         Robot robot = new Robot();
 
-        attachShutDownHook(robot);
+
+
+
+         attachShutDownHook(robot);
+
 
         try {
 
-            robot.setSpeed(DEFAULT_SPEED);
             robot.forward();
+            robot.setSpeed(DEFAULT_SPEED);
+
 
             while (true) {
                 robot.runLoop();
@@ -190,7 +206,7 @@ public class Robot {
         }
     }
 
-    private static void attachShutDownHook(Robot robot) {
+    private static void attachShutDownHook(final Robot robot) {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {

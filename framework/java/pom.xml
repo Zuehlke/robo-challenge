@@ -29,8 +29,8 @@
                 <version>3.5.1</version>
                 <configuration>
                     <!-- or whatever version you use -->
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -46,7 +46,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <finalName>uber-${artifactId}-${version}</finalName>
+                    <finalName>uber-${project.artifactId}-${version}</finalName>
                 </configuration>
             </plugin>
         </plugins>
