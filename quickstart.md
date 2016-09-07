@@ -25,7 +25,7 @@ You should use one of the official [language bindings](https://github.com/ev3dev
 The official language bindings should implement the language binding [specification](http://ev3dev-lang.readthedocs.io).
 
 We have already provided some basic examples to get you started very quickly. 
-* see supported [Frameworks](framework/README.md) for the Zühlke RoboChallenge.
+* see supported [Frameworks](framework) for the Zühlke RoboChallenge.
 
 
 
