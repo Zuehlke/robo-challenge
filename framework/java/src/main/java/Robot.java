@@ -79,7 +79,6 @@ public class Robot {
     }
 
     public void forward() {
-
         for (EV3LargeRegulatedMotor m : motors) {
             m.forward();
 
@@ -104,12 +103,13 @@ public class Robot {
 
     public void turn()  {
         leftMotor.stop();
-        float pos = rightMotor.getPosition();
+        float pos = getPosition(rightMotor);
 
         // new absolute position
         float absPos = pos + 500;
+        rightMotor.forward();
 
-        while (Math.abs(rightMotor.getPosition() - absPos) > 10) {
+        while (Math.abs(getPosition(rightMotor) - absPos) > 10) {
             // turn to new position
 
             // stop when object detected
@@ -146,7 +146,7 @@ public class Robot {
             brake();
 
             // drive backwards
-            setSpeed(30);
+            setSpeed(35);
             backward();
 
             float newPos = getPosition(rightMotor) - 200;
@@ -193,13 +193,9 @@ public class Robot {
 
          attachShutDownHook(robot);
 
-
         try {
-
             robot.setSpeed(DEFAULT_SPEED);
             robot.forward();
-
-
 
             while (true) {
                 robot.runLoop();
@@ -211,6 +207,7 @@ public class Robot {
         }
     }
 
+    // handling exits
     private static void attachShutDownHook(final Robot robot) {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -218,7 +215,6 @@ public class Robot {
                 robot.tearDown();
             }
         });
-
     }
 
 }

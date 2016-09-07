@@ -23,7 +23,6 @@ var motors = [motorLeft, motorRight];
 
 motorRight.reset();
 motorLeft.reset();
-motorRight.setAttribute("regulation", "on");
 
 
 // sensors
