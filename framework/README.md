@@ -1,6 +1,6 @@
 
 # Supported Frameworks
-Here you find the current sate of the example code for the different frameworks and programming languages.
+Here you find the example code for the different frameworks and programming languages, which are supported for the challenge.
 
 |  Language | Framework  | Release | Kernel | Example Tested  | Note | Supported |
 |---|---|---|---|---|---|---|
