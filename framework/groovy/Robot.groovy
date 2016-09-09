@@ -1,7 +1,6 @@
-@GrabResolver(name = 'jitpack.io', root = 'https://jitpack.io')
-@Grab(group = 'com.github.jabrena', module = 'ev3dev-lang-java', version = 'v0.2.0')
 
-import ev3dev.hardware.motor.EV3LargeRegulatedMotor
+@GrabResolver(name = "jitpack.io", root = "https://jitpack.io")
+@Grab(group = "com.github.jabrena", module = "ev3dev-lang-java", version = "v0.2.0")
 import ev3dev.hardware.motor.EV3LargeRegulatedMotor
 import ev3dev.hardware.port.MotorPort
 import ev3dev.hardware.port.SensorPort
@@ -11,21 +10,13 @@ import lejos.robotics.SampleProvider
 import lejos.utility.Delay
 
 // default sleep timeout in sec
-def DEFAULT_SLEEP_TIMEOUT_IN_MSEC = 100
+DEFAULT_SLEEP_TIMEOUT_IN_MSEC = 100
 
 // default speed
-def DEFAULT_SPEED = 60
+DEFAULT_SPEED = 60
 
 // default threshold distance
-def DEFAULT_THRESHOLD_DISTANCE = 90
-
-def EV3LargeRegulatedMotor rightMotor
-def EV3LargeRegulatedMotor leftMotor
-def List<EV3LargeRegulatedMotor> motors = new ArrayList<>()
-
-def EV3UltrasonicSensor ultrasonicSensor
-def EV3ColorSensor colorSensor
-
+DEFAULT_THRESHOLD_DISTANCE = 90
 
 println("Setting up...")
 
@@ -36,12 +27,14 @@ System.out.println("right motor connected: " + rightMotor)
 leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);
 System.out.println("left motor connected: " + leftMotor)
 
+motors = [rightMotor, leftMotor]
 
-leftMotor.resetTachoCount()
-rightMotor.resetTachoCount()
+leftMotor.resetTachoCount();
+rightMotor.resetTachoCount();
 
-motors.add(rightMotor)
-motors.add(leftMotor)
+// workaround: set to duty cycle -> speed regulation = off
+leftMotor.suspendRegulation();
+rightMotor.suspendRegulation();
 
 // sensors
 colorSensor = new EV3ColorSensor(SensorPort.S4)
@@ -105,27 +98,27 @@ def tearDown() {
     println("Tearing down...")
 
     for (m in motors) {
-        m.stop()
         m.resetTachoCount()
+        m.stop()
     }
 }
 
-def getDistance(EV3UltrasonicSensor ultrasonicSensor) {
-    final SampleProvider sp = ultrasonicSensor.getDistanceMode()
+def getDistance(ultrasonicSensor) {
+    SampleProvider sp = ultrasonicSensor.getDistanceMode()
     float[] sample = new float[sp.sampleSize()]
     sp.fetchSample(sample, 0)
     return (int) sample[0]
 }
 
-def getColorReflect(EV3ColorSensor colorSensor) {
-    final SampleProvider sp = colorSensor.getRedMode()
+def getColorReflect(colorSensor) {
+    SampleProvider sp = colorSensor.getRedMode()
     float[] sample = new float[sp.sampleSize()]
     sp.fetchSample(sample, 0)
     return (int) sample[0]
 }
 
 // workaround: position does not work
-def getPosition(EV3LargeRegulatedMotor motor) {
+def getPosition(motor) {
     return motor.getIntegerAttribute("position")
 }
 
@@ -145,14 +138,13 @@ def runLoop() {
         speed(35)
         backward()
 
-        float newPos = getPosition(rightMotor) - 200
-        long timeout = new Date().getTime()
+        newPos = getPosition(rightMotor) - 200
+        timeout = new Date().getTime()
         while (getPosition(rightMotor) - newPos > 10) {
             // wait until robot has reached the new position or timeout (milliseconds) has expired
             if (new Date().getTime() - timeout > 5000) {
                 break
             }
-
         }
 
         // turn
@@ -164,32 +156,31 @@ def runLoop() {
 }
 
 
-def main() {
+def runRobot() {
 
     println("Run robot, run!")
-
-    Runtime.getRuntime().addShutdownHook(new Thread() {
-        @Override
-        public void run() {
-            tearDown()
-        }
-    });
 
     try {
         speed(DEFAULT_SPEED)
         forward()
 
         while (true) {
-            robot.runLoop()
+            runLoop()
             Delay.msDelay(DEFAULT_SLEEP_TIMEOUT_IN_MSEC)
         }
 
     } catch (Exception ex) {
+        println(ex)
         tearDown()
     }
+}
+
+// add shutdown hook
+addShutdownHook {
+    tearDown()
 }
 
 //
 // start the program
 //
-main()
+runRobot()
