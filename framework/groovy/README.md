@@ -1,4 +1,4 @@
-# Groovy 2.4.x (with mbedded Java version)
+# Groovy 2.4.x (with embedded Java version)
 ## ev3dev-lang-java
 The Groovy example is based on the [ev3dev-lang-java](https://github.com/ev3dev-lang-java/ev3dev-lang-java/) Java package for the EV3. 
 
