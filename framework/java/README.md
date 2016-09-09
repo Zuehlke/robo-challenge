@@ -1,4 +1,4 @@
-# Java (Embedded version)
+# Java 7 (Embedded version)
 ## ev3dev-lang-java
 The Java example is based on the [ev3dev-lang-java](https://github.com/ev3dev-lang-java/ev3dev-lang-java/) Java package for the EV3. 
 
@@ -22,7 +22,7 @@ tar -xvf ejre-7u60-b19-ejre-7u60-fcs-b19-linux-arm-sflt-headless-07_may_2014.tar
 
 4.) Remove compressed file.
 
-5.) Adapt the PATH and JAVA_HOME variable.
+5.) Add the PATH and JAVA_HOME variable to your start script.
 
 ```bash
 export JAVA_HOME=/home/robot/ejre1.7.0_60
