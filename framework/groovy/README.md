@@ -30,7 +30,9 @@ unzip apache-groovy-sdk-2.4.7.zip
 
 ```bash
 export JAVA_HOME=/home/robot/ejre1.7.0_60
-export PATH=$PATH:$JAVA_HOME/bin
+export GROOVY_HOME=/home/robot/groovy-2.4.7
+
+export PATH=$PATH:$JAVA_HOME/bin:$GROOVY_HOME/bin
 ```
 
 
