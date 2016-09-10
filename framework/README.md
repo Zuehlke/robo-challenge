@@ -14,9 +14,25 @@ Here you find the example code for the different frameworks and programming lang
 |  go |  ev3go |  -| - | - | - |no!|
 
 
- 
- 
-####Reference
+## Robot Building Instruction
+
+To run the code examples you must connect the following components:
+- Right motor (EV3 large motor) -> Output pin A
+- Left motor (EV3 large motor) -> Output pin B
+- Ultrasonic sensor -> Input pin 1
+- Color sensor -> Input pin 4
+
+__Note:__ You robot might look something like this. Keep in mind when you robot has a different shape, 
+the code might be adapted to your own layout.
+
+![layout_01](layout_01.png)
+
+![layout_02](layout_02.png)
+
+## Performance
+tbd
+
+## Reference
 - libraries, http://www.ev3dev.org/docs/libraries/
 - ev3dev releases, https://github.com/ev3dev/ev3dev/releases
 
