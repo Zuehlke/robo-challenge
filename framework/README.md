@@ -30,7 +30,18 @@ the code might be adapted to your own layout.
 ![layout_02](layout_02.png)
 
 ## Performance
-tbd
+In the performance test we measured how long it take to start a simple program (print a message to the console) 
+on the ev3dev platform (Kernel 3.16.7-ckt21-9-ev3dev-ev3) with the different programming languages.
+
+|Language|Version|Performance (Start up time)|
+|---|---|---|
+|Bash|-|133 msec|
+|Python|2.7.9|887 msec|
+|Node.js|v0.10.29|5974 msec|
+|Java|1.7.0_60|4465 msec|
+|Groovy|2.4.7|64455 msec|
+
+
 
 ## Reference
 - libraries, http://www.ev3dev.org/docs/libraries/
