@@ -1,5 +1,5 @@
 
-# Supported Frameworks
+# Supported frameworks
 Here you find the example code for the different frameworks and programming languages, which are supported for the challenge.
 
 |  Language | Framework  | Release | Kernel | Example Tested  | Note | Supported |
@@ -14,7 +14,7 @@ Here you find the example code for the different frameworks and programming lang
 |  go |  ev3go |  -| - | - | - |no!|
 
 
-## Robot Building Instruction
+## Robot building instruction
 
 To run the code examples you must connect the following components:
 - Right motor (EV3 large motor) -> Output pin A

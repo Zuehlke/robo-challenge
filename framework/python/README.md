@@ -2,17 +2,17 @@
 ## ev3dev-lang-python
 The Python example is based on the [Python language bindings for ev3dev](https://github.com/rhempel/ev3dev-lang-python) module for the ev3. 
 
-## API Documentation
+## API documentation
 The online documentation can be found here: 
 
 - Python language bidnings: http://python-ev3dev.readthedocs.io/en/latest/
 - ev3dev language bindings: http://ev3dev-lang.readthedocs.io/en/latest/
 
-## Setting Up the EV3 Brick
+## Setting up the EV3 Brick
 For Python 2.7.x the ev3dev-lang-python module is already 
 installed on the ev3dev distribution.
 
-## Development Environment
+## Development environment
 It's up to you how you want to develop. This section is just a suggestion how you could setting up your Python environment.
 
 First download Python. We recommend the Anaconda Python distribution (https://www.continuum.io/downloads).
@@ -38,6 +38,14 @@ cd framework/python
 pip install -r requirements.txt
 ```
 
-## Basic Robot Example
+## Execute the program
+1.) Copy the Python program (robot.py) to the EV3 brick.
+
+2.) Make the start script executable.
+```bash
+chomd 755 robot.py
+```
+
+## Basic Robot example
 An example program that is written in Python and that uses the ev3dev-lang-python lib can be found here. 
 - [robot.py](robot.py)

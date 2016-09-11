@@ -17,7 +17,7 @@ To get started using Lego Mindstorms and ev3dev (http://www.ev3dev.org), please 
 [Quickstart](quickstart.md) tutorial.
 
 ## Frameworks
-You can find example code for the different frameworks and programming languages in the framework section.
+You can find example code for the different frameworks and programming languages 
+in the [Framework](framework) section.
 
-* see [Framework](framework) section
 

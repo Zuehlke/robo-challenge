@@ -29,18 +29,18 @@ We have already provided some basic examples to get you started very quickly.
 
 
 
-### Development & Deployment 
+### Development & deployment 
 You should consider an easy solution to test and deploy your code to the EV3 brick. 
 
 Tools which you can use to connect to your EV3 brick. 
 - __ssh__ command (Linux & Mac), http://linuxcommand.org/man_pages/ssh1.html
-- http://www.putty.org/ (Windows)
+- PuTTY (Windows), http://www.putty.org/
 
 
 Tools for copying files to your EV3 brick.
 - __scp__ command (Linux & Mac), http://linux.die.net/man/1/scp
-- https://cyberduck.io/ (Mac & Windows)
-- https://winscp.net/eng/index.php (Windows)
+- Cyberduck (Mac & Windows), https://cyberduck.io/
+- WinSCP (Windows), https://winscp.net/eng/index.php
 
 
 ### Start you engine (or program)
@@ -107,8 +107,8 @@ motorRight.setString("speed_regulation", "on")
 ```
 
 ### Useful links
-* Basic Linux commands - http://www.comptechdoc.org/os/linux/usersguide/linux_ugbasics.html
-* Debian Linux reference - https://www.debian.org/doc/manuals/debian-reference/
-* Setting up Push-to-Deploy with git - http://krisjordan.com/essays/setting-up-push-to-deploy-with-git
-* How To Set Up Automatic Deployment with Git - https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps
+* Basic Linux commands, http://www.comptechdoc.org/os/linux/usersguide/linux_ugbasics.html
+* Debian Linux reference, https://www.debian.org/doc/manuals/debian-reference/
+* Setting up Push-to-Deploy with git, http://krisjordan.com/essays/setting-up-push-to-deploy-with-git
+* How To Set Up Automatic Deployment with Git, https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps
 

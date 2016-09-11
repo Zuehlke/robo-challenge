@@ -3,11 +3,11 @@
 The Groovy example is based on the [ev3dev-lang-java](https://github.com/ev3dev-lang-java/ev3dev-lang-java/) Java package for the EV3. 
 
 
-## API Documentation
+## API documentation
 - Java language bindings: http://ev3dev-lang-java.github.io/docs/api/
 - ev3dev language bindings: http://ev3dev-lang.readthedocs.io/en/latest/
 
-## Setting Up the EV3 Brick
+## Setting up the EV3 brick
 First, you need to set up up a JVM on the EV3 brick. 
 
 1.) Have a look at our [Java](../java/) code example, how to set up a JVM on the EV3 brick. 
@@ -36,22 +36,62 @@ export PATH=$PATH:$JAVA_HOME/bin:$GROOVY_HOME/bin
 ```
 
 
-
-## Development Environment
+## Development environment
 It's up to you how you want to develop. This section is just a suggestion how you could setting up your Java environment.
 
 First download the latest Java SE (JDK) version (http://www.oracle.com/technetwork/java/javase/downloads/index.html).
 
 Next you need IDE, you could use InteliJ IDEA community version (https://www.jetbrains.com/idea/) or eclipse (https://eclipse.org).
 
-### Build & execute the program
-For a better and easier deployment we have provided you with a Maven [pom.xml](pom.xml) which bundles all required libraries (ev3-lang-java-*.jar, etc.) into one big jar file (ueber jar file). Then you have just to copy one big jar file.
+### Execute the program
 
-1.) Just build the application with Apache Maven:
+1.) Copy the start script (robot_groovy.sh) and the Groovy program (Robot.groovy) to the EV3 brick.
+
+2.) Make the start script executable.
 ```bash
-mvn clean package
+chomd 755 robot_groovy.sh
 ```
 
-2.) Then copy the ueber-*.jar (_uber-ev3-robot-jdk-1.0-SNAPSHOT.jar_) to the EV3 brick.
 
-### Grab settings
+
+__Note:__ For a faster execution you might consider to compile the Groovy code
+
+### Grab (Dependency management)
+
+To automatically import the _ev3dev-lang-java_ dependencies you can use Grab (http://docs.groovy-lang.org/latest/html/documentation/grape.html). Just add to the first import 
+statement the following annotations.
+
+```java
+@GrabResolver(name = "jitpack.io", root = "https://jitpack.io")
+@Grab(group = "com.github.jabrena", module = "ev3dev-lang-java", version = "v0.2.0")
+```
+
+### Compile Groovy code
+groovyc is the Groovy compiler command line tool. It allows you to compile Groovy 
+sources into bytecode (http://groovy-lang.org/groovyc.html).
+
+Or you can use the gmavenplus Maven plugin (https://github.com/groovy/GMavenPlus/wiki).
+```xml
+<build>
+    <plugins>
+      
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>1.4</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      </plugins>
+</build>
+```  
+
+## Basic Robot Example
+An example program that is written in Groovy and that uses the ev3dev-lang-java lib can be found here. 
+- [Robot.groovy](Robot.groovy)
