@@ -4,4 +4,4 @@ export GROOVY_HOME=/home/robot/groovy-2.4.7
 
 export PATH=$PATH:$JAVA_HOME/bin:$GROOVY_HOME/bin
 
-groovy -Dgroovy.grape.report.downloads=true -Divy.message.logger.level=4 Robot.groovy
+groovy -Dgroovy.grape.report.downloads=true -Divy.message.logger.level=4 -Divy.cache.ttl.default=eternal Robot.groovy

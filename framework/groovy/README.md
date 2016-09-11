@@ -54,4 +54,4 @@ mvn clean package
 
 2.) Then copy the ueber-*.jar (_uber-ev3-robot-jdk-1.0-SNAPSHOT.jar_) to the EV3 brick.
 
-### Grape settings
+### Grab settings
