@@ -87,5 +87,5 @@ When you want to build your own Maven project, you have to do the following step
 ```
 
 ## Basic Robot example
-An example program that is written in Python and that uses the ev3dev-lang-python lib can be found here. 
+An example program that is written in Java and that uses the ev3dev-lang-java lib can be found here. 
 - [Robot.java](src/main/java/Robot.java)
