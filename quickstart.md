@@ -1,7 +1,7 @@
 # Quickstart
 Welcome to the Zühlke RoboChallenge. You have received the following components for the challenge:
 * Lego Mindstorms Education Kit. ([What are the difference between education and retail kit](http://robotsquare.com/2013/11/25/difference-between-ev3-home-edition-and-education-ev3/))
-* Wirless dongle
+* Wireless dongle
 * SD card (microSD or microSDHC) with pre-installed [ev3dev](http://www.ev3dev.org) (Debian Linux-based operating system)
 
 ###First steps
@@ -65,10 +65,10 @@ The ev3dev project provides a list of all supported sensors with all the values 
 - http://www.ev3dev.org/docs/sensors/
 
 In the education kit you have the following sensors:
-- 1x EV3 Ultrasonic Sensor (distance)
-- 1x EV3 Gyro Sensor (rotation or movement)
-- 1x EV3 Color Sensor (color reflection)
-- 2x EV3 Touch Sensor
+- 1x EV3 Ultrasonic Sensor (distance), http://www.ev3dev.org/docs/sensors/lego-ev3-ultrasonic-sensor/ 
+- 1x EV3 Gyro Sensor (rotation or movement), http://www.ev3dev.org/docs/sensors/lego-ev3-gyro-sensor/
+- 1x EV3 Color Sensor (color reflection), http://www.ev3dev.org/docs/sensors/lego-ev3-color-sensor/
+- 2x EV3 Touch Sensor, http://www.ev3dev.org/docs/sensors/lego-ev3-touch-sensor/
 
 All sensors (INPUT) must be connected to the numbered EV3 ports (1,2,3 or 4). 
 
@@ -78,14 +78,21 @@ settings which can be used. You should only consider the EV3 motors.
 - http://www.ev3dev.org/docs/motors/
 
 The education kit has the following motors:
-- 2x EV3 Large Servo Motor
-- 1x EV3 Medium Servo Motor
+- 2x EV3 Large Servo Motor, http://www.ev3dev.org/docs/motors/lego-ev3-large-servo-motor/
+- 1x EV3 Medium Servo Motor, http://www.ev3dev.org/docs/motors/lego-ev3-medium-servo-motor/
 
 All motors (OUTPUT) must be connected to the alphabetic EV3 ports (A,B,C or D). 
 
 
+### LCD (Display)
+How to use the the EV3 LCD is written in the following [ev3dev LCD tutorial](http://www.ev3dev.org/docs/tutorials/using-ev3-lcd/).
+
 ### Sound
 How to speak or play sound with your ev3dev is described [here](https://github.com/ev3dev/ev3dev/wiki/Using-Sound).
+
+### Buttons
+The buttons on the EV3 are mapped as regular keyboard keys. Have a look at 
+the [EV3 button tutorial](http://www.ev3dev.org/docs/tutorials/using-ev3-buttons/).
 
 ### FAQ
 
@@ -107,8 +114,6 @@ motorRight.setString("speed_regulation", "on")
 ```
 
 ### Useful links
-* Basic Linux commands, http://www.comptechdoc.org/os/linux/usersguide/linux_ugbasics.html
+* Basic Linux commands, http://linuxcommand.org/lc3_learning_the_shell.php
 * Debian Linux reference, https://www.debian.org/doc/manuals/debian-reference/
-* Setting up Push-to-Deploy with git, http://krisjordan.com/essays/setting-up-push-to-deploy-with-git
-* How To Set Up Automatic Deployment with Git, https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps
 
