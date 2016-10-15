@@ -44,9 +44,3 @@ a round:
 In the final round, you still fight in best of three. The final round works in
 KO-mode, so if you lose a round, your robot is out. If you have the most points
 from the group phase, you fight against the one with the fewest points.
-
-09:00 Start
-12:00 First battle. All-vs-all best of 3
-15:30 Next battle
-16:30 Next battle
-17:30 Final Round
