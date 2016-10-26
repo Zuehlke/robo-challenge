@@ -20,4 +20,5 @@ To get started using Lego Mindstorms and ev3dev (http://www.ev3dev.org), please 
 You can find example code for the different frameworks and programming languages 
 in the [Framework](framework) section.
 
-
+## Supported Versions
+The latest examples supports the __ev3dev-jessie-2016-10-17__ version. For older examples have a look at the 'tag / release' section. https://github.com/Zuehlke/robo-challenge/releases 
