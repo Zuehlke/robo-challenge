@@ -4,8 +4,8 @@ var ev3dev = require('ev3dev-lang');
 
 var DEFAULT_SLEEP_TIMEOUT_IN_MSEC = 100;
 
-// default duty_cycle (0 - 100)
-var DEFAULT_DUTY_CYCLE = 60;
+// default speed
+var DEFAULT_SPEED = 600;
 var DEFAULT_THRESHOLD_DISTANCE = 90;
 
 //
@@ -41,10 +41,10 @@ ultrasonicSensor.mode = "US-DIST-CM";
 //
 function backward() {
     for (var i = 0; i < motors.length; i++) {
-        var currentDutyCycle = motors[i].dutyCycleSp;
+        var currentSpeed = motors[i].speedSp;
 
-        if (currentDutyCycle > 0) {
-            motors[i].dutyCycleSp = currentDutyCycle * -1;
+        if (currentSpeed > 0) {
+            motors[i].speedSp = currentSpeed * -1;
         }
         motors[i].runForever();
     }
@@ -52,18 +52,18 @@ function backward() {
 
 function forward() {
     for (var i = 0; i < motors.length; i++) {
-        var currentDutyCycle = motors[i].dutyCycleSp;
+        var currentSpeed = motors[i].speedSp;
 
-        if (currentDutyCycle < 0) {
-            motors[i].dutyCycleSp = currentDutyCycle * -1;
+        if (currentSpeed < 0) {
+            motors[i].speedSp = currentSpeed * -1;
         }
         motors[i].runForever();
     }
 }
 
-function setSpeed(dutyCycle) {
+function setSpeed(speed) {
     for (var i = 0; i < motors.length; i++) {
-        motors[i].dutyCycleSp = dutyCycle;
+        motors[i].speedSp = speed;
     }
 }
 
@@ -90,7 +90,7 @@ function turn() {
         }
     }
 
-    setSpeed(DEFAULT_DUTY_CYCLE);
+    setSpeed(DEFAULT_SPEED);
     forward();
 
 }
@@ -108,7 +108,7 @@ function tearDown() {
 function main() {
     console.log("Run robot, run!");
 
-    setSpeed(DEFAULT_DUTY_CYCLE);
+    setSpeed(DEFAULT_SPEED);
     forward();
 
     // game loop (endless loop)
@@ -126,7 +126,7 @@ function run_loop() {
     // found obstacle
     if (ultrasonicSensor.getValue(0) < DEFAULT_THRESHOLD_DISTANCE) {
 
-        setSpeed(35);
+        setSpeed(DEFAULT_SPEED / 2);
         brake();
 
         // drive backwards
