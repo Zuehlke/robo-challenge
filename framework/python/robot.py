@@ -7,8 +7,8 @@ import ev3dev.ev3 as ev3
 # default sleep timeout in sec
 DEFAULT_SLEEP_TIMEOUT_IN_SEC = 0.1
 
-# default duty_cycle (0 - 100)
-DEFAULT_DUTY_CYCLE = 60
+# default speed
+DEFAULT_SPEED = 600
 
 # default threshold distance
 DEFAULT_THRESHOLD_DISTANCE = 90
@@ -46,26 +46,26 @@ ultrasonic_sensor.mode = 'US-DIST-CM'
 def backward():
 
     for m in motors:
-        duty_cycle = m.duty_cycle_sp
-        if duty_cycle > 0:
-            m.duty_cycle_sp = duty_cycle * -1
+        speed = m.speed_sp
+        if speed > 0:
+            m.speed_sp = speed * -1
 
-        m.run_direct()
+        m.run_forever()
 
 
 def forward():
 
     for m in motors:
-        duty_cycle = m.duty_cycle_sp
-        if duty_cycle < 0:
-            m.duty_cycle_sp = duty_cycle * -1
+        speed = m.speed_sp
+        if speed < 0:
+            m.speed_sp = speed * -1
 
-        m.run_direct()
+        m.run_forever()
 
 
-def set_speed(duty_cycle):
+def set_speed(speed):
     for m in motors:
-        m.duty_cycle_sp = duty_cycle
+        m.speed_sp = speed
 
 
 def brake():
@@ -90,7 +90,7 @@ def turn():
         if ultrasonic_sensor.value() < DEFAULT_THRESHOLD_DISTANCE:
             break
 
-    set_speed(DEFAULT_DUTY_CYCLE)
+    set_speed(DEFAULT_SPEED)
     forward()
 
 
@@ -112,7 +112,7 @@ def run_loop():
         # found obstacle
         if ultrasonic_sensor.value() < DEFAULT_THRESHOLD_DISTANCE:
 
-            set_speed(35)
+            set_speed(DEFAULT_SPEED / 2)
             brake()
 
             # drive backwards
@@ -136,7 +136,7 @@ def run_loop():
 def main():
     print('Run robot, run!')
 
-    set_speed(DEFAULT_DUTY_CYCLE)
+    set_speed(DEFAULT_SPEED)
     forward()
 
     try:
