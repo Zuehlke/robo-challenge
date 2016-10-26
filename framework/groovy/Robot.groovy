@@ -13,7 +13,7 @@ import lejos.utility.Delay
 DEFAULT_SLEEP_TIMEOUT_IN_MSEC = 100
 
 // default speed
-DEFAULT_SPEED = 60
+DEFAULT_SPEED = 600
 
 // default threshold distance
 DEFAULT_THRESHOLD_DISTANCE = 90
@@ -32,15 +32,12 @@ motors = [rightMotor, leftMotor]
 leftMotor.resetTachoCount();
 rightMotor.resetTachoCount();
 
-// workaround: set to duty cycle -> speed regulation = off
-leftMotor.suspendRegulation();
-rightMotor.suspendRegulation();
 
 // sensors
 colorSensor = new EV3ColorSensor(SensorPort.S4)
 println("color sensor connected: " + colorSensor)
 
-ultrasonicSensor = new EV3UltrasonicSensor(SensorPort.S2)
+ultrasonicSensor = new EV3UltrasonicSensor(SensorPort.S1)
 println("ultrasonic sensor connected: " + ultrasonicSensor)
 
 //
@@ -98,8 +95,9 @@ def tearDown() {
     println("Tearing down...")
 
     for (m in motors) {
+        m.setSpeed(0)
+        m.forward()
         m.resetTachoCount()
-        m.stop()
     }
 }
 
@@ -135,7 +133,7 @@ def runLoop() {
         brake()
 
         // drive backwards
-        speed(35)
+        speed(DEFAULT_SPEED / 2)
         backward()
 
         newPos = getPosition(rightMotor) - 200
