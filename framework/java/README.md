@@ -15,9 +15,9 @@ Java embedded version, that runs on the EV3 brick.
 
 2.) Copy ejre-7u60-b19-ejre-7u60-fcs-b19-linux-arm-sflt-headless-07_may_2014.tar.gz to your EV3 brick.
 
-3.) Next extract the compressed file.
+3.) Next extract the compressed file. (x = extract, z = compress, f = file, v = verbose)
 ```bash
-tar -xvf ejre-7u60-b19-ejre-7u60-fcs-b19-linux-arm-sflt-headless-07_may_2014.tar.gz
+tar -xvfz ejre-7u60-b19-ejre-7u60-fcs-b19-linux-arm-sflt-headless-07_may_2014.tar.gz
 ```
 
 4.) Remove compressed file.

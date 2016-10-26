@@ -1,4 +1,4 @@
-# Python (2.7.x)
+# Python (3.4.x)
 ## ev3dev-lang-python
 The Python example is based on the [Python language bindings for ev3dev](https://github.com/rhempel/ev3dev-lang-python) module for the ev3. 
 
@@ -9,7 +9,7 @@ The online documentation can be found here:
 - ev3dev language bindings: http://ev3dev-lang.readthedocs.io/en/latest/
 
 ## Setting up the EV3 Brick
-For Python 2.7.x the ev3dev-lang-python module is already 
+For Python 3.4.x the ev3dev-lang-python module is already 
 installed on the ev3dev distribution.
 
 ## Development environment
@@ -20,7 +20,7 @@ First download Python. We recommend the Anaconda Python distribution (https://ww
 Create a new virtual environment with conda . http://conda.pydata.org/docs/using/envs.html
 
 ```bash
-conda create -n ev3 python=2.7
+conda create -n ev3 python=3.4
 ```
 
 Now you can switch to your Python environment.
