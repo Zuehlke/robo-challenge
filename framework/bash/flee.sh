@@ -1,7 +1,7 @@
 #!/bin/bash
 
-REVERT_THRESHOLD=50
-REVERT_SPEED=-40
+REVERT_THRESHOLD=100
+REVERT_SPEED=-400
 
 function stop_motor {
 	echo "stop" > /sys/class/tacho-motor/motor0/command
@@ -9,17 +9,17 @@ function stop_motor {
 }
 
 function activate_motor {
-	echo "run-direct" > /sys/class/tacho-motor/motor0/command
-	echo "run-direct" > /sys/class/tacho-motor/motor1/command
+	echo "run-forever" > /sys/class/tacho-motor/motor0/command
+	echo "run-forever" > /sys/class/tacho-motor/motor1/command
 }
 
 function set_motor_speed {
-	echo $1 > /sys/class/tacho-motor/motor0/duty_cycle_sp
-	echo $1 > /sys/class/tacho-motor/motor1/duty_cycle_sp
+	echo $1 > /sys/class/tacho-motor/motor0/speed_sp
+	echo $1 > /sys/class/tacho-motor/motor1/speed_sp
 }
 
 function reset_sensor {
-	echo "IR-PROX" > /sys/class/lego-sensor/sensor0/mode
+	echo "US-DIST-CM" > /sys/class/lego-sensor/sensor0/mode
 }
 
 function reset_motor {
@@ -55,6 +55,7 @@ do
 	speed=$(determine_motor_speed $prox)
 	echo -e "PROX:\t${prox}\tSPEED:\t${speed}"
 	set_motor_speed $speed
+    activate_motor
 done
 
 

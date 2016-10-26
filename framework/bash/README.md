@@ -10,8 +10,8 @@ The `flee.sh` shell script expects a robot with the following configuration:
 
 * Heavy tacho-motor connected to A
 * Heavy tacho-motor connected to B
-* IR sensor connected to 0, heading forward
+* Ultrasonic sensor connected to 1, heading forward
 
 If you have setup your robot like that, you can execute the `flee.sh` script.
-The motors get activated and move the robot backwards, if the infrared proximity
-sensor detects something in  of the robot.
+The motors get activated and move the robot backwards, if the ultrasonic sensor
+detects something in front of the robot.
