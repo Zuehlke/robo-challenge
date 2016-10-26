@@ -20,7 +20,7 @@ public class Robot {
     private static final int DEFAULT_SLEEP_TIMEOUT_IN_MSEC = 100;
 
     // default speed
-    private static final int DEFAULT_SPEED = 60;
+    private static final int DEFAULT_SPEED = 600;
 
     // default threshold distance
     private static final int DEFAULT_THRESHOLD_DISTANCE = 90;
@@ -52,9 +52,6 @@ public class Robot {
         leftMotor.resetTachoCount();
         rightMotor.resetTachoCount();
 
-        // workaround: set to duty cycle -> speed regulation = off
-        leftMotor.suspendRegulation();
-        rightMotor.suspendRegulation();
 
         motors.add(rightMotor);
         motors.add(leftMotor);
@@ -63,7 +60,7 @@ public class Robot {
         colorSensor = new EV3ColorSensor(SensorPort.S4);
         System.out.println("color sensor connected: " + colorSensor);
 
-        ultrasonicSensor = new EV3UltrasonicSensor(SensorPort.S2);
+        ultrasonicSensor = new EV3UltrasonicSensor(SensorPort.S1);
         System.out.println("ultrasonic sensor connected: " + ultrasonicSensor);
 
     }
@@ -81,7 +78,6 @@ public class Robot {
     public void forward() {
         for (EV3LargeRegulatedMotor m : motors) {
             m.forward();
-
         }
     }
 
@@ -90,7 +86,6 @@ public class Robot {
             // possible workaround for speed regulation
             // m.setStringAttribute("speed_regulation", "on");
             m.setSpeed(speed);
-
         }
     }
 
@@ -127,9 +122,9 @@ public class Robot {
         System.out.println("Tearing down...");
 
         for (EV3LargeRegulatedMotor m : motors) {
-            m.stop();
+            m.setSpeed(0);
+            m.forward();
             m.resetTachoCount();
-
         }
     }
 
@@ -146,7 +141,7 @@ public class Robot {
             brake();
 
             // drive backwards
-            setSpeed(35);
+            setSpeed(DEFAULT_SPEED / 2);
             backward();
 
             float newPos = getPosition(rightMotor) - 200;
