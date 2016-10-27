@@ -56,7 +56,7 @@ def forward() {
     }
 }
 
-def speed(new_speed) {
+def speed(int new_speed) {
     for (m in motors) {
         // possible workaround for speed regulation
         // m.setStringAttribute("speed_regulation", "on");
@@ -95,7 +95,7 @@ def tearDown() {
     println("Tearing down...")
 
     for (m in motors) {
-        m.setSpeed(0)
+        m.setSpeed(0);
         m.forward()
         m.resetTachoCount()
     }
@@ -133,7 +133,7 @@ def runLoop() {
         brake()
 
         // drive backwards
-        speed(DEFAULT_SPEED / 2)
+        speed(300)
         backward()
 
         newPos = getPosition(rightMotor) - 200
