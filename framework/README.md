@@ -2,7 +2,7 @@
 # Supported frameworks
 Here you find the example code for the different frameworks and programming languages, which are supported for the challenge.
 
-|  Language | Framework  | Release | Kernel | Example Tested  | Note | Supported |
+|  Language | Framework  | Release | Kernel | Example Tested  | Note | Supported by us during the challenge  |
 |---|---|---|---|---|---|---|
 | JavaScript (Node.js)  | ev3dev-lang-js  | ev3dev-jessie-2016-10-17 | 4.4.24-16-ev3dev-ev3 | _OK!_  | Recommend by ev3dev | yes!|
 |  Python |  ev3dev-lang-python | ev3dev-jessie-2016-10-17| 4.4.24-16-ev3dev-ev3 | _OK!_ | Recommend by ev3dev |yes!|
