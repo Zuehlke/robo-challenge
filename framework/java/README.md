@@ -7,6 +7,18 @@ The Java example is based on the [ev3dev-lang-java](https://github.com/ev3dev-la
 - Java language bindings: http://ev3dev-lang-java.github.io/docs/api/
 - ev3dev language bindings: http://ev3dev-lang.readthedocs.io/en/latest/
 
+>__Note:__ You can acces the underling kernel sysfs attributes with the Java API when some commands are not directly supported. See for example the Tacho Motor class.
+
+> setStringAttribute("command", "reset");
+
+> String getStringAttribute(String attribute)
+
+> int getIntegerAttribute(String attribute)
+
+> setStringAttribute(String attribute, String value)
+
+> setIntegerAttribute(String attribute, int value)
+
 ## Setting up the EV3 Brick
 First, you need to set up up a JVM on the EV3 brick. Thankfully, Oracle provides a
 Java embedded version, that runs on the EV3 brick.

@@ -2,10 +2,23 @@
 ## ev3dev-lang-java
 The Groovy example is based on the [ev3dev-lang-java](https://github.com/ev3dev-lang-java/ev3dev-lang-java/) Java package for the EV3. 
 
+> __Note:__ For a faster execution you might consider to compile the Groovy code to bytecode. See [groovyc](http://groovy-lang.org/groovyc.html).
+
 
 ## API documentation
 - Java language bindings: http://ev3dev-lang-java.github.io/docs/api/
 - ev3dev language bindings: http://ev3dev-lang.readthedocs.io/en/latest/
+
+>__Note:__ You can acces the underling kernel sysfs attributes with the Java API when some commands are not directly supported. See for example the Tacho Motor class.
+> _setStringAttribute("command", "reset");_
+
+> String getStringAttribute(String attribute)
+
+> int getIntegerAttribute(String attribute)
+
+> setStringAttribute(String attribute, String value)
+
+> setIntegerAttribute(String attribute, int value)
 
 ## Setting up the EV3 brick
 First, you need to set up up a JVM on the EV3 brick. 
@@ -53,8 +66,6 @@ chomd 755 robot_groovy.sh
 ```
 
 
-
-__Note:__ For a faster execution you might consider to compile the Groovy code
 
 ### Grab (Dependency management)
 
