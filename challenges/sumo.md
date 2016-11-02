@@ -20,14 +20,12 @@ The robots will be placed back-to-back inside a circle and you must turn
 
 To win the game, your enemy needs to have left the circle with the whole robot
 or is not able to fight anymore. You can force him out with full body contact,
-or any other technique you can think of.
+or any other technique you can think of. If your robot is not able to fight anymore, 
+for example, because it's software crashed, you win.
 
 ## Mode
 
-Two robots fight three times against each other. The robot who wins 2 games wins the
-round. If there is a tie of games, the games are repeated until there is a winner.
-If there is no winner after 2 minutes, the game counts as a tie.
-Between every round, each of the teams have 30 seconds to make their robot ready again.
+Two robots fight against each other. A game usually takes no longer than two minutes.
 
 
 ### Group Phase
