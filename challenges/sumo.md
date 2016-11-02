@@ -25,8 +25,8 @@ for example, because it's software crashed, you win.
 
 ## Mode
 
-Two robots fight against each other. A game usually takes no longer than two minutes.
-
+Two robots fight against each other. A game usually takes no longer than two minutes. If after two minutes 
+no winner was determined, the game counts as tie.
 
 ### Group Phase
 
