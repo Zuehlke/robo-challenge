@@ -1,4 +1,0 @@
-
-# Autonomous Harvester
-
-TBD
