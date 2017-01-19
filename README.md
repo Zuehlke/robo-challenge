@@ -8,5 +8,5 @@ This is the official repository for the Zühlke RoboChallenge.
 
 You find detailed information regarding the challenges here:
 
-* [Sumo](challenges/sumo/sumo.md).
-* [Harvester](challenges/harvester/harvester.md)
+* [Sumo](challenges/sumo/README.md)
+* [Harvester](challenges/harvester/README.md)
