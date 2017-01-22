@@ -1,0 +1,10 @@
+{
+  "name": "javascript",
+  "version": "1.0.0",
+  "description": "javascript",
+  "main": "index.js",
+  "dependencies": {
+    "mqtt": "^2.2.1"
+  },
+  "devDependencies": {}
+}

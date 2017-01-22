@@ -52,19 +52,19 @@ class BasicTestSuite(unittest.TestCase):
 
         self.assertEqual(d.position(), start_pos)
         d.forward(350)
-        self.assertEqual(d.position(), (25.0, 0.0, 15))
+        self.assertEqual(d.position(), (10.0, 0.0, 15))
+
+        d.tick()
+        self.assertEqual(d.position(), (20.0, 0.0, 15))
+
+        d.tick()
+        self.assertEqual(d.position(), (30.0, 0.0, 15))
+
+        d.tick()
+        self.assertEqual(d.position(), (40.0, 0.0, 15))
 
         d.tick()
         self.assertEqual(d.position(), (50.0, 0.0, 15))
-
-        d.tick()
-        self.assertEqual(d.position(), (75.0, 0.0, 15))
-
-        d.tick()
-        self.assertEqual(d.position(), (100.0, 0.0, 15))
-
-        d.tick()
-        self.assertEqual(d.position(), (125.0, 0.0, 15))
 
     def test_backward(self):
         d = api.TimeDecorator(api.Simulator())
@@ -72,19 +72,19 @@ class BasicTestSuite(unittest.TestCase):
 
         self.assertEqual(d.position(), start_pos)
         d.backward(350)
-        self.assertEqual(d.position(), (-25.0, 0.0, 15))
+        self.assertEqual(d.position(), (-10.0, 0.0, 15))
 
         d.tick()
-        self.assertEqual(d.position(), (-50.0, 0.0, 15))
+        self.assertEqual(d.position(), (-20.0, 0.0, 15))
 
         d.tick()
-        self.assertEqual(d.position(), (-75.0, 0.0, 15))
+        self.assertEqual(d.position(), (-30.0, 0.0, 15))
 
         d.tick()
-        self.assertEqual(d.position(), (-100.0, 0.0, 15))
+        self.assertEqual(d.position(), (-40.0, 0.0, 15))
 
         d.tick()
-        self.assertEqual(d.position(), (-125, 0.0, 15))
+        self.assertEqual(d.position(), (-50, 0.0, 15))
 
     def test_next_command(self):
         d = api.TimeDecorator(api.Simulator())
@@ -93,23 +93,23 @@ class BasicTestSuite(unittest.TestCase):
         self.assertEqual(d.position(), start_pos)
         d.forward(978)
 
-        self.assertEqual(d.next, {'command': 'forward', 'value': 928})
+        self.assertEqual(d.next, {'command': 'forward', 'value': 958})
         d.tick()
-        self.assertEqual(d.next, {'command': 'forward', 'value': 878})
+        self.assertEqual(d.next, {'command': 'forward', 'value': 938})
 
         d.forward(350)
-        self.assertEqual(d.next, {'command': 'forward', 'value': 300})
+        self.assertEqual(d.next, {'command': 'forward', 'value': 330})
 
         d.reset()
         self.assertEqual(d.next, {'command': None, 'value': 0})
 
         d.forward(600)
-        self.assertEqual(d.next, {'command': 'forward', 'value': 550})
+        self.assertEqual(d.next, {'command': 'forward', 'value': 580})
 
         d.backward(300)
-        self.assertEqual(d.next, {'command': 'backward', 'value': 250})
+        self.assertEqual(d.next, {'command': 'backward', 'value': 280})
 
         d.tick()
-        self.assertEqual(d.next, {'command': 'backward', 'value': 200})
+        self.assertEqual(d.next, {'command': 'backward', 'value': 260})
 
 

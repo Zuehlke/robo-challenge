@@ -5,12 +5,7 @@ var doUpdate = true;
 var max_x = 0;
 var max_y = 0;
 
-// set callback handlers
-client.onConnectionLost = onConnectionLost;
-client.onMessageArrived = onMessageArrived;
 
-// connect the client
-client.connect({onSuccess:onConnect});
 
 
 function zoom(value) {
@@ -23,7 +18,8 @@ function zoom(value) {
 function onConnect() {
   // Once a connection has been made, make a subscription.
   console.log("onConnect");
-  client.subscribe("robot/#");
+  client.subscribe("robot/state");
+  client.subscribe("game/position");
 }
 
 // called when the client loses its connection
@@ -34,8 +30,11 @@ function onConnectionLost(responseObject) {
 }
 
 function reset(){
-    message = new Paho.MQTT.Message("reset");
-    message.destinationName = "game";
+    message = new Paho.MQTT.Message(JSON.stringify({"command": "reset"}));
+    message.destinationName = "game/process";
+    client.send(message);
+
+    message.destinationName = "robot/process";
     client.send(message);
 
     doUpdate = true
@@ -133,11 +132,15 @@ function createWorld(ctx, body) {
 // called when a message arrives
 function onMessageArrived(message) {
 
+    console.log("onMessageArrived");
+
     var c = $("#map_layer");
     var ctx = c[0].getContext('2d');
 
+    console.log(message.destinationName);
+
     var body = JSON.parse(message.payloadString)
-    if (message.destinationName === 'robot/position') {
+    if (message.destinationName === 'game/position') {
         if(doUpdate) {
 
             createWorld(ctx, body)
@@ -172,3 +175,11 @@ function onMessageArrived(message) {
 
 
 }
+
+
+// set callback handlers
+client.onConnectionLost = onConnectionLost;
+client.onMessageArrived = onMessageArrived;
+
+// connect the client
+client.connect({onSuccess:onConnect});

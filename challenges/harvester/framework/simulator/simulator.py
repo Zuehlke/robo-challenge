@@ -148,7 +148,7 @@ class TimeDecorator:
     Decorator for the Simulator, extends the Simulator with dimension time.
     """
 
-    TACHO_COUNT_PER_TICK = 50
+    TACHO_COUNT_PER_TICK = 20
 
     def __init__(self, simulator):
         self.simulator = simulator

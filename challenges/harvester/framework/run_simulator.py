@@ -17,8 +17,6 @@ logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
 TIMEOUT_SEC = 1
 KEEPALIVE_SEC = 60
 
-# default topic
-topic = "robot"
 
 # default mqtt broker (hostname or ip) and port
 server = "127.0.0.1"
@@ -50,7 +48,7 @@ if __name__ == "__main__":
 
     dispatcher = CommandDispatcher(robot)
 
-    logging.info("Try to connect to " + str(server) + ":" + str(port) + " and topic " + str(topic))
+    logging.info("Try to connect to " + str(server) + ":" + str(port))
 
     mqtt = mqtt.Client()
     mqtt.connect(server, port, KEEPALIVE_SEC)
@@ -62,8 +60,8 @@ if __name__ == "__main__":
 
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
-        client.subscribe(topic + "/process")
-        client.subscribe("game")
+        client.subscribe("robot/process")
+        client.subscribe("game/process")
 
 
     # The callback for when a PUBLISH message is received from the server.
@@ -74,15 +72,15 @@ if __name__ == "__main__":
             try:
                 obj = json.loads(msg.payload.decode('utf-8'))
                 dispatcher.exec(obj)
-                client.publish(topic + "/done", json.dumps(obj))
+                client.publish("robot/done", json.dumps(obj))
             except Exception as ex:
                 logging.exception("Invalid message format! %s" % msg.payload)
-                client.publish(topic + "/error",  json.dumps({'type': type(ex).__name__, 'error': str(ex)}))
+                client.publish("robot/error",  json.dumps({'type': type(ex).__name__, 'error': str(ex)}))
 
         if "game" in msg.topic:
             global game, robot
             logging.info("Reset game")
-            robot.reset()
+            #robot.reset()
             game.reset()
 
 
@@ -101,7 +99,7 @@ if __name__ == "__main__":
         time.sleep(TIMEOUT_SEC)
         robot.tick()
 
-        mqtt.publish(topic + "/state", json.dumps(robot.state()))
+        mqtt.publish("robot/state", json.dumps(robot.state()))
 
         x, y, r = robot.position()
         x_max = game.max_x()
@@ -110,7 +108,7 @@ if __name__ == "__main__":
         game.check(x, y, r)
         points = game.points()
 
-        mqtt.publish(topic + "/position", json.dumps({'robot': {'x': x, 'y': y, 'r': r},
+        mqtt.publish("game/position", json.dumps({'robot': {'x': x, 'y': y, 'r': r},
                                                       'world': {'x_max': x_max, 'y_max': y_max},
                                                       'points': points}, cls=PointEncoder))
 
