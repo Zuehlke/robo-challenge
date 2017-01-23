@@ -36,10 +36,10 @@
         <div id="header" class="page-header">
             <h1>Robot Harvester <small>...</small></h1>
             <div>
-                <button type="button" class="btn btn-default" onClick="reset()">Reset</button>
-                <button type="button" class="btn btn-default" onClick="zoom('150%')">Zoom 150%</button>
-                <button type="button" class="btn btn-default" onClick="zoom('100%')">Zoom 100%</button>
-                <button type="button" class="btn btn-default" onClick="zoom('50%')">Zoom 50%</button>
+                <button type="button" class="btn btn-xs btn-default" onClick="zoom('150%')">Zoom 150%</button>
+                <button type="button" class="btn btn-xs btn-default" onClick="zoom('100%')">Zoom 100%</button>
+                <button type="button" class="btn btn-xs btn-default" onClick="zoom('50%')">Zoom 50%</button>
+
             </div>
         </div>
 
@@ -57,6 +57,41 @@
 
             </div>
             <div class="col-md-2">
+
+                <p class="lead">Control</p>
+
+                <div class="input-group input-group-sm">
+                    <div class="input-group-btn">
+                        <!-- Buttons -->
+                        <button id="forward" class="btn btn-default" type="button">F</button>
+                        <button id="backward" class="btn btn-default" type="button">B</button>
+                    </div>
+                    <input id="distance" type="text" class="form-control" value="100">
+                </div>
+
+                <div class="input-group input-group-sm">
+                    <div class="input-group-btn">
+                        <!-- Buttons -->
+                        <button id="left" class="btn btn-default" type="button">L</button>
+                        <button id="right" class="btn btn-default" type="button">R</button>
+                    </div>
+                    <input id="angle" type="text" class="form-control" value="90">
+                </div>
+
+                <div class="input-group input-group-sm">
+                    <div class="input-group-btn">
+                        <!-- Buttons -->
+                        <button id="stop" class="btn btn-default" type="button">STOP</button>
+                        <button id="reset" class="btn btn-default" type="button">RESET</button>
+                    </div>
+
+                </div>
+
+
+
+                <br>
+
+
                 <!--Body content-->
                 <p class="lead">Robot</p>
                 <ul id="state">
@@ -80,8 +115,6 @@
                 <ul id="mouse">
                     <li>?</li>
                 </ul>
-
-
 
             </div>
         </div>

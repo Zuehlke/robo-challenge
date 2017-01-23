@@ -14,7 +14,7 @@ from game import Game
 
 logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
 
-TIMEOUT_SEC = 1
+TIMEOUT_SEC = 0.5
 KEEPALIVE_SEC = 60
 
 

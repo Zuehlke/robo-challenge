@@ -6,6 +6,59 @@ var max_x = 0;
 var max_y = 0;
 
 
+$(document).ready(function() {
+    $('#forward').click(function() {
+        var message = new Paho.MQTT.Message(JSON.stringify({"command": "forward", "args": [parseInt($('#distance').val())]}));
+        message.destinationName = "robot/process";
+        client.send(message);
+    });
+});
+
+$(document).ready(function() {
+    $('#backward').click(function() {
+        var message = new Paho.MQTT.Message(JSON.stringify({"command": "backward", "args": [parseInt($('#distance').val())]}));
+        message.destinationName = "robot/process";
+        client.send(message);
+    });
+});
+
+$(document).ready(function() {
+    $('#left').click(function() {
+        var message = new Paho.MQTT.Message(JSON.stringify({"command": "left", "args": [parseInt($('#angle').val())]}));
+        message.destinationName = "robot/process";
+        client.send(message);
+    });
+});
+
+$(document).ready(function() {
+    $('#right').click(function() {
+        var message = new Paho.MQTT.Message(JSON.stringify({"command": "right", "args": [parseInt($('#angle').val())]}));
+        message.destinationName = "robot/process";
+        client.send(message);
+    });
+});
+
+$(document).ready(function() {
+    $('#reset').click(function() {
+        var message = new Paho.MQTT.Message(JSON.stringify({"command": "reset"}));
+        message.destinationName = "game/process";
+        client.send(message);
+
+        message.destinationName = "robot/process";
+        client.send(message);
+
+        doUpdate = true;
+    });
+});
+
+$(document).ready(function() {
+    $('#stop').click(function() {
+        var message = new Paho.MQTT.Message(JSON.stringify({"command": "stop"}));
+
+        message.destinationName = "robot/process";
+        client.send(message);
+    });
+});
 
 
 function zoom(value) {
@@ -29,16 +82,6 @@ function onConnectionLost(responseObject) {
   }
 }
 
-function reset(){
-    message = new Paho.MQTT.Message(JSON.stringify({"command": "reset"}));
-    message.destinationName = "game/process";
-    client.send(message);
-
-    message.destinationName = "robot/process";
-    client.send(message);
-
-    doUpdate = true
-}
 
 function drawRobot(x, y, r, max_x, max_y) {
     var c = $("#robot_layer");
