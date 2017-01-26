@@ -7,6 +7,10 @@
 .idea/workspace.xml
 .idea/libraries
 
+# python
+__pycache__
+*.pyc
+
 # node
 node_modules
 
