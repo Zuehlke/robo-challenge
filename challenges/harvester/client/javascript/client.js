@@ -16,6 +16,9 @@ client.on('message', function (topic, message) {
     // message is Buffer
     console.log(topic);
     console.log(message.toString());
+
+    // TODO: implement algorithm
+
 });
 
 
@@ -45,4 +48,3 @@ process.on('SIGINT', exitHandler.bind(null, {exit: true}));
 
 // catches uncaught exceptions
 process.on('uncaughtException', exitHandler.bind(null, {exit: true}));
-

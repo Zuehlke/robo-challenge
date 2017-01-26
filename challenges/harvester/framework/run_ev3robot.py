@@ -41,7 +41,7 @@ if __name__ == "__main__":
         if opt == '--broker':
             server = arg
         elif opt == '--port':
-            port = arg
+            port = int(arg)
         elif opt == '--topic':
             topic = arg
 
@@ -49,8 +49,8 @@ if __name__ == "__main__":
 
     logging.info("Try to connect to " + str(server) + ":" + str(port) + " and topic " + str(topic))
 
-    mqtt = mqtt.Client()
-    mqtt.connect(server, port, KEEPALIVE_SEC)
+    client = mqtt.Client()
+    client.connect(server, port, KEEPALIVE_SEC)
 
     # The callback for when the client receives a CONNACK response from the server.
     def on_connect(client, userdata, flags, rc):
@@ -78,14 +78,17 @@ if __name__ == "__main__":
         logging.info("Disconnected with return code " + str(rc))
 
 
-    mqtt.on_connect = on_connect
-    mqtt.on_message = on_message
-    mqtt.on_disconnect = on_disconnect
+    client.on_connect = on_connect
+    client.on_message = on_message
+    client.on_disconnect = on_disconnect
 
     while True:
         time.sleep(TIMEOUT_SEC)
-        mqtt.loop()
+        code = client.loop()
 
-        mqtt.publish(topic + "/state", json.dumps(robot.state()))
+        if code != mqtt.MQTT_ERR_SUCCESS:
+            client.reconnect()
+
+        client.publish(topic + "/state", json.dumps(robot.state()))
 
 

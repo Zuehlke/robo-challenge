@@ -1,16 +1,22 @@
 // Create a client instance
 var client = new Paho.MQTT.Client(location.hostname, Number(9001), "clientId");
+
 var doUpdate = true;
 
 var max_x = 0;
 var max_y = 0;
 
+// do reconnect when connection is lost
+setInterval(function(){
+    reconnectIfConnectionIsLost(client);
+}, 3000);
 
 $(document).ready(function() {
     $('#forward').click(function() {
         var message = new Paho.MQTT.Message(JSON.stringify({"command": "forward", "args": [parseInt($('#distance').val())]}));
         message.destinationName = "robot/process";
         client.send(message);
+
     });
 });
 
@@ -41,6 +47,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#reset').click(function() {
         var message = new Paho.MQTT.Message(JSON.stringify({"command": "reset"}));
+
         message.destinationName = "game/process";
         client.send(message);
 
@@ -60,6 +67,13 @@ $(document).ready(function() {
     });
 });
 
+
+function reconnectIfConnectionIsLost(client) {
+    if(!client.isConnected()) {
+        console.log("try to reconnect");
+        client.connect();
+    }
+}
 
 function zoom(value) {
     console.log(value);

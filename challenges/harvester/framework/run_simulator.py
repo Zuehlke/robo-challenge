@@ -28,15 +28,13 @@ if __name__ == "__main__":
     logging.info("Starting simulator...")
 
     # parse args
-    optlist, args = getopt.getopt(sys.argv[1:], shortopts="", longopts=["broker=", "port=", "topic="])
+    optlist, args = getopt.getopt(sys.argv[1:], shortopts="", longopts=["broker=", "port="])
 
     for opt, arg in optlist:
         if opt == '--broker':
             server = arg
         elif opt == '--port':
-            port = arg
-        elif opt == '--topic':
-            topic = arg
+            port = int(arg)
 
     # default robot / game
     game = Game(n_points=50, radius=5, max_x=800, max_y=800, radius_factor=40)
@@ -50,8 +48,8 @@ if __name__ == "__main__":
 
     logging.info("Try to connect to " + str(server) + ":" + str(port))
 
-    mqtt = mqtt.Client()
-    mqtt.connect(server, port, KEEPALIVE_SEC)
+    client = mqtt.Client()
+    client.connect(server, port, KEEPALIVE_SEC)
 
 
     # The callback for when the client receives a CONNACK response from the server.
@@ -88,18 +86,18 @@ if __name__ == "__main__":
         logging.info("Disconnected with return code " + str(rc))
 
 
-    mqtt.on_connect = on_connect
-    mqtt.on_message = on_message
-    mqtt.on_disconnect = on_disconnect
+    client.on_connect = on_connect
+    client.on_message = on_message
+    client.on_disconnect = on_disconnect
 
-    mqtt.loop_start()
+    client.loop_start()
 
     while True:
 
         time.sleep(TIMEOUT_SEC)
         robot.tick()
 
-        mqtt.publish("robot/state", json.dumps(robot.state()))
+        client.publish("robot/state", json.dumps(robot.state()))
 
         x, y, r = robot.position()
         x_max = game.max_x()
@@ -108,7 +106,7 @@ if __name__ == "__main__":
         game.check(x, y, r)
         points = game.points()
 
-        mqtt.publish("game/position", json.dumps({'robot': {'x': x, 'y': y, 'r': r},
+        client.publish("game/position", json.dumps({'robot': {'x': x, 'y': y, 'r': r},
                                                       'world': {'x_max': x_max, 'y_max': y_max},
                                                       'points': points}, cls=PointEncoder))
 
