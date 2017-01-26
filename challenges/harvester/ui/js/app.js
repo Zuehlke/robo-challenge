@@ -16,7 +16,6 @@ $(document).ready(function() {
         var message = new Paho.MQTT.Message(JSON.stringify({"command": "forward", "args": [parseInt($('#distance').val())]}));
         message.destinationName = "robot/process";
         client.send(message);
-
     });
 });
 
@@ -71,12 +70,11 @@ $(document).ready(function() {
 function reconnectIfConnectionIsLost(client) {
     if(!client.isConnected()) {
         console.log("try to reconnect");
-        client.connect();
+        client.connect({onSuccess:onConnect});
     }
 }
 
 function zoom(value) {
-    console.log(value);
     document.body.style.zoom = value;
 }
 
@@ -189,7 +187,6 @@ function createWorld(ctx, body) {
 // called when a message arrives
 function onMessageArrived(message) {
 
-    console.log("onMessageArrived");
 
     var c = $("#map_layer");
     var ctx = c[0].getContext('2d');
