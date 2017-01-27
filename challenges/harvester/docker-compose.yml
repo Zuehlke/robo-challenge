@@ -1,0 +1,15 @@
+version: '2'
+services:
+  broker:
+    image: toke/mosquitto
+    ports:
+     - "1883:1883"
+     - "9001:9001"
+  web:
+    image: nginx
+    ports:
+     - "8080:80"
+    volumes:
+     - ./ui:/usr/share/nginx/html:ro
+    links:
+     - broker
