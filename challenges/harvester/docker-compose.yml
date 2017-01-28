@@ -13,3 +13,12 @@ services:
      - ./ui:/usr/share/nginx/html:ro
     links:
      - broker
+  rps:
+    build: framework/rps
+    volumes:
+     - ./framework/rps:/rps:ro
+    devices:
+     - /dev/video0
+    command: python3 /rps/rps.py
+    links:
+     - broker
