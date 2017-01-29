@@ -14,9 +14,9 @@ services:
     links:
      - broker
   rps:
-    build: framework/rps
+    build: rps
     volumes:
-     - ./framework/rps:/rps:ro
+     - ./rps:/rps:ro
     devices:
      - /dev/video0
     command: python3 /rps/rps.py
