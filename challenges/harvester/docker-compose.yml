@@ -22,3 +22,10 @@ services:
     command: python3 /rps/rps.py
     links:
      - broker
+  gamemaster:
+    build: gamemaster
+    volumes:
+     - ./gamemaster:/gamemaster:ro
+    command: python3 /gamemaster/gamemaster.py
+    links:
+     - broker
