@@ -45,9 +45,11 @@ class Tournament:
         board = []
 
         for player in self.players:
-            board.append(Rank(player, sum([game.points for game in self.played_games if game.player == player])))
+            games_of_player = [game.points for game in self.played_games if game.player == player]
+            points = max(games_of_player) if len(games_of_player) > 0 else 0
+            board.append(Rank(player, points))
 
-        return board
+        return sorted(board, key=lambda game: game.points, reverse=True)
 
 
 import paho.mqtt.client as mqtt

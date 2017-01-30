@@ -51,4 +51,14 @@ class TournamentTests(unittest.TestCase):
         tournament.store_played_game(PlayedGame("player2", 15))
         tournament.store_played_game(PlayedGame("player1", 3))
 
-        self.assertEqual(tournament.leaderboard(), [Rank("player1", 20), Rank("player2", 15)])
+        self.assertEqual(tournament.leaderboard(), [Rank("player1", 17), Rank("player2", 15)])
+
+    def test_leaderboard_games_played_ordered_by_points(self):
+        tournament = Tournament()
+
+        tournament.register_player("player1")
+        tournament.register_player("player2")
+        tournament.store_played_game(PlayedGame("player1", 15))
+        tournament.store_played_game(PlayedGame("player2", 18))
+
+        self.assertEqual(tournament.leaderboard(), [Rank("player2", 18), Rank("player1", 15)])
