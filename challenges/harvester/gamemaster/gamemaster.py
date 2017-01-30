@@ -1,5 +1,9 @@
 #!/bin/env python3
 
+import logging
+
+logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
+
 class PlayedGame:
     def __init__(self, player, points):
         self.player = player
@@ -53,12 +57,15 @@ class Tournament:
 
 
 import paho.mqtt.client as mqtt
+import re
 import json
 
+
 class TournamentRadio:
-    def __init__(self, host, port):
+    def __init__(self, host, port, tournament):
         self.host = host
         self.port = port
+        self.tournament = tournament
 
     def __enter__(self):
         self.client = mqtt.Client("Game Master")
@@ -78,10 +85,25 @@ class TournamentRadio:
         self.client.publish("tournament", payload)
 
     def on_connect(self, client, userdata, flags, rc):
-        print("Connected with result code "+str(rc))
+        logging.info("Connected with result code "+str(rc))
+
+        self.client.subscribe("players/+")
 
     def on_message(self, client, userdata, msg):
-        print(msg.topic+" "+str(msg.payload))
+        logging.info("Received message '" + str(msg.payload) + " on topic " + msg.topic + " with QoS " + str(msg.qos))
+
+        try:
+            result = re.search("(?:players/)(\w+)", msg.topic)
+
+            if result is None:
+                return
+
+            player = result.group(1)
+            logging.info("Registering player: " + player)
+            self.tournament.register_player(player)
+            
+        except Exception as ex:
+            logging.exception("Error processing message")
 
 import time
 
@@ -90,8 +112,8 @@ LOOP_CYCLE_TIME_SEC=0.5
 if __name__ == '__main__':
     tournament = Tournament()
 
-    with TournamentRadio("broker", 1883) as radio:
+    with TournamentRadio("broker", 1883, tournament) as radio:
         while True:
             radio.process_messages(LOOP_CYCLE_TIME_SEC)
             radio.publish_tournament(tournament)
-            time.sleep(0.01)
+            time.sleep(1)

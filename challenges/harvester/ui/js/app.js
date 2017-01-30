@@ -6,6 +6,8 @@ var doUpdate = true;
 var max_x = 0;
 var max_y = 0;
 
+var viewState = { leaderboard: [] };
+
 // do reconnect when connection is lost
 setInterval(function(){
     reconnectIfConnectionIsLost(client);
@@ -85,6 +87,7 @@ function onConnect() {
   console.log("onConnect");
   client.subscribe("robot/state");
   client.subscribe("game/position");
+  client.subscribe("tournament");
 }
 
 // called when the client loses its connection
@@ -227,9 +230,16 @@ function onMessageArrived(message) {
             .append("<li>right motor: " + body.right_motor + "</li>");
     }
 
+    if(message.destinationName === 'tournament') {
+        viewState.leaderboard = body.leaderboard;
+    }
 
 }
 
+var leaderboard = new Vue({
+    el: '#leaderboard',
+    data: viewState
+});
 
 // set callback handlers
 client.onConnectionLost = onConnectionLost;
