@@ -11,6 +11,6 @@ if __name__ == '__main__':
 
     with TournamentRadio("broker", 1883, tournament) as radio:
         while True:
-            radio.process_messages(LOOP_CYCLE_TIME_SEC)
+            radio.game_loop(LOOP_CYCLE_TIME_SEC)
             radio.publish_tournament(tournament)
             time.sleep(1)

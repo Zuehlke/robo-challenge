@@ -60,3 +60,30 @@ class BasicTestSuite(unittest.TestCase):
         ce = api.CommandDispatcher(caller)
         with self.assertRaises(RuntimeError):
             ce.exec(None)
+
+
+class TopicCaller:
+    def __init__(self):
+        self.topic = None
+        self.arg = None
+
+    def one(self, topic, arg):
+        self.topic = topic
+        self.arg = arg
+
+
+class TopicAwareCommandDispatcher(unittest.TestCase):
+    def test_init(self):
+        caller = TopicCaller()
+        dispatcher = api.TopicAwareCommandDispatcher(caller)
+
+        self.assertIsNotNone(dispatcher.command_dispatcher)
+
+    def test_exec(self):
+        caller = TopicCaller()
+        dispatcher = api.TopicAwareCommandDispatcher(caller)
+
+        dispatcher.exec("topic", {'command': 'one', 'args': ['arg']})
+
+        self.assertEqual(caller.topic, "topic")
+        self.assertEqual(caller.arg, "arg")
