@@ -38,21 +38,21 @@ class TournamentRadio:
                 self.tournament.finish_game()
                 self.client.publish(self.response_topic_for_player(player), json.dumps({'command': 'finished'}))
 
-    def publish_tournament(self, tournament):
+    def publish_tournament(self):
         payload = json.dumps({
-            'currentGame': self.current_game_state(tournament),
-            'leaderboard': [{'player': r.player, 'points': r.points} for r in tournament.leaderboard()]
+            'currentGame': self.current_game_state(),
+            'leaderboard': [{'player': r.player, 'points': r.points} for r in self.tournament.leaderboard()]
         })
         self.client.publish("tournament", payload)
 
-    def current_game_state(self, tournament):
-        if tournament.current_game is None:
+    def current_game_state(self):
+        if self.tournament.current_game is None:
             return {'player': '', 'state': 'OPEN', 'time': 0}
 
         return {
-            'player': tournament.current_game.player,
-            'state': 'RUNNING' if tournament.current_game.is_started() else 'READY',
-            'time': tournament.current_game.elapsed_time() if tournament.current_game.is_started() else 0
+            'player': self.tournament.current_game.player,
+            'state': 'RUNNING' if self.tournament.current_game.is_started() else 'READY',
+            'time': self.tournament.current_game.elapsed_time() if self.tournament.current_game.is_started() else 0
         }
 
     def on_connect(self, client, userdata, flags, rc):
@@ -102,7 +102,7 @@ class TournamentRadio:
         logging.info("Starting game for player %s" % player)
         self.tournament.start_game()
 
-
+LOOP_TIMEOUT=1
 LOOP_CYCLE_TIME_SEC = 0.5
 
 if __name__ == '__main__':
@@ -111,5 +111,5 @@ if __name__ == '__main__':
     with TournamentRadio("broker", 1883, tournament) as radio:
         while True:
             radio.game_loop(LOOP_CYCLE_TIME_SEC)
-            radio.publish_tournament(tournament)
-            time.sleep(1)
+            radio.publish_tournament()
+            time.sleep(LOOP_TIMEOUT)

@@ -12,10 +12,15 @@ class CurrentGame:
     def __init__(self, player):
         self.player = player
         self.start_time = 0
+        self.robot_position = {'x': 0, 'y': 0, 'r': 0}
         self.game = Game()
 
     def start(self):
         self.start_time = time.time()
+
+    def update_robot_position(self, robot_position):
+        self.robot_position = robot_position
+        self.game.check(robot_position.x, robot_position.y, robot_position.r)
 
     def elapsed_time(self):
         return time.time() - self.start_time

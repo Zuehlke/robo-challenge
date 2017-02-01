@@ -106,6 +106,7 @@ if __name__ == "__main__":
         game.check(x, y, r)
         points = game.points()
 
+        client.publish("robot/position", json.dumps({'x': x, 'y': y, 'r': r}))
         client.publish("game/position", json.dumps({'robot': {'x': x, 'y': y, 'r': r},
                                                       'world': {'x_max': x_max, 'y_max': y_max},
                                                       'points': points}, cls=PointEncoder))
