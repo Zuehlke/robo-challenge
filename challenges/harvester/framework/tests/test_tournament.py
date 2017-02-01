@@ -11,6 +11,7 @@ class TournamentTests(unittest.TestCase):
         self.assertEqual(tournament.players, [])
         self.assertEqual(tournament.played_games, [])
         self.assertEqual(tournament.leaderboard(), [])
+        self.assertEqual(tournament.current_game, None)
 
     def test_register_player(self):
         tournament = Tournament()
@@ -62,3 +63,19 @@ class TournamentTests(unittest.TestCase):
         tournament.store_played_game(PlayedGame("player2", 18))
 
         self.assertEqual(tournament.leaderboard(), [Rank("player2", 18), Rank("player1", 15)])
+
+    def test_prepare_game_unknown_player(self):
+        tournament = Tournament()
+
+        tournament.prepare_game("player1")
+
+        self.assertEqual(tournament.current_game, None)
+
+    def test_prepare_game_known_player(self):
+        tournament = Tournament()
+
+        tournament.register_player("player1")
+        tournament.prepare_game("player1")
+
+        self.assertEqual(tournament.current_game.player, "player1")
+        self.assertIsNotNone(tournament.current_game.start_time)

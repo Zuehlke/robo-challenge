@@ -23,9 +23,9 @@ services:
     links:
      - broker
   gamemaster:
-    build: gamemaster
+    build: ./framework/gamemaster
     volumes:
-     - ./gamemaster:/gamemaster:ro
-    command: python3 /gamemaster/gamemaster.py
+     - ./framework:/framework:ro
+    command: python3 /framework/run_gamemaster.py
     links:
      - broker
