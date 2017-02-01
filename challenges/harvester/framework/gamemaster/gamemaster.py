@@ -1,8 +1,22 @@
 #!/bin/env python3
 
 import logging
+import time
+import re
+import json
+import paho.mqtt.client as mqtt
 
-logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
+from game import Game
+
+logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
+
+
+class CurrentGame:
+    def __init__(self, player):
+        self.player = player
+        self.start_time = time.time()
+        self.game = Game()
+
 
 class PlayedGame:
     def __init__(self, player, points):
@@ -32,6 +46,7 @@ class Tournament:
     def __init__(self):
         self.players = []
         self.played_games = []
+        self.current_game = None
 
     def register_player(self, name):
         if name in self.players:
@@ -45,6 +60,13 @@ class Tournament:
 
         self.played_games.append(played_game)
 
+    def prepare_game(self, player):
+        if player not in self.players:
+            logging.warning("Attempting to prepare game for unknown player: %s" % player)
+            return
+
+        self.current_game = CurrentGame(player)
+
     def leaderboard(self):
         board = []
 
@@ -54,11 +76,6 @@ class Tournament:
             board.append(Rank(player, points))
 
         return sorted(board, key=lambda game: game.points, reverse=True)
-
-
-import paho.mqtt.client as mqtt
-import re
-import json
 
 
 class TournamentRadio:
@@ -104,16 +121,3 @@ class TournamentRadio:
             
         except Exception as ex:
             logging.exception("Error processing message")
-
-import time
-
-LOOP_CYCLE_TIME_SEC=0.5
-
-if __name__ == '__main__':
-    tournament = Tournament()
-
-    with TournamentRadio("broker", 1883, tournament) as radio:
-        while True:
-            radio.process_messages(LOOP_CYCLE_TIME_SEC)
-            radio.publish_tournament(tournament)
-            time.sleep(1)
