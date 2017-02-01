@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
-WHITE = ((0, 0, 230),(0, 0, 255))
-ORANGE = ((8, 150, 100),(15, 255, 255))
+WHITE = ((0, 0, 230), (0, 0, 255))
+ORANGE = ((8, 150, 100), (15, 255, 255))
 CAMERA = 0
 
 import cv2
+
 
 class RobotPositioningSystem():
     def __enter__(self):
@@ -42,8 +43,10 @@ class RobotPositioningSystem():
         print(center)
         return center
 
+
 import paho.mqtt.client as mqtt
 import json
+
 
 class RoboRadio():
     def __init__(self, host, port):
@@ -61,7 +64,7 @@ class RoboRadio():
         self.client.disconnect()
 
     def publish_location(self, location):
-        payload = json.dumps({'x':location[0], 'y':location[1]})
+        payload = json.dumps({'x': location[0], 'y': location[1]})
         self.client.publish("rps", payload)
 
     def process_messages(self):
