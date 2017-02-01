@@ -36,7 +36,7 @@ class TournamentRadio:
                 player = self.tournament.current_game.player
                 logging.info("Game for player %s finished" % player)
                 self.tournament.finish_game()
-                self.client.publish("players/"+player, json.dumps({'command': 'finished'}))
+                self.client.publish(self.response_topic_for_player(player), json.dumps({'command': 'finished'}))
 
     def publish_tournament(self, tournament):
         payload = json.dumps({
@@ -71,6 +71,9 @@ class TournamentRadio:
         except Exception as ex:
             logging.exception("Error processing message")
 
+    def response_topic_for_player(self, player):
+        return "players/%s/incoming" % player
+
     def extract_player_from_topic(self, topic):
         result = re.search("(?:players/)(\w+)", topic)
         if result is not None:
@@ -88,7 +91,7 @@ class TournamentRadio:
     def prepare(self, topic, player):
         logging.info("Preparing game for player %s" % player)
         self.tournament.prepare_game(player)
-        self.client.publish("players/"+player, json.dumps({'command': 'start'}))
+        self.client.publish(self.response_topic_for_player(player), json.dumps({'command': 'start'}))
 
     def start(self, topic):
         player = self.extract_player_from_topic(topic)
