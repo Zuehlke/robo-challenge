@@ -8,14 +8,28 @@ import paho.mqtt.client as mqtt
 
 from game import Game
 
+GAME_LENGTH_SECONDS = 60
+
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 
 
 class CurrentGame:
     def __init__(self, player):
         self.player = player
-        self.start_time = time.time()
+        self.start_time = 0
         self.game = Game()
+
+    def start(self):
+        self.start_time = time.time()
+
+    def elapsed_time(self):
+        return time.time() - self.start_time
+
+    def is_started(self):
+        return self.start_time > 0
+
+    def is_finished(self):
+        return self.start_time <= (time.time() - GAME_LENGTH_SECONDS)
 
 
 class PlayedGame:
@@ -67,6 +81,21 @@ class Tournament:
 
         self.current_game = CurrentGame(player)
 
+    def start_game(self):
+        if self.current_game is None:
+            logging.warning("Attempting to start unprepared game")
+            return
+
+        self.current_game.start()
+
+    def finish_game(self):
+        if self.current_game is None:
+            logging.warning("Attempting to finish not started game")
+            return
+
+        self.played_games.append(PlayedGame(self.current_game.player, self.current_game.game.score()))
+        self.current_game = None
+
     def leaderboard(self):
         board = []
 
@@ -105,16 +134,16 @@ class TournamentRadio:
             'currentGame': self.current_game_state(tournament),
             'leaderboard': [{'player': r.player, 'points': r.points} for r in tournament.leaderboard()]
         })
-        ("tournament", payload)
+        self.client.publish("tournament", payload)
 
     def current_game_state(self, tournament):
-        if self.tournament.current_game is None:
+        if tournament.current_game is None:
             return {'player': '', 'state': 'OPEN', 'time': 0}
 
         return {
-            'player': self.tournament.current_game.player,
-            'state': 'PREPARED',
-            'time': 0
+            'player': tournament.current_game.player,
+            'state': 'RUNNING' if tournament.current_game.is_started() else 'READY',
+            'time': tournament.current_game.elapsed_time() if tournament.current_game.is_started() else 0
         }
 
     def on_connect(self, client, userdata, flags, rc):
@@ -146,6 +175,4 @@ class TournamentRadio:
 
     def start(self):
         logging.info("Starting game")
-
-    def finish(self):
-        logging.info("Finishing game ")
+        self.tournament.start_game()

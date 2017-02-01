@@ -79,3 +79,50 @@ class TournamentTests(unittest.TestCase):
 
         self.assertEqual(tournament.current_game.player, "player1")
         self.assertIsNotNone(tournament.current_game.start_time)
+
+    def test_start_game_prepared_game(self):
+        tournament = Tournament()
+
+        tournament.register_player("player1")
+        tournament.prepare_game("player1")
+        tournament.start_game()
+
+        self.assertTrue(tournament.current_game.start_time > 0)
+
+    def test_start_game_no_prepared_game(self):
+        tournament = Tournament()
+
+        tournament.register_player("player1")
+        tournament.start_game()
+
+        self.assertEqual(tournament.current_game, None)
+
+    def test_is_finished(self):
+        tournament = Tournament()
+
+        tournament.register_player("player1")
+        tournament.prepare_game("player1")
+        tournament.start_game()
+
+        self.assertFalse(tournament.current_game.is_finished())
+
+    def test_is_finished_time_elapsed(self):
+        tournament = Tournament()
+
+        tournament.register_player("player1")
+        tournament.prepare_game("player1")
+        tournament.start_game()
+        tournament.current_game.start_time = 0
+
+        self.assertTrue(tournament.current_game.is_finished())
+
+    def test_finish(self):
+        tournament = Tournament()
+
+        tournament.register_player("player1")
+        tournament.prepare_game("player1")
+        tournament.start_game()
+        tournament.finish_game()
+
+        self.assertIsNone(tournament.current_game)
+        self.assertEqual(tournament.played_games, [PlayedGame("player1", 0)])

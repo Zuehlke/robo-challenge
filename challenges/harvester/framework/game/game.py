@@ -92,6 +92,9 @@ class Game:
                 # robot has found the point
                 p.collected = True
 
+    def score(self):
+        return sum([p.score for p in self.points() if p.collected])
+
     def __str__(self):
         return "points: %s, x: %s, y: %s, r: %s, radius factor: %s" % (self.__n_points, self.__max_x, self.__max_y, self.__radius, self.__radius_factor)
 

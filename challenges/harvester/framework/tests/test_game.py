@@ -37,6 +37,7 @@ class BasicTestSuite(unittest.TestCase):
         p = g.points()[0]
         print(p)
         self.assertEqual(p.collected, True)
+        self.assertEqual(g.score(), 1)
 
     def test_create_points(self):
         x = 300
@@ -94,3 +95,5 @@ class BasicTestSuite(unittest.TestCase):
 
         for p in g.points():
             self.assertEqual(p.collected, True)
+
+        self.assertEqual(g.score(), len(g.points()))
