@@ -1,0 +1,29 @@
+version: '2'
+services:
+  broker:
+    image: toke/mosquitto
+    ports:
+     - "1883:1883"
+     - "9001:9001"
+  web:
+    image: nginx
+    ports:
+     - "8080:80"
+    volumes:
+     - ./ui:/usr/share/nginx/html:ro
+    links:
+     - broker
+  simulator:
+    build: ./framework/simulator
+    volumes:
+     - ./framework:/framework:ro
+    command: python3 /framework/run_simulator.py
+    links:
+     - broker
+  gamemaster:
+    build: ./framework/gamemaster
+    volumes:
+     - ./framework:/framework:ro
+    command: python3 /framework/run_gamemaster.py
+    links:
+     - broker
