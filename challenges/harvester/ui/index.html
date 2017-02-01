@@ -57,6 +57,13 @@
 
             </div>
             <div class="col-md-4">
+                <p class="lead">Current Game</p>
+                <div id="currentGame">
+                    <p>State: {{currentGame.state}}</p>
+                    <p>Player: {{currentGame.player}}</p>
+                    <p>Time: {{currentGame.time}}</p>
+                </div>
+
                 <p class="lead">Leaderboard</p>
                 <table class="table" id="leaderboard">
                     <thead>
@@ -69,6 +76,7 @@
                         <tr v-for="rank in leaderboard">
                             <td>{{rank.player}}</td>
                             <td>{{rank.points}}</td>
+                            <td><input class="btn" type="button" v-on:click="{{prepareGame(rank.player)}}" value="Prepare Game" /></td>
                         </tr>
                     </tbody>
                 </table>

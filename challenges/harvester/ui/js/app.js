@@ -6,7 +6,7 @@ var doUpdate = true;
 var max_x = 0;
 var max_y = 0;
 
-var viewState = { leaderboard: [] };
+var viewState = { leaderboard: [], currentGame: {} };
 
 // do reconnect when connection is lost
 setInterval(function(){
@@ -232,13 +232,30 @@ function onMessageArrived(message) {
 
     if(message.destinationName === 'tournament') {
         viewState.leaderboard = body.leaderboard;
+        viewState.currentGame = body.currentGame;
     }
 
 }
 
+var currentGame = new Vue({
+    el: '#currentGame',
+    data: viewState
+});
+
 var leaderboard = new Vue({
     el: '#leaderboard',
-    data: viewState
+    data: viewState,
+    methods: {
+        prepareGame: function(player) {
+            var message = new Paho.MQTT.Message(JSON.stringify({
+                "command": "prepare",
+                "args": [player]
+            }));
+
+            message.destinationName = "gamemaster";
+            client.send(message);
+        }
+    }
 });
 
 // set callback handlers

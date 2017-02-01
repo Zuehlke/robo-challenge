@@ -77,6 +77,8 @@ class Tournament:
 
         return sorted(board, key=lambda game: game.points, reverse=True)
 
+from common import CommandDispatcher
+
 
 class TournamentRadio:
     def __init__(self, host, port, tournament):
@@ -89,6 +91,7 @@ class TournamentRadio:
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.client.connect(self.host, self.port, 60)
+        self.dispatcher = CommandDispatcher(self)
         return self
 
     def __exit__(self, type, value, traceback):
@@ -98,26 +101,51 @@ class TournamentRadio:
         self.client.loop(timeout)
 
     def publish_tournament(self, tournament):
-        payload = json.dumps({'leaderboard': [{'player': r.player, 'points': r.points} for r in tournament.leaderboard()]})
-        self.client.publish("tournament", payload)
+        payload = json.dumps({
+            'currentGame': self.current_game_state(tournament),
+            'leaderboard': [{'player': r.player, 'points': r.points} for r in tournament.leaderboard()]
+        })
+        ("tournament", payload)
+
+    def current_game_state(self, tournament):
+        if self.tournament.current_game is None:
+            return {'player': '', 'state': 'OPEN', 'time': 0}
+
+        return {
+            'player': self.tournament.current_game.player,
+            'state': 'PREPARED',
+            'time': 0
+        }
 
     def on_connect(self, client, userdata, flags, rc):
         logging.info("Connected with result code "+str(rc))
 
         self.client.subscribe("players/+")
+        self.client.subscribe("gamemaster")
 
     def on_message(self, client, userdata, msg):
         logging.info("Received message '" + str(msg.payload) + " on topic " + msg.topic + " with QoS " + str(msg.qos))
 
         try:
             result = re.search("(?:players/)(\w+)", msg.topic)
+            if result is not None:
+                player = result.group(1)
+                logging.info("Registering player: " + player)
+                self.tournament.register_player(player)
+            else:
+                obj = json.loads(msg.payload.decode('utf-8'))
+                self.dispatcher.exec(obj)
 
-            if result is None:
-                return
-
-            player = result.group(1)
-            logging.info("Registering player: " + player)
-            self.tournament.register_player(player)
-            
         except Exception as ex:
             logging.exception("Error processing message")
+
+    def prepare(self, player):
+        logging.info("Preparing game for player %s" % player)
+        self.tournament.prepare_game(player)
+        self.client.publish("players/"+player, json.dumps({'command': 'start'}))
+
+    def start(self):
+        logging.info("Starting game")
+
+    def finish(self):
+        logging.info("Finishing game ")
