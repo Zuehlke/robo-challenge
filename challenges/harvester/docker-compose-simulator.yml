@@ -14,7 +14,7 @@ services:
     links:
      - broker
   simulator:
-    build: simulator
+    build: ./framework/simulator
     volumes:
      - ./framework:/framework:ro
     command: python3 /framework/run_simulator.py
