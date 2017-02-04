@@ -1,15 +1,29 @@
 // Create a client instance
-var client = new Paho.MQTT.Client(location.hostname, Number(9001), "clientId");
 
-var doUpdate = true;
+var clientId = guid();
+console.log('client id ' + clientId);
+
+var client = new Paho.MQTT.Client(location.hostname, Number(9001), clientId);
 
 var max_x = 0;
 var max_y = 0;
+
+var worldUpdated = false;
 
 // do reconnect when connection is lost
 setInterval(function(){
     reconnectIfConnectionIsLost(client);
 }, 3000);
+
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
+}
 
 $(document).ready(function() {
     $('#forward').click(function() {
@@ -52,8 +66,6 @@ $(document).ready(function() {
 
         message.destinationName = "robot/process";
         client.send(message);
-
-        doUpdate = true;
     });
 });
 
@@ -84,7 +96,9 @@ function onConnect() {
   // Once a connection has been made, make a subscription.
   console.log("onConnect");
   client.subscribe("robot/state");
+  client.subscribe("game/process");
   client.subscribe("game/position");
+
 }
 
 // called when the client loses its connection
@@ -193,18 +207,26 @@ function onMessageArrived(message) {
 
     console.log(message.destinationName);
 
-    var body = JSON.parse(message.payloadString)
+    var body = JSON.parse(message.payloadString);
+
+    if (message.destinationName === 'game/process') {
+        if(body.command == 'reset') {
+            worldUpdated = false;
+        }
+    }
+
+
     if (message.destinationName === 'game/position') {
-        if(doUpdate) {
 
-            createWorld(ctx, body)
-
+        if(!worldUpdated) {
+            createWorld(ctx, body);
+            worldUpdated = true;
         } else {
 
-            updatePoints(ctx, body.points)
+            updatePoints(ctx, body.points);
 
-            var robot = body.robot
-            drawRobot(robot.x, robot.y, robot.r, max_x, max_y)
+            var robot = body.robot;
+            drawRobot(robot.x, robot.y, robot.r, max_x, max_y);
 
             $("#position").empty()
                 .append("<li>x: " + robot.x + "</li>")
@@ -212,11 +234,14 @@ function onMessageArrived(message) {
                 .append("<li>r: " + robot.r + "</li>");
 
             var score = getScore(body.points);
-             $("#score").empty()
+            $("#score").empty()
                 .append("<li>max: " + score.max + "</li>")
                 .append("<li>current: " + score.current + "</li>");
 
+
         }
+
+
     }
 
     if (message.destinationName === 'robot/state') {

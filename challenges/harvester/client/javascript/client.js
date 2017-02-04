@@ -8,16 +8,18 @@ var PORT = 1883;
 var client  = mqtt.connect({host: SERVER, port: PORT});
 
 client.on('connect', function () {
+    console.log("Connected " + client.connected);
     client.subscribe('robot/state');
     client.subscribe('game/position');
 });
 
 client.on('message', function (topic, message) {
-    // message is Buffer
     console.log(topic);
-    console.log(message.toString());
+    var obj = JSON.parse(message.toString());
+    console.log(obj);
 
     // TODO: implement algorithm
+    client.publish('robot/process', JSON.stringify({'command': 'stop'}))
 
 });
 
