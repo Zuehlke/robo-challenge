@@ -9,6 +9,8 @@ var max_x = 0;
 var max_y = 0;
 
 var worldUpdated = false;
+var viewState = { leaderboard: [], currentGame: {} };
+
 
 // do reconnect when connection is lost
 setInterval(function(){
@@ -98,8 +100,7 @@ function onConnect() {
   client.subscribe("robot/state");
   client.subscribe("game/process");
   client.subscribe("game/position");
-
-}
+  client.subscribe("tournament");
 
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
@@ -252,9 +253,33 @@ function onMessageArrived(message) {
             .append("<li>right motor: " + body.right_motor + "</li>");
     }
 
+    if(message.destinationName === 'tournament') {
+        viewState.leaderboard = body.leaderboard;
+        viewState.currentGame = body.currentGame;
+    }
 
 }
 
+var currentGame = new Vue({
+    el: '#currentGame',
+    data: viewState
+});
+
+var leaderboard = new Vue({
+    el: '#leaderboard',
+    data: viewState,
+    methods: {
+        prepareGame: function(player) {
+            var message = new Paho.MQTT.Message(JSON.stringify({
+                "command": "prepare",
+                "args": [player]
+            }));
+
+            message.destinationName = "gamemaster";
+            client.send(message);
+        }
+    }
+});
 
 // set callback handlers
 client.onConnectionLost = onConnectionLost;

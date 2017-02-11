@@ -19,7 +19,7 @@ KEEPALIVE_SEC = 60
 
 
 # default mqtt broker (hostname or ip) and port
-server = "127.0.0.1"
+server = "broker"
 port = 1883
 
 

@@ -13,13 +13,11 @@ services:
      - ./ui:/usr/share/nginx/html:ro
     links:
      - broker
-  rps:
-    build: rps
+  simulator:
+    build: ./framework/simulator
     volumes:
-     - ./rps:/rps:ro
-    devices:
-     - /dev/video0
-    command: python3 /rps/rps.py
+     - ./framework:/framework:ro
+    command: python3 /framework/run_simulator.py
     links:
      - broker
   gamemaster:

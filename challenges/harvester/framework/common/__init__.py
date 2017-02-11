@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-from .command import CommandDispatcher
+from .command import CommandDispatcher, TopicAwareCommandDispatcher

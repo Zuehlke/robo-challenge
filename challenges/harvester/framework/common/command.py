@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+
+
+def getattr_caller(dispatcher, command, args):
+    getattr(dispatcher, command)(*args)
+
+
 class CommandDispatcher:
     """
     Command dispatcher
@@ -24,9 +30,10 @@ class CommandDispatcher:
         self.strategies = strategies
         self.dispatcher = cmd
 
-    def exec(self, msg):
+    def exec(self, msg, method_caller=getattr_caller):
         """
         :param msg: the command as msg (dict) which should be executed ({command: 'foo', args = []})
+        :param method_caller: the function used to call the method on the dispatcher
         :return:
         """
         if not msg:
@@ -42,14 +49,27 @@ class CommandDispatcher:
             if command in self.strategies:
                 if self.MSG_ARGS in msg:
                     # command has args
-                    getattr(self.dispatcher, command)(*msg[self.MSG_ARGS])
+                    method_caller(self.dispatcher, command, msg[self.MSG_ARGS])
 
                 else:
                     # command has no args
-                    getattr(self.dispatcher, command)()
+                    method_caller(self.dispatcher, command, [])
 
             else:
                 raise NameError('The command "%s" was not found in strategies!' % command)
 
         else:
             raise RuntimeError('Wrong format, property "command" not found!')
+
+
+class TopicAwareCommandDispatcher:
+    def __init__(self, cmd):
+        self.command_dispatcher = CommandDispatcher(cmd)
+
+    def exec(self, topic, msg):
+        self.command_dispatcher.exec(msg, method_caller=TopicAwareCommandDispatcher.call_with_topic(topic))
+
+    @staticmethod
+    def call_with_topic(topic):
+        return lambda dispatcher, command, args: getattr_caller(dispatcher, command, [topic] + args)
+
