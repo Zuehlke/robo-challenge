@@ -6,7 +6,8 @@ import json
 import logging
 import paho.mqtt.client as mqtt
 
-from gamemaster import Tournament
+from game import Point
+from gamemaster import Tournament, PickleTournamentStorage
 from common import TopicAwareCommandDispatcher
 
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
@@ -21,10 +22,11 @@ class PointEncoder(json.JSONEncoder):
 
 
 class TournamentRadio:
-    def __init__(self, host, port, tournament):
+    def __init__(self, host, port, tournament, storage):
         self.host = host
         self.port = port
         self.tournament = tournament
+        self.storage = storage
 
     def __enter__(self):
         self.client = mqtt.Client("Game Master")
@@ -47,6 +49,7 @@ class TournamentRadio:
                 player = self.tournament.current_game.player
                 logging.info("Game for player %s finished" % player)
                 self.tournament.finish_game()
+                self.storage.store_tournament(self.tournament)
                 self.client.publish(self.response_topic_for_player(player), json.dumps({'command': 'finished'}))
 
     def publish_tournament(self):
@@ -87,7 +90,7 @@ class TournamentRadio:
         self.client.subscribe("robot/position")
 
     def on_message(self, client, userdata, msg):
-        logging.info("Received message '" + str(msg.payload) + " on topic " + msg.topic + " with QoS " + str(msg.qos))
+        logging.debug("Received message '" + str(msg.payload) + " on topic " + msg.topic + " with QoS " + str(msg.qos))
 
         try:
             obj = json.loads(msg.payload.decode('utf-8'))
@@ -135,9 +138,10 @@ LOOP_TIMEOUT = 0.1
 LOOP_CYCLE_TIME_SEC = 0.5
 
 if __name__ == '__main__':
-    tournament = Tournament()
+    storage = PickleTournamentStorage("/framework/tournament.pickle")
+    tournament = storage.load_tournament() or Tournament()
 
-    with TournamentRadio("broker", 1883, tournament) as radio:
+    with TournamentRadio("broker", 1883, tournament, storage) as radio:
         while True:
             radio.game_loop(LOOP_CYCLE_TIME_SEC)
             radio.publish_tournament()

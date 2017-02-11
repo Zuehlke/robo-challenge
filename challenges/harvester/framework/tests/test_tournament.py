@@ -1,7 +1,6 @@
 
 import unittest
-from gamemaster import Tournament, PlayedGame, Rank
-
+from gamemaster import Tournament, PlayedGame, Rank, PickleTournamentStorage
 
 class TournamentTests(unittest.TestCase):
 
@@ -141,3 +140,27 @@ class TournamentTests(unittest.TestCase):
 
         self.assertIsNone(tournament.current_game)
         self.assertEqual(tournament.played_games, [PlayedGame("player1", 0)])
+
+
+class PickleTournamentStorageTests(unittest.TestCase):
+    def test_store(self):
+        tournament = Tournament()
+
+        tournament.register_player("player1")
+        tournament.prepare_game("player1")
+        tournament.start_game()
+        tournament.finish_game()
+
+        storage = PickleTournamentStorage()
+        storage.store_tournament(tournament)
+        tournament = storage.load_tournament()
+
+        self.assertIsNotNone(tournament)
+        self.assertIsNone(tournament.current_game)
+        self.assertEqual(tournament.played_games, [PlayedGame("player1", 0)])
+
+    def test_load_from_inexisting_file(self):
+        storage = PickleTournamentStorage("unknown")
+        tournament = storage.load_tournament()
+
+        self.assertIsNone(tournament)
