@@ -2,6 +2,9 @@
 import random
 import math
 
+WORLD_WIDTH = 1920
+WORLD_HEIGHT = 960
+
 class Point:
     """
     A point in the game world. A point has a score which is
@@ -29,7 +32,7 @@ class Game:
     The game engine -  master of the points and score
     """
 
-    def __init__(self, n_points=50, radius=5, max_x=800, max_y=800, radius_factor=10):
+    def __init__(self, n_points=50, radius=5, max_x=WORLD_WIDTH, max_y=WORLD_HEIGHT, radius_factor=10):
 
         self.__max_y = max_y
         self.__max_x = max_x

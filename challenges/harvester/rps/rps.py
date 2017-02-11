@@ -4,6 +4,8 @@ WHITE = ((0, 0, 230), (0, 0, 255))
 ORANGE = ((8, 150, 100), (15, 255, 255))
 CAMERA = 0
 
+WORLD_WIDTH = 1920
+WORLD_HEIGHT = 960
 RADIUS = 5
 
 import cv2
@@ -12,8 +14,8 @@ import cv2
 class RobotPositioningSystem:
     def __enter__(self):
         self.camera = cv2.VideoCapture(CAMERA)
-        self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-        self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 960)
+        self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, WORLD_WIDTH)
+        self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, WORLD_HEIGHT)
         return self
 
     def __exit__(self, type, value, traceback):
