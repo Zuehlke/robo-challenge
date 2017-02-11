@@ -23,34 +23,3 @@ tbd
 
 ### UI
 ![main page](ui.png)
-
-### Message Specification
-tbd
-
-#### Topic (Write): robot/process
-tbd
-
-
-    mosquitto_pub -h 127.0.0.1 -t robot/process -m '{"command": "forward", "args": [100]}'
-
-Drive 100 tacho counts forward
-
-    {"command": "forward", "args": [100]}
-
-Drive 50 tacho counts backward
-
-    {"command": "forward", "args": [100]}
-
-#### Topic (Read): robot/done
-tbd
-
-#### Topic (Read): robot/state
-tbd
-
-    mosquitto_sub -h 127.0.0.1 -t robot/state
-
-    {"angle": 100, "left_motor": -143, "right_motor": 345}
-
-#### Topic (Read): game/state
-tbd
-
