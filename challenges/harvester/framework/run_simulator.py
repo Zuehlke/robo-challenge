@@ -8,9 +8,8 @@ import time
 
 from simulator import Simulator
 from simulator import TimeDecorator
-from game import PointEncoder
+
 from common import CommandDispatcher
-from game import Game
 
 logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
 
@@ -36,11 +35,7 @@ if __name__ == "__main__":
         elif opt == '--port':
             port = int(arg)
 
-    # default robot / game
-    game = Game(n_points=50, radius=5, max_x=800, max_y=800, radius_factor=40)
-    logging.info("Game: " + str(game))
-
-    robot = TimeDecorator(Simulator(x=game.center_x(), y=game.center_y(), r=15, angle=0))
+    robot = TimeDecorator(Simulator(x=400, y=400, r=15, angle=0))
     #robot = Simulator(x=game.center_x(), y=game.center_y(), r=15, angle=0)
     logging.info("Robot: " + str(robot))
 
@@ -59,7 +54,6 @@ if __name__ == "__main__":
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
         client.subscribe("robot/process")
-        client.subscribe("game/process")
 
 
     # The callback for when a PUBLISH message is received from the server.
@@ -74,13 +68,6 @@ if __name__ == "__main__":
             except Exception as ex:
                 logging.exception("Invalid message format! %s" % msg.payload)
                 client.publish("robot/error",  json.dumps({'type': type(ex).__name__, 'error': str(ex)}))
-
-        if "game" in msg.topic:
-            global game, robot
-            logging.info("Reset game")
-            #robot.reset()
-            game.reset()
-
 
     def on_disconnect(client, userdata, rc):
         logging.info("Disconnected with return code " + str(rc))
@@ -97,19 +84,9 @@ if __name__ == "__main__":
         time.sleep(TIMEOUT_SEC)
         robot.tick()
 
-        client.publish("robot/state", json.dumps(robot.state()))
-
         x, y, r = robot.position()
-        x_max = game.max_x()
-        y_max = game.max_y()
 
-        game.check(x, y, r)
-        points = game.points()
-
+        client.publish("robot/state", json.dumps(robot.state()))
         client.publish("robot/position", json.dumps({'x': x, 'y': y, 'r': r}))
-        client.publish("game/position", json.dumps({'robot': {'x': x, 'y': y, 'r': r},
-                                                      'world': {'x_max': x_max, 'y_max': y_max},
-                                                      'points': points}, cls=PointEncoder))
-
 
 

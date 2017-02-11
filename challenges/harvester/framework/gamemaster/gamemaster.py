@@ -20,7 +20,7 @@ class CurrentGame:
 
     def update_robot_position(self, robot_position):
         self.robot_position = robot_position
-        self.game.check(robot_position.x, robot_position.y, robot_position.r)
+        self.game.check(robot_position['x'], robot_position['y'], robot_position['r'])
 
     def elapsed_time(self):
         return time.time() - self.start_time
@@ -87,6 +87,12 @@ class Tournament:
             return
 
         self.current_game.start()
+
+    def update_robot_position(self, position):
+        if self.current_game is None:
+            return
+
+        self.current_game.update_robot_position(position)
 
     def finish_game(self):
         if self.current_game is None:

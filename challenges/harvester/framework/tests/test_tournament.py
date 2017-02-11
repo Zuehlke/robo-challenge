@@ -106,6 +106,21 @@ class TournamentTests(unittest.TestCase):
 
         self.assertFalse(tournament.current_game.is_finished())
 
+    def test_update_robot_state(self):
+        tournament = Tournament()
+
+        tournament.register_player("player1")
+        tournament.prepare_game("player1")
+        tournament.start_game()
+
+        first_point = tournament.current_game.game.points()[0]
+
+        tournament.update_robot_position({'x': first_point.x, 'y': first_point.y, 'r': 5})
+        tournament.finish_game()
+
+        self.assertIsNone(tournament.current_game)
+        self.assertEqual(tournament.played_games, [PlayedGame("player1", 1)])
+
     def test_is_finished_time_elapsed(self):
         tournament = Tournament()
 

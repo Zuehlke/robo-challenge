@@ -8,6 +8,7 @@ import paho.mqtt.client as mqtt
 
 from gamemaster import Tournament
 from common import TopicAwareCommandDispatcher
+from game import PointEncoder
 
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 
@@ -29,9 +30,12 @@ class TournamentRadio:
     def __exit__(self, type, value, traceback):
         self.client.disconnect()
 
+    def is_game_started(self):
+        return self.tournament.current_game is not None and self.tournament.current_game.is_started()
+
     def game_loop(self, timeout=1.0):
         self.client.loop(timeout)
-        if self.tournament.current_game is not None and self.tournament.current_game.is_started():
+        if self.is_game_started():
             if self.tournament.current_game.is_finished():
                 player = self.tournament.current_game.player
                 logging.info("Game for player %s finished" % player)
@@ -44,6 +48,19 @@ class TournamentRadio:
             'leaderboard': [{'player': r.player, 'points': r.points} for r in self.tournament.leaderboard()]
         })
         self.client.publish("tournament", payload)
+        if self.is_game_started():
+            self.client.publish("game/state", json.dumps(self.current_game_details(), cls=PointEncoder))
+
+    def current_game_details(self):
+        current_game = self.tournament.current_game
+        return {'robot': {
+                    'x': current_game.robot_position['x'],
+                    'y': current_game.robot_position['y'],
+                    'r': current_game.robot_position['r']
+                    },
+                'world': {'x_max': current_game.game.max_x(), 'y_max': current_game.game.max_y()},
+                'points': current_game.game.points()
+                }
 
     def current_game_state(self):
         if self.tournament.current_game is None:
@@ -60,13 +77,18 @@ class TournamentRadio:
 
         self.client.subscribe("players/+")
         self.client.subscribe("gamemaster")
+        self.client.subscribe("robot/position")
 
     def on_message(self, client, userdata, msg):
         logging.info("Received message '" + str(msg.payload) + " on topic " + msg.topic + " with QoS " + str(msg.qos))
 
         try:
             obj = json.loads(msg.payload.decode('utf-8'))
-            self.dispatcher.exec(msg.topic, obj)
+            if msg.topic == "robot/position":
+                self.tournament.update_robot_position(obj)
+            else:
+                # Command dispatch
+                self.dispatcher.exec(msg.topic, obj)
 
         except Exception as ex:
             logging.exception("Error processing message")
@@ -95,14 +117,14 @@ class TournamentRadio:
 
     def start(self, topic):
         player = self.extract_player_from_topic(topic)
-        if self.tournament.current_game.player != player:
+        if self.tournament.current_game is not None and self.tournament.current_game.player != player:
             logging.warning("%s attempted to start game for other player %s" % (player, self.tournament.current_game.player))
             return
 
         logging.info("Starting game for player %s" % player)
         self.tournament.start_game()
 
-LOOP_TIMEOUT=1
+LOOP_TIMEOUT = 0.1
 LOOP_CYCLE_TIME_SEC = 0.5
 
 if __name__ == '__main__':
