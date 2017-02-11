@@ -8,9 +8,16 @@ import paho.mqtt.client as mqtt
 
 from gamemaster import Tournament
 from common import TopicAwareCommandDispatcher
-from game import PointEncoder
 
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
+
+
+class PointEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Point):
+            return {'x': obj.x, 'y': obj.y, 'r': obj.r, 'score': obj.score, 'collected': obj.collected}
+        # Let the base class default method raise the TypeError
+        return json.JSONEncoder.default(self, obj)
 
 
 class TournamentRadio:

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 import random
 import math
-import json
 
 class Point:
     """
-    A point in the game world. A pint has a score which is
+    A point in the game world. A point has a score which is
     earned when the point was collected by the robot.
     """
     def __init__(self, x, y, r):
@@ -99,9 +98,4 @@ class Game:
         return "points: %s, x: %s, y: %s, r: %s, radius factor: %s" % (self.__n_points, self.__max_x, self.__max_y, self.__radius, self.__radius_factor)
 
 
-class PointEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Point):
-            return {'x': obj.x, 'y': obj.y, 'r': obj.r, 'score': obj.score, 'collected': obj.collected}
-        # Let the base class default method raise the TypeError
-        return json.JSONEncoder.default(self, obj)
+
