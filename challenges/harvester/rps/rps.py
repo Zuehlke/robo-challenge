@@ -4,14 +4,18 @@ WHITE = ((0, 0, 230), (0, 0, 255))
 ORANGE = ((8, 150, 100), (15, 255, 255))
 CAMERA = 0
 
+WORLD_WIDTH = 1920
+WORLD_HEIGHT = 960
+RADIUS = 5
+
 import cv2
 
 
-class RobotPositioningSystem():
+class RobotPositioningSystem:
     def __enter__(self):
         self.camera = cv2.VideoCapture(CAMERA)
-        self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-        self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 960)
+        self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, WORLD_WIDTH)
+        self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, WORLD_HEIGHT)
         return self
 
     def __exit__(self, type, value, traceback):
@@ -39,8 +43,7 @@ class RobotPositioningSystem():
         M = cv2.moments(c)
 
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-        cv2.circle(image, center, 5, (0, 0, 255), -1)
-        print(center)
+
         return center
 
 
@@ -48,7 +51,7 @@ import paho.mqtt.client as mqtt
 import json
 
 
-class RoboRadio():
+class RoboRadio:
     def __init__(self, host, port):
         self.host = host
         self.port = port
@@ -64,8 +67,8 @@ class RoboRadio():
         self.client.disconnect()
 
     def publish_location(self, location):
-        payload = json.dumps({'x': location[0], 'y': location[1]})
-        self.client.publish("rps", payload)
+        payload = json.dumps({'x': location[0], 'y': location[1], 'r': RADIUS})
+        self.client.publish("robot/position", payload)
 
     def process_messages(self):
         self.client.loop()

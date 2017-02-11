@@ -1,31 +1,17 @@
 // Create a client instance
+var client = new Paho.MQTT.Client(location.hostname, Number(9001), "clientId");
 
-var clientId = guid();
-console.log('client id ' + clientId);
-
-var client = new Paho.MQTT.Client(location.hostname, Number(9001), clientId);
+var doUpdate = true;
 
 var max_x = 0;
 var max_y = 0;
 
-var worldUpdated = false;
 var viewState = { leaderboard: [], currentGame: {} };
-
 
 // do reconnect when connection is lost
 setInterval(function(){
     reconnectIfConnectionIsLost(client);
 }, 3000);
-
-function guid() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-        s4() + '-' + s4() + s4() + s4();
-}
 
 $(document).ready(function() {
     $('#forward').click(function() {
@@ -68,6 +54,8 @@ $(document).ready(function() {
 
         message.destinationName = "robot/process";
         client.send(message);
+
+        doUpdate = true;
     });
 });
 
@@ -95,18 +83,18 @@ function zoom(value) {
 
 // called when the client connects
 function onConnect() {
-  // Once a connection has been made, make a subscription.
-  console.log("onConnect");
-  client.subscribe("robot/state");
-  client.subscribe("game/process");
-  client.subscribe("game/position");
-  client.subscribe("tournament");
+    // Once a connection has been made, make a subscription.
+    console.log("onConnect");
+    client.subscribe("robot/state");
+    client.subscribe("game/state");
+    client.subscribe("tournament");
+}
 
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
-  if (responseObject.errorCode !== 0) {
-    console.log("onConnectionLost:"+responseObject.errorMessage);
-  }
+    if (responseObject.errorCode !== 0) {
+        console.log("onConnectionLost:"+responseObject.errorMessage);
+    }
 }
 
 
@@ -178,12 +166,12 @@ function createWorld(ctx, body) {
         return {
             x: Math.round(evt.clientX - rect.left),
             y: Math.round(Math.abs(evt.clientY - rect.top - canvas.height))
-           };
-     }
+        };
+    }
 
     ctx.canvas.addEventListener('mousemove', function(evt) {
         var mousePos = getMousePos(ctx.canvas, evt);
-         $("#mouse").empty()
+        $("#mouse").empty()
             .append("<li>x: " + mousePos.x + "</li>")
             .append("<li>y: " + mousePos.y + "</li>");
     }, false);
@@ -208,26 +196,18 @@ function onMessageArrived(message) {
 
     console.log(message.destinationName);
 
-    var body = JSON.parse(message.payloadString);
+    var body = JSON.parse(message.payloadString)
+    if (message.destinationName === 'game/state') {
+        if(doUpdate) {
 
-    if (message.destinationName === 'game/process') {
-        if(body.command == 'reset') {
-            worldUpdated = false;
-        }
-    }
+            createWorld(ctx, body)
 
-
-    if (message.destinationName === 'game/position') {
-
-        if(!worldUpdated) {
-            createWorld(ctx, body);
-            worldUpdated = true;
         } else {
 
-            updatePoints(ctx, body.points);
+            updatePoints(ctx, body.points)
 
-            var robot = body.robot;
-            drawRobot(robot.x, robot.y, robot.r, max_x, max_y);
+            var robot = body.robot
+            drawRobot(robot.x, robot.y, robot.r, max_x, max_y)
 
             $("#position").empty()
                 .append("<li>x: " + robot.x + "</li>")
@@ -239,15 +219,12 @@ function onMessageArrived(message) {
                 .append("<li>max: " + score.max + "</li>")
                 .append("<li>current: " + score.current + "</li>");
 
-
         }
-
-
     }
 
     if (message.destinationName === 'robot/state') {
 
-         $("#state").empty()
+        $("#state").empty()
             .append("<li>angle: " + body.angle + "</li>")
             .append("<li>left motor: " + body.left_motor + "</li>")
             .append("<li>right motor: " + body.right_motor + "</li>");

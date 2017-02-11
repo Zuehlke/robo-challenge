@@ -23,7 +23,7 @@ services:
   gamemaster:
     build: ./framework/gamemaster
     volumes:
-     - ./framework:/framework:ro
+     - ./framework:/framework:rw
     command: python3 /framework/run_gamemaster.py
     links:
      - broker
