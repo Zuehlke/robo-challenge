@@ -86,7 +86,7 @@ function onConnect() {
   // Once a connection has been made, make a subscription.
   console.log("onConnect");
   client.subscribe("robot/state");
-  client.subscribe("game/position");
+  client.subscribe("game/state");
   client.subscribe("tournament");
 }
 
@@ -197,7 +197,7 @@ function onMessageArrived(message) {
     console.log(message.destinationName);
 
     var body = JSON.parse(message.payloadString)
-    if (message.destinationName === 'game/position') {
+    if (message.destinationName === 'game/state') {
         if(doUpdate) {
 
             createWorld(ctx, body)
