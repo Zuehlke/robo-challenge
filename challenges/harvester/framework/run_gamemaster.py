@@ -59,7 +59,10 @@ class TournamentRadio:
         })
         self.client.publish("tournament", payload)
         if self.is_game_started():
-            self.client.publish("game/state", json.dumps(self.current_game_details(), cls=PointEncoder))
+            player = self.tournament.current_game.player
+            game = json.dumps(self.current_game_details(), cls=PointEncoder)
+            self.client.publish("players/"+player+"/game", game)
+            self.client.publish("game/state", game)
 
     def current_game_details(self):
         current_game = self.tournament.current_game
