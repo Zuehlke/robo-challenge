@@ -118,7 +118,7 @@ class TournamentTests(unittest.TestCase):
         tournament.finish_game()
 
         self.assertIsNone(tournament.current_game)
-        self.assertEqual(tournament.played_games, [PlayedGame("player1", 1)])
+        self.assertEqual(tournament.played_games, [PlayedGame("player1", first_point.score)])
 
     def test_is_finished_time_elapsed(self):
         tournament = Tournament()

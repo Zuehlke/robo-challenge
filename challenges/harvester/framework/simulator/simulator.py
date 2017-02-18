@@ -4,7 +4,7 @@ import math
 
 class Simulator:
     """
-    Simulator for the robot and positional system. With a given RADIUS (radius of the obot in cm),
+    Simulator for the robot and positional system. With a given RADIUS (radius of the robot in cm),
     POSITION_FACTOR (factor between robot distance and positional system) and TACHO_COUNT_CM_RATIO
     (factor between robot distance and cm).
     """

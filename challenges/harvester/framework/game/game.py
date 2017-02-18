@@ -32,23 +32,28 @@ class Game:
     The game engine -  master of the points and score
     """
 
-    def __init__(self, n_points=50, radius=5, max_x=WORLD_WIDTH, max_y=WORLD_HEIGHT, radius_factor=10):
+    def __init__(self, n_points=50, ratio_anti_points=0.1, radius=5, max_x=WORLD_WIDTH, max_y=WORLD_HEIGHT, distance=100):
 
         self.__max_y = max_y
         self.__max_x = max_x
         self.__radius = radius
         self.__n_points = n_points
+        self.__ratio_anti_points = ratio_anti_points
 
         x_center = round(max_x / 2)
         y_center = round(max_y / 2)
         self.__x_center = x_center
         self.__y_center = y_center
-        self.__radius_factor = radius_factor
+        self.__distance = distance
 
-        self.__points = self.create_points(n_points, x_center, y_center, radius * radius_factor)
+        self.__points = self.create_points(n_points, ratio_anti_points, radius, x_center, y_center, distance)
 
     def reset(self):
-        self.__points = self.create_points(self.__n_points, self.__x_center, self.__y_center, self.__radius * self.__radius_factor)
+        """
+        Reset the game and world
+        :return: None
+        """
+        self.__points = self.create_points(self.__n_points, self.__ratio_anti_points, self.__radius, self.__x_center, self.__y_center, self.__distance)
 
     def points(self):
         return self.__points
@@ -70,7 +75,7 @@ class Game:
         y = random.randint(self.__radius * 2, self.__max_y - self.__radius * 2)
         return x, y
 
-    def create_points(self, n_points, x_center, y_center, factor):
+    def create_points(self, n_points, ratio_anti_points, radius, x_center, y_center, distance):
 
         points = []
 
@@ -78,12 +83,22 @@ class Game:
 
             x, y = self.create_coordinate()
 
-            while math.pow(x - round(x_center), 2) + math.pow(y - round(y_center), 2) < math.pow(factor, 2):
+            while math.pow(x - round(x_center), 2) + math.pow(y - round(y_center), 2) < math.pow(distance, 2):
                 x, y = self.create_coordinate()
 
-            points.append(Point(x=x, y=y, r=self.__radius))
+            points.append(Point(x=x, y=y, r=radius))
+
+        # create anti points
+        n_anti_points = min(int(n_points * ratio_anti_points), len(points))
+
+        for i in range(n_anti_points):
+            points[i - len(points)].score = -1
 
         return points
+
+    def create_point(self):
+        pass
+
 
     def check(self, x, y, r):
 

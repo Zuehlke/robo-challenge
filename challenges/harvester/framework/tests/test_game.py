@@ -96,4 +96,6 @@ class BasicTestSuite(unittest.TestCase):
         for p in g.points():
             self.assertEqual(p.collected, True)
 
-        self.assertEqual(g.score(), len(g.points()))
+        current_points = sum([p.score for p in g.points()])
+
+        self.assertEqual(g.score(), current_points)

@@ -87,7 +87,11 @@ function getScore(points){
     var total = 0;
     var current = 0;
     for (var i = 0; i < points.length; i++) {
-        total += points[i].score;
+
+        if (points[i].score > 0) {
+            total += points[i].score;
+        }
+
         if(points[i].collected) {
             current += points[i].score;
         }
@@ -104,8 +108,15 @@ function drawPoints(ctx, points, factor) {
 
         ctx.beginPath();
         ctx.lineWidth = 1;
-        ctx.fillStyle = "#12c122";
-        ctx.strokeStyle = "#12c122";
+
+        if (point.score > 0) {
+            ctx.fillStyle = "#12c122";
+            ctx.strokeStyle = "#12c122";
+        } else {
+            ctx.fillStyle = "#8a0000";
+            ctx.strokeStyle = "#8a0000";
+        }
+
         ctx.arc(x, y, r, 2 * Math.PI, false);
 
         if (point.collected) {
@@ -173,7 +184,7 @@ function onMessageArrived(message) {
         } else {
 
             drawPoints(ctx, points, zoomFactor);
-            drawRobot(robot, world,  zoomFactor);
+            drawRobot(robot, world, zoomFactor);
 
             viewState.robotPosition = robot;
             viewState.currentWorld = world;
@@ -278,6 +289,10 @@ var control = new Vue({
 
             message.destinationName = "robot/process";
             client.send(message);
+        },
+        zoom: function(factor) {
+            zoomFactor = factor;
+            doUpdate = true;
         }
     }
 });

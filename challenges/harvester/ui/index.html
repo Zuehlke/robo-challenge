@@ -43,12 +43,6 @@
         <h1>RoboChallenge -
             <small>Autonomous Mars Rover</small>
         </h1>
-        <div>
-            <button type="button" class="btn btn-xs btn-default" onClick="zoom('150%')">Zoom 150%</button>
-            <button type="button" class="btn btn-xs btn-default" onClick="zoom('100%')">Zoom 100%</button>
-            <button type="button" class="btn btn-xs btn-default" onClick="zoom('50%')">Zoom 50%</button>
-
-        </div>
     </div>
 
     <div class="row">
@@ -76,26 +70,30 @@
             <p class="lead">Control</p>
             <table class="table" id="control">
                 <tr>
-                    <td>
-                        <button id="forward" class="btn" type="button" v-on:click="{{forward(control.distance)}}">F
-                        </button>
-                        <button id="backward" class="btn" type="button" v-on:click="{{backward(control.distance)}}">B
-                        </button>
-                    </td>
-                    <td><input id="distance" type="text" class="form-control" v-model="control.distance"></td>
+                    <td><button id="zoom" class="btn btn-sm" type="button" v-on:click="{{zoom(control.zoomFactor)}}">Zoom</button></td>
+                    <td><input id="zoomfactor" type="text" class="form-control input-sm" v-model="control.zoomFactor"></td>
                 </tr>
                 <tr>
                     <td>
-                        <button id="left" class="btn" type="button" v-on:click="{{left(control.angle)}}">L</button>
-                        <button id="right" class="btn" type="button" v-on:click="{{right(control.angle)}}">R</button>
+                        <button id="forward" class="btn btn-sm" type="button" v-on:click="{{forward(control.distance)}}">F
+                        </button>
+                        <button id="backward" class="btn btn-sm" type="button" v-on:click="{{backward(control.distance)}}">B
+                        </button>
                     </td>
-                    <td><input id="angle" type="text" class="form-control" v-model="control.angle"></td>
+                    <td><input id="distance" type="text" class="form-control input-sm" v-model="control.distance"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <button id="left" class="btn btn-sm" type="button" v-on:click="{{left(control.angle)}}">L</button>
+                        <button id="right" class="btn btn-sm" type="button" v-on:click="{{right(control.angle)}}">R</button>
+                    </td>
+                    <td><input id="angle" type="text" class="form-control input-sm" v-model="control.angle"></td>
                 </tr>
                 <tr>
                     <td colspan="2">
 
-                        <button id="stop" class="btn" type="button" v-on:click="{{stop()}}">STOP</button>
-                        <button id="reset" class="btn" type="button" v-on:click="{{reset()}}">RESET</button>
+                        <button id="stop" class="btn btn-sm" type="button" v-on:click="{{stop()}}">STOP</button>
+                        <button id="reset" class="btn btn-sm" type="button" v-on:click="{{reset()}}">RESET</button>
 
                     </td>
                 </tr>
