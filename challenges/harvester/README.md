@@ -21,5 +21,11 @@ tbd
 ### Simulator
 tbd
 
+```bash
+docker-compose -f docker-compose-simulator.yml up
+```
+
+
+
 ### UI
 ![main page](ui.png)

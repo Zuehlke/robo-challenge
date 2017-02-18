@@ -35,7 +35,7 @@ if __name__ == "__main__":
         elif opt == '--port':
             port = int(arg)
 
-    robot = TimeDecorator(Simulator(x=400, y=400, r=15, angle=0))
+    robot = TimeDecorator(Simulator(x=960, y=480, r=15, angle=0))
     #robot = Simulator(x=game.center_x(), y=game.center_y(), r=15, angle=0)
     logging.info("Robot: " + str(robot))
 

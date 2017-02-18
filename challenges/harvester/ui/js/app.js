@@ -1,72 +1,28 @@
 // Create a client instance
-var client = new Paho.MQTT.Client(location.hostname, Number(9001), "clientId");
+var client = new Paho.MQTT.Client(location.hostname, Number(9001), guid());
 
 var doUpdate = true;
+var zoomFactor = 0.5;
 
-var max_x = 0;
-var max_y = 0;
-
-var viewState = { leaderboard: [], currentGame: {} };
+var viewState = { leaderboard: [], currentGame: {} ,
+    currentScore: {}, robotState: {}, robotPosition: {},
+    currentWorld: {}, control: { angle: 90, distance: 100, zoomFactor: zoomFactor}};
 
 // do reconnect when connection is lost
 setInterval(function(){
     reconnectIfConnectionIsLost(client);
 }, 3000);
 
-$(document).ready(function() {
-    $('#forward').click(function() {
-        var message = new Paho.MQTT.Message(JSON.stringify({"command": "forward", "args": [parseInt($('#distance').val())]}));
-        message.destinationName = "robot/process";
-        client.send(message);
-    });
-});
 
-$(document).ready(function() {
-    $('#backward').click(function() {
-        var message = new Paho.MQTT.Message(JSON.stringify({"command": "backward", "args": [parseInt($('#distance').val())]}));
-        message.destinationName = "robot/process";
-        client.send(message);
-    });
-});
-
-$(document).ready(function() {
-    $('#left').click(function() {
-        var message = new Paho.MQTT.Message(JSON.stringify({"command": "left", "args": [parseInt($('#angle').val())]}));
-        message.destinationName = "robot/process";
-        client.send(message);
-    });
-});
-
-$(document).ready(function() {
-    $('#right').click(function() {
-        var message = new Paho.MQTT.Message(JSON.stringify({"command": "right", "args": [parseInt($('#angle').val())]}));
-        message.destinationName = "robot/process";
-        client.send(message);
-    });
-});
-
-$(document).ready(function() {
-    $('#reset').click(function() {
-        var message = new Paho.MQTT.Message(JSON.stringify({"command": "reset"}));
-
-        message.destinationName = "game/process";
-        client.send(message);
-
-        message.destinationName = "robot/process";
-        client.send(message);
-
-        doUpdate = true;
-    });
-});
-
-$(document).ready(function() {
-    $('#stop').click(function() {
-        var message = new Paho.MQTT.Message(JSON.stringify({"command": "stop"}));
-
-        message.destinationName = "robot/process";
-        client.send(message);
-    });
-});
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
+}
 
 
 function reconnectIfConnectionIsLost(client) {
@@ -98,23 +54,30 @@ function onConnectionLost(responseObject) {
 }
 
 
-function drawRobot(x, y, r, max_x, max_y) {
+function drawRobot(robot, world, factor) {
     var c = $("#robot_layer");
     var ctx = c[0].getContext('2d');
 
+    var x_max = world.x_max * factor;
+    var y_max = world.y_max * factor;
+    var x = robot.x * factor;
+    var y = robot.y * factor;
+    var r = robot.r * factor;
 
-    ctx.canvas.height = max_y;
-    ctx.canvas.width = max_x;
+    ctx.canvas.height = y_max;
+    ctx.canvas.width = x_max;
 
-    ctx.translate(0, max_y);
+    ctx.translate(0, y_max);
     ctx.scale(1, -1);
 
-    ctx.clearRect(0, 0, max_x, max_y);
+    ctx.clearRect(0, 0, x_max, y_max);
 
     ctx.beginPath();
+    ctx.lineWidth = 1;
 
     ctx.arc(x, y, r, 2 * Math.PI, false);
     ctx.fillStyle = "#c12676";
+    ctx.strokeStyle = "#8a0035";
     ctx.fill();
     ctx.stroke();
 
@@ -122,7 +85,7 @@ function drawRobot(x, y, r, max_x, max_y) {
 
 function getScore(points){
     var total = 0;
-    var current = 0
+    var current = 0;
     for (var i = 0; i < points.length; i++) {
         total += points[i].score;
         if(points[i].collected) {
@@ -132,30 +95,41 @@ function getScore(points){
     return {'max': total, 'current': current};
 }
 
-function updatePoints(ctx, points) {
+function drawPoints(ctx, points, factor) {
     $.each(points, function(index, point) {
+
+        var x = point.x * factor;
+        var y = point.y * factor;
+        var r =  point.r * factor;
+
         ctx.beginPath();
-        ctx.arc(point.x, point.y, point.r, 0, 2 * Math.PI, false);
+        ctx.lineWidth = 1;
+        ctx.fillStyle = "#12c122";
+        ctx.strokeStyle = "#12c122";
+        ctx.arc(x, y, r, 2 * Math.PI, false);
 
         if (point.collected) {
-            ctx.fillStyle = "#6726c1";
-            ctx.fill();
+            ctx.fillStyle = "#ffeef6";
+            ctx.strokeStyle = "#c3c3c3";
         }
-
+        ctx.fill();
         ctx.stroke();
     });
 }
 
-function createWorld(ctx, body) {
-    ctx.canvas.height = body.world.y_max;
-    ctx.canvas.width = body.world.x_max;
+function drawWorld(ctx, world, factor) {
 
-    ctx.clearRect(0, 0, max_x, max_y);
+    var y_max = world.y_max * factor;
+    var x_max = world.x_max * factor;
 
-    max_x = body.world.x_max;
-    max_y = body.world.y_max;
+    ctx.canvas.height = y_max;
+    ctx.canvas.width = x_max;
 
-    ctx.translate(0, max_y);
+    ctx.lineWidth = 1;
+
+    ctx.clearRect(0, 0, x_max , y_max);
+
+    ctx.translate(0, y_max);
     ctx.scale(1, -1);
 
     function getMousePos(canvas, evt) {
@@ -170,19 +144,12 @@ function createWorld(ctx, body) {
     }
 
     ctx.canvas.addEventListener('mousemove', function(evt) {
-        var mousePos = getMousePos(ctx.canvas, evt);
-        $("#mouse").empty()
-            .append("<li>x: " + mousePos.x + "</li>")
-            .append("<li>y: " + mousePos.y + "</li>");
+        //viewState.notice['mouse'] = getMousePos(ctx.canvas, evt);
     }, false);
 
 
 
-    $("#world").empty()
-        .append("<li>x max: " + body.world.x_max + "</li>")
-        .append("<li>y max: " + body.world.y_max + "</li>")
-        .append("<li>x min: 0 </li>")
-        .append("<li>y min: 0 </li>");
+    //viewState.notice['world'] = body.world;
 
     doUpdate = false;
 }
@@ -190,44 +157,33 @@ function createWorld(ctx, body) {
 // called when a message arrives
 function onMessageArrived(message) {
 
-
     var c = $("#map_layer");
     var ctx = c[0].getContext('2d');
 
-    console.log(message.destinationName);
-
-    var body = JSON.parse(message.payloadString)
+    var body = JSON.parse(message.payloadString);
     if (message.destinationName === 'game/state') {
+
+        var robot = body.robot;
+        var world = body.world;
+        var points = body.points;
+
         if(doUpdate) {
-
-            createWorld(ctx, body)
-
+            // redraw world
+            drawWorld(ctx, world, zoomFactor);
         } else {
 
-            updatePoints(ctx, body.points)
+            drawPoints(ctx, points, zoomFactor);
+            drawRobot(robot, world,  zoomFactor);
 
-            var robot = body.robot
-            drawRobot(robot.x, robot.y, robot.r, max_x, max_y)
-
-            $("#position").empty()
-                .append("<li>x: " + robot.x + "</li>")
-                .append("<li>y: " + robot.y + "</li>")
-                .append("<li>r: " + robot.r + "</li>");
-
-            var score = getScore(body.points);
-            $("#score").empty()
-                .append("<li>max: " + score.max + "</li>")
-                .append("<li>current: " + score.current + "</li>");
+            viewState.robotPosition = robot;
+            viewState.currentWorld = world;
+            viewState.currentScore = getScore(points);
 
         }
     }
 
     if (message.destinationName === 'robot/state') {
-
-        $("#state").empty()
-            .append("<li>angle: " + body.angle + "</li>")
-            .append("<li>left motor: " + body.left_motor + "</li>")
-            .append("<li>right motor: " + body.right_motor + "</li>");
+        viewState.robotState = body;
     }
 
     if(message.destinationName === 'tournament') {
@@ -254,8 +210,81 @@ var leaderboard = new Vue({
 
             message.destinationName = "gamemaster";
             client.send(message);
+
+            message = new Paho.MQTT.Message(JSON.stringify({
+                "command": "reset"}
+            ));
+
+            message.destinationName = "robot/process";
+            client.send(message);
+
+            doUpdate = true;
         }
     }
+});
+
+var control = new Vue({
+    el: '#control',
+    data: viewState,
+    methods: {
+        forward: function(distance) {
+            var message = new Paho.MQTT.Message(JSON.stringify({
+                "command": "forward",
+                "args": [parseInt(distance)]
+            }));
+
+            message.destinationName = "robot/process";
+            client.send(message);
+        },
+        backward: function(distance) {
+            var message = new Paho.MQTT.Message(JSON.stringify({
+                "command": "backward",
+                "args": [parseInt(distance)]
+            }));
+
+            message.destinationName = "robot/process";
+            client.send(message);
+        },
+        left: function(angle) {
+            var message = new Paho.MQTT.Message(JSON.stringify({
+                "command": "left",
+                "args": [parseInt(angle)]
+            }));
+
+            message.destinationName = "robot/process";
+            client.send(message);
+        },
+        right: function(angle) {
+            var message = new Paho.MQTT.Message(JSON.stringify({
+                "command": "right",
+                "args": [parseInt(angle)]
+            }));
+
+            message.destinationName = "robot/process";
+            client.send(message);
+        },
+        reset: function() {
+            var message = new Paho.MQTT.Message(JSON.stringify({
+                "command": "reset"}
+            ));
+
+            message.destinationName = "robot/process";
+            client.send(message);
+        },
+        stop: function() {
+            var message = new Paho.MQTT.Message(JSON.stringify({
+                "command": "stop"
+            }));
+
+            message.destinationName = "robot/process";
+            client.send(message);
+        }
+    }
+});
+
+var notice = new Vue({
+    el: '#notice',
+    data: viewState
 });
 
 // set callback handlers
