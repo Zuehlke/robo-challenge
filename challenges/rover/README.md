@@ -53,7 +53,7 @@ You should see the web interface and when you start a new game you should see so
 
 
 Next try to start a game and play around with the web interface to control the Mars Rover. Then you could have a look at the examples how to control the Mars Rover with a programming language.
-- [Examples](client)
+- [Examples](examples)
 
 
 ### Mars Rover
