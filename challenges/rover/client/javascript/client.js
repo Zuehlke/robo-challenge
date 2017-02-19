@@ -4,13 +4,15 @@ var mqtt = require('mqtt')
 var SERVER = "127.0.0.1";
 var PORT = 1883;
 
+var PLAYER_NAME = "foo";
+
 
 var client  = mqtt.connect({host: SERVER, port: PORT});
 
 client.on('connect', function () {
     console.log("Connected " + client.connected);
+    client.subscribe('players/' + PLAYER_NAME + "/#");
     client.subscribe('robot/state');
-    client.subscribe('game/position');
 });
 
 client.on('message', function (topic, message) {
@@ -19,7 +21,6 @@ client.on('message', function (topic, message) {
     console.log(obj);
 
     // TODO: implement algorithm
-    client.publish('robot/process', JSON.stringify({'command': 'stop'}))
 
 });
 

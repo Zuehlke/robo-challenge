@@ -4,6 +4,8 @@ import json
 SERVER = "127.0.0.1"
 PORT = 1883
 
+PLAYER_NAME = "foo"
+
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -11,8 +13,8 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
+    client.subscribe('players/' + PLAYER_NAME + '/#')
     client.subscribe('robot/state')
-    client.subscribe('game/position')
 
 
 # The callback for when a PUBLISH message is received from the server.

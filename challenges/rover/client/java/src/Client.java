@@ -1,12 +1,10 @@
-/**
- * Created by mru on 28.01.17.
- */
-
 import org.eclipse.paho.client.mqttv3.*;
 import org.json.*;
 import java.util.UUID;
 
 public class Client implements MqttCallback{
+
+    private static final String PLAYER_NAME  = "foo";
 
 
     private static final String BROKER = "tcp://127.0.0.1:1883";
@@ -28,8 +26,8 @@ public class Client implements MqttCallback{
 
             mqtt.setCallback(new Client(mqtt));
 
+            mqtt.subscribe("players/" + PLAYER_NAME + "/#");
             mqtt.subscribe("robot/state");
-            mqtt.subscribe("game/position");
 
 
         } catch (Exception e) {
@@ -47,6 +45,8 @@ public class Client implements MqttCallback{
         System.out.println(topic);
         JSONObject obj = new JSONObject(new String(mqttMessage.getPayload()));
         System.out.println(obj);
+
+        // TODO: implement algorithm
     }
 
     @Override
