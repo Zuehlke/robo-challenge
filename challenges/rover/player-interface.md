@@ -3,7 +3,7 @@
 ## Overview over the available topics
 
 | Topic                             | Direction           | Description                             | Link                     |
-| --                                | --                  | --                                      | --                       |
+| --------------------------------- | ------------------- | --------------------------------------- | ------------------------ |
 | players/{your_team_name}          | PLAYER_TO_SERVER    | Register player and start games         | [Details](#game-master)  |
 | players/{your_team_name}/incoming | SERVER_TO_PLAYER    | Listen if game starts or is finished    | [Details](#game-master)  |
 | players/{your_team_name}/game     | SERVER_TO_PLAYER    | Get updates on currently running game   | [Details](#game-state)   |
