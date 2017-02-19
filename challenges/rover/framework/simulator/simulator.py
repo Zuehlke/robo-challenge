@@ -186,9 +186,11 @@ class TimeDecorator:
 
     def left(self, angle):
         self.simulator.left(angle)
+        self.next = {'command': None, 'value': 0}
 
     def right(self, angle):
         self.simulator.right(angle)
+        self.next = {'command': None, 'value': 0}
 
     def __str__(self):
         return str(self.simulator)

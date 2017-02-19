@@ -3,12 +3,15 @@
 ## Overview over the available topics
 
 | Topic                             | Direction           | Description                             | Link                     |
-| --                                |--                   |--                                       |--                        |
+| --                                | --                  | --                                      | --                       |
 | players/{your_team_name}          | PLAYER_TO_SERVER    | Register player and start games         | [Details](#game-master)  |
 | players/{your_team_name}/incoming | SERVER_TO_PLAYER    | Listen if game starts or is finished    | [Details](#game-master)  |
 | players/{your_team_name}/game     | SERVER_TO_PLAYER    | Get updates on currently running game   | [Details](#game-state)   |
 | robot/state                       | SERVER_TO_PLAYER    | Get current state of robot              | [Details](#robot-state)  |
 | robot/process                     | PLAYER_TO_SERVER    | Send commands to robot                  | [Details](#robot-control)|
+| robot/done                        | SERVER_TO_PLAYER    | Processed commands by the robot         | [Details](#robot-done)   |
+| robot/error                       | SERVER_TO_PLAYER    | Processing errors form the robot        | [Details](#robot-error)  |
+
 
 ## Sequence of a game
 Before a game starts, you have to register yourself as a player. You do this by sending a
@@ -65,9 +68,13 @@ When you are in a running game, you receive the state of the game on the topic
 }
 ```
 
+> __Note__: Supply items have a score of _1_ and craters a score of _-1_. 
+
 ## Robot
 
 ### <a name="robot-state"></a> Receive state of hardware
+
+The robot will send the current state of the gryro sensor (angle) and the position of the left and right motor to the topic _'robot/state'_. The angle is in degree the robot has turned. The value of the left_motor and right_motor ist the position of the motor in tacho counts.
 
 ```json
 {"angle": 100, "left_motor": -143, "right_motor": 345}
@@ -75,29 +82,49 @@ When you are in a running game, you receive the state of the game on the topic
 
 ### <a name="robot-control"></a> Control the robot
 
-#### Topic (Write): robot/process
-tbd
+With the topic _robot/process_  you can send command to the robot.
+
+> __Note:__ you can add additional attributes to the message like a message id. The attributes will also be shown in the processed messages in the '_robot/done_' topic.
 
 
-    mosquitto_pub -h 127.0.0.1 -t robot/process -m '{"command": "forward", "args": [100]}'
+Drive forward
 
-Drive 100 tacho counts forward
+```json
+{"command": "forward", "args": [100]}
+```
 
-    {"command": "forward", "args": [100]}
+Drive backward
 
-Drive 50 tacho counts backward
+```json
+{"command": "backward", "args": [100]}
+```
 
-    {"command": "forward", "args": [100]}
+Left turn
 
-#### Topic (Read): robot/done
-tbd
+```json
+{"command": "left", "args": [90]}
+```
 
-#### Topic (Read): robot/state
-tbd
+Right turn
 
-    mosquitto_sub -h 127.0.0.1 -t robot/state
+```json
+{"command": "right", "args": [90]}
+```
 
-    {"angle": 100, "left_motor": -143, "right_motor": 345}
+Stop
 
-#### Topic (Read): game/state
-tbd
+```json
+{"command": "stop"}
+```
+
+Reset hardware sensors (gyro and motor)
+
+```json
+{"command": "reset"}
+```
+
+### <a name="robot-done"></a> Processed commands
+All processed commands will be sent back to the _'robot/done'_ topic.
+
+### <a name="robot-error"></a> Processing errors
+All processing errors of the robot are send to the _'robot/error'_ topic.
