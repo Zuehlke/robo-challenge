@@ -107,10 +107,12 @@ class BasicTestSuite(unittest.TestCase):
         sim = api.Simulator()
 
         sim.right(90)
-        self.assertEqual(sim.state(), {'angle': -90, 'left_motor': 220, 'right_motor': -220})
+        self.assertEqual(sim.state(), {'angle': 90, 'left_motor': 220, 'right_motor': -220})
 
     def test_distance_left(self):
         sim = api.Simulator()
 
         sim.left(90)
-        self.assertEqual(sim.state(), {'angle': 90, 'left_motor': -220, 'right_motor': 220})
+        self.assertEqual(sim.state(), {'angle': -90, 'left_motor': -220, 'right_motor': 220})
+
+

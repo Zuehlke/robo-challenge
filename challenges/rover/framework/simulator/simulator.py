@@ -121,12 +121,15 @@ class Simulator:
         """
         Returns the state of the robot (distance right / left motor and angle)
         :return: map {'right_motor', 'lef_motor', 'angle'} with the current values distance
-        left motor, distance right motor and current angle in degrees of the robot
+        left motor, distance right motor and current angle in degrees of the robot.
+
+        The real angle from gyro is the current angle multiplied with -1
+
         """
         out = {
             'right_motor': self.__right_distance,
             'left_motor': self.__left_distance,
-            'angle': self.angle()
+            'angle': self.angle() * -1
         }
 
         return out
