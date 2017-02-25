@@ -125,6 +125,15 @@ class TopicAwareCommandDispatcher(unittest.TestCase):
         self.assertEqual(caller.topic, "topic")
         self.assertEqual(caller.arg, "arg")
 
+    def test_simple_exec(self):
+        caller = TopicCaller()
+        dispatcher = api.TopicAwareCommandDispatcher(caller)
+
+        dispatcher.exec("topic", {'command': 'one', 'args': 'arg'})
+
+        self.assertEqual(caller.topic, "topic")
+        self.assertEqual(caller.arg, "arg")
+
     def test_no_args_exec(self):
         caller = TopicCaller()
         dispatcher = api.TopicAwareCommandDispatcher(caller)

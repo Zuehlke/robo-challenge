@@ -8,6 +8,19 @@ def getattr_caller(dispatcher, command, args):
         getattr(dispatcher, command)(args)
 
 
+def join_args(*args):
+    out = []
+
+    for outer in args:
+        if type(outer) is list:
+            for inner in outer:
+                out.append(inner)
+        else:
+            out.append(outer)
+
+    return out
+
+
 class CommandDispatcher:
     """
     Command dispatcher
@@ -75,5 +88,5 @@ class TopicAwareCommandDispatcher:
 
     @staticmethod
     def call_with_topic(topic):
-        return lambda dispatcher, command, args: getattr_caller(dispatcher, command, [topic] + args)
+        return lambda dispatcher, command, args: getattr_caller(dispatcher, command, join_args(topic, args))
 
