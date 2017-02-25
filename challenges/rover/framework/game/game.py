@@ -2,7 +2,7 @@
 import random
 import math
 
-WORLD_WIDTH = 1920
+WORLD_WIDTH = 1280
 WORLD_HEIGHT = 960
 
 class Point:

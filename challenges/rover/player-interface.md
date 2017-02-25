@@ -60,7 +60,7 @@ When you are in a running game, you receive the state of the game on the topic
 ```json
 {
     "robot": {"r": 15, "x": 920.0, "y": 750.0},
-    "world": {"y_max": 960, "x_max": 1920},
+    "world": {"y_max": 960, "x_max": 1280},
     "points": [
       {"collected": false, "r": 5, "x": 908, "score": 1, "y": 831}
     ]

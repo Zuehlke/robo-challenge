@@ -139,6 +139,7 @@ class TournamentRadio:
 
 LOOP_TIMEOUT = 0.1
 LOOP_CYCLE_TIME_SEC = 0.5
+last_cycle_time = time.time()
 
 if __name__ == '__main__':
     storage = PickleTournamentStorage("/framework/tournament.pickle")
@@ -146,6 +147,7 @@ if __name__ == '__main__':
 
     with TournamentRadio("broker", 1883, tournament, storage) as radio:
         while True:
-            radio.game_loop(LOOP_CYCLE_TIME_SEC)
-            radio.publish_tournament()
-            time.sleep(LOOP_TIMEOUT)
+            radio.game_loop(LOOP_TIMEOUT)
+            if time.time() - last_cycle_time > LOOP_CYCLE_TIME_SEC:
+                last_cycle_time = time.time()
+                radio.publish_tournament()
