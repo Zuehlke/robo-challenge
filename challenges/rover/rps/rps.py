@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-WHITE = ((0, 0, 230), (0, 0, 255))
+WHITE = ((0, 0, 200), (60, 10, 255))
 ORANGE = ((8, 150, 100), (15, 255, 255))
-CAMERA = 0
+CAMERA = 1
 
 WORLD_WIDTH = 1920
 WORLD_HEIGHT = 960
-RADIUS = 5
+RADIUS = 25
 
 import cv2
 
@@ -43,8 +43,7 @@ class RobotPositioningSystem:
         M = cv2.moments(c)
 
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-
-        return center
+        return  center[0], WORLD_HEIGHT - center[1]
 
 
 import paho.mqtt.client as mqtt
@@ -86,6 +85,7 @@ def main_loop():
             while True:
                 radio.process_messages()
                 location = rps.locate_robot_on_frame(WHITE)
+
                 if location is None:
                     continue
 
