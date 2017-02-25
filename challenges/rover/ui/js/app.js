@@ -216,7 +216,7 @@ var leaderboard = new Vue({
         prepareGame: function(player) {
             var message = new Paho.MQTT.Message(JSON.stringify({
                 "command": "prepare",
-                "args": [player]
+                "args": player
             }));
 
             message.destinationName = "gamemaster";
@@ -241,7 +241,7 @@ var control = new Vue({
         forward: function(distance) {
             var message = new Paho.MQTT.Message(JSON.stringify({
                 "command": "forward",
-                "args": [parseInt(distance)]
+                "args": parseInt(distance)
             }));
 
             message.destinationName = "robot/process";
@@ -250,7 +250,7 @@ var control = new Vue({
         backward: function(distance) {
             var message = new Paho.MQTT.Message(JSON.stringify({
                 "command": "backward",
-                "args": [parseInt(distance)]
+                "args": parseInt(distance)
             }));
 
             message.destinationName = "robot/process";
@@ -259,7 +259,7 @@ var control = new Vue({
         left: function(angle) {
             var message = new Paho.MQTT.Message(JSON.stringify({
                 "command": "left",
-                "args": [parseInt(angle)]
+                "args": parseInt(angle)
             }));
 
             message.destinationName = "robot/process";
@@ -268,7 +268,7 @@ var control = new Vue({
         right: function(angle) {
             var message = new Paho.MQTT.Message(JSON.stringify({
                 "command": "right",
-                "args": [parseInt(angle)]
+                "args": parseInt(angle)
             }));
 
             message.destinationName = "robot/process";

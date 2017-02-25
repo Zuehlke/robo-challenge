@@ -9,7 +9,6 @@
 | players/{your_team_name}/game     | SERVER_TO_PLAYER    | Get updates on currently running game   | [Details](#game-state)   |
 | robot/state                       | SERVER_TO_PLAYER    | Get current state of robot              | [Details](#robot-state)  |
 | robot/process                     | PLAYER_TO_SERVER    | Send commands to robot                  | [Details](#robot-control)|
-| robot/done                        | SERVER_TO_PLAYER    | Processed commands by the robot         | [Details](#robot-done)   |
 | robot/error                       | SERVER_TO_PLAYER    | Processing errors form the robot        | [Details](#robot-error)  |
 
 
@@ -122,9 +121,6 @@ Reset hardware sensors (gyro and motor)
 ```json
 {"command": "reset"}
 ```
-
-### <a name="robot-done"></a> Processed commands
-All processed commands will be sent back to the _'robot/done'_ topic.
 
 ### <a name="robot-error"></a> Processing errors
 All processing errors of the robot are send to the _'robot/error'_ topic.

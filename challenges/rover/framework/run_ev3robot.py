@@ -68,7 +68,6 @@ if __name__ == "__main__":
         try:
             obj = json.loads(msg.payload.decode('utf-8'))
             dispatcher.exec(obj)
-            client.publish(topic + "/done", json.dumps(obj))
         except Exception as ex:
             logging.exception("Invalid message format! %s" % msg.payload)
             client.publish(topic + "/error", json.dumps({'type': type(ex).__name__, 'error': str(ex)}))
