@@ -2,8 +2,11 @@
 
 
 def getattr_caller(dispatcher, command, args):
-    getattr(dispatcher, command)(*args)
-
+    if type(args) is list:
+        print(type(args))
+        getattr(dispatcher, command)(*args)
+    else:
+        getattr(dispatcher, command)(args)
 
 class CommandDispatcher:
     """
@@ -49,6 +52,7 @@ class CommandDispatcher:
             if command in self.strategies:
                 if self.MSG_ARGS in msg:
                     # command has args
+                    print(msg[self.MSG_ARGS])
                     method_caller(self.dispatcher, command, msg[self.MSG_ARGS])
 
                 else:
