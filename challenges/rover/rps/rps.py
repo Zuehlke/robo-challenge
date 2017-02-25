@@ -69,9 +69,6 @@ class RoboRadio:
         payload = json.dumps({'x': location[0], 'y': location[1], 'r': RADIUS})
         self.client.publish("robot/position", payload)
 
-    def process_messages(self):
-        self.client.loop()
-
     def on_connect(self, client, userdata, flags, rc):
         print("Connected with result code "+str(rc))
 
@@ -83,7 +80,6 @@ def main_loop():
     with RobotPositioningSystem() as rps:
         with RoboRadio("broker", 1883) as radio:
             while True:
-                radio.process_messages()
                 location = rps.locate_robot_on_frame(WHITE)
 
                 if location is None:
