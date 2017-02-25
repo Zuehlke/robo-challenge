@@ -9,15 +9,20 @@ class Caller:
         self.foo_called = False
         self.one_called = False
         self.two_called = False
+        self.arg1 = None
+        self.arg2 = None
 
     def foo(self):
         self.foo_called = True
 
     def one(self, arg1):
         self.one_called = True
+        self.arg1 = arg1
 
     def two(self, arg1, arg2):
         self.two_called = True
+        self.arg1 = arg1
+        self.arg2 = arg2
 
 
 class BasicTestSuite(unittest.TestCase):
@@ -38,18 +43,22 @@ class BasicTestSuite(unittest.TestCase):
         ce = api.CommandDispatcher(caller)
         ce.exec({'command': 'one', 'args': ['test']})
         self.assertEqual(True, caller.one_called)
+        self.assertEqual('test', caller.arg1)
 
     def test_exec_tow_args(self):
         caller = Caller()
         ce = api.CommandDispatcher(caller)
         ce.exec({'command': 'two', 'args': ['test1', 'test2']})
         self.assertEqual(True, caller.two_called)
+        self.assertEqual('test1', caller.arg1)
+        self.assertEqual('test2', caller.arg2)
 
     def test_exec_with_simple_args(self):
         caller = Caller()
         ce = api.CommandDispatcher(caller)
         ce.exec({'command': 'one', 'args': 'test'})
         self.assertEqual(True, caller.one_called)
+        self.assertEqual('test', caller.arg1)
 
     def test_command_not_found(self):
         caller = Caller()

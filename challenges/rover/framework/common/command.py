@@ -3,10 +3,10 @@
 
 def getattr_caller(dispatcher, command, args):
     if type(args) is list:
-        print(type(args))
         getattr(dispatcher, command)(*args)
     else:
         getattr(dispatcher, command)(args)
+
 
 class CommandDispatcher:
     """
