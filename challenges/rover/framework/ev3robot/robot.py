@@ -8,7 +8,7 @@ class Robot:
     The ev3dev robot (Lego Mindstorms).
     """
 
-    DEFAULT_SPEED = 200
+    DEFAULT_SPEED = 100
 
     def __init__(self):
         """
