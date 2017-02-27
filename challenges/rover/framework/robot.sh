@@ -4,7 +4,7 @@
 if [[ $BROKER ]] ; then
     echo "broker set $BROKER"
 else
-    BROKER="127.0.0.1"
+    BROKER="10.10.10.30"
     echo "use default broker ip $BROKER"
 fi
 
