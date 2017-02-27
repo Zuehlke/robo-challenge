@@ -65,7 +65,6 @@ class CommandDispatcher:
             if command in self.strategies:
                 if self.MSG_ARGS in msg:
                     # command has args
-                    print(msg[self.MSG_ARGS])
                     method_caller(self.dispatcher, command, msg[self.MSG_ARGS])
 
                 else:
