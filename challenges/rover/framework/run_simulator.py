@@ -8,13 +8,16 @@ import time
 
 from simulator import Simulator
 from simulator import TimeDecorator
-
 from common import CommandDispatcher
 
 logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
 
 TIMEOUT_SEC = 0.5
 KEEPALIVE_SEC = 60
+
+START_X = 640
+START_Y = 480
+ROBOT_R = 15
 
 
 # default mqtt broker (hostname or ip) and port
@@ -35,7 +38,7 @@ if __name__ == "__main__":
         elif opt == '--port':
             port = int(arg)
 
-    robot = TimeDecorator(Simulator(x=960, y=480, r=15, angle=0))
+    robot = TimeDecorator(Simulator(x=START_X, y=START_Y, r=ROBOT_R, angle=0))
     #robot = Simulator(x=game.center_x(), y=game.center_y(), r=15, angle=0)
     logging.info("Robot: " + str(robot))
 
