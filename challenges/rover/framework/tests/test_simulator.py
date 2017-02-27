@@ -12,9 +12,9 @@ class BasicTestSuite(unittest.TestCase):
         t.speed(0)
         self.__turtle = t
 
-    def compare_pos(self, pos1, pos2, factor=1/2):
-        self.assertAlmostEqual(pos1[0], pos2[0] * factor, delta=0.01)
-        self.assertAlmostEqual(pos1[1], pos2[1] * factor, delta=0.01)
+    def compare_pos(self, pos1, pos2, factor=3.328125):
+        self.assertAlmostEqual(pos1[0], round(pos2[0] / factor, 0), delta=0.01)
+        self.assertAlmostEqual(pos1[1], round(pos2[1] / factor, 0), delta=0.01)
 
     def test_init_default(self):
         sim = api.Simulator()
@@ -22,9 +22,14 @@ class BasicTestSuite(unittest.TestCase):
         self.assertEqual(sim.position(), (0, 0, 15))
 
     def test_init_with_values(self):
-        sim = api.Simulator(x=10, y=20, angle=90)
-        self.assertEqual(sim.angle(), 90)
-        self.compare_pos(sim.position(), (20, 40))
+        x = 10
+        y = 20
+        angle = 90
+        r = 15
+
+        sim = api.Simulator(x=x, y=y, angle=angle, r=r)
+        self.assertEqual(sim.angle(), angle)
+        self.assertEqual(sim.position(), (x, y, r))
 
     def test_forward(self):
         sim = api.Simulator()

@@ -12,7 +12,7 @@ from common import CommandDispatcher
 
 logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
 
-TIMEOUT_SEC = 0.5
+TIMEOUT_SEC = 0.15
 KEEPALIVE_SEC = 60
 
 START_X = 640

@@ -30,10 +30,10 @@ class BasicTestSuite(unittest.TestCase):
 
         self.assertEqual(d.position(), start_pos)
         d.forward(10)
-        self.assertEqual(d.position(), (5.0, 0.0, 15))
+        self.assertEqual(d.position(), (3.0, 0.0, 15))
 
         d.tick()
-        self.assertEqual(d.position(), (5.0, 0.0, 15))
+        self.assertEqual(d.position(), (3.0, 0.0, 15))
 
     def test_backward_whole_distance(self):
         d = api.TimeDecorator(api.Simulator())
@@ -41,10 +41,10 @@ class BasicTestSuite(unittest.TestCase):
 
         self.assertEqual(d.position(), start_pos)
         d.backward(10)
-        self.assertEqual(d.position(), (-5.0, 0.0, 15))
+        self.assertEqual(d.position(), (-3.0, 0.0, 15))
 
         d.tick()
-        self.assertEqual(d.position(), (-5.0, 0.0, 15))
+        self.assertEqual(d.position(), (-3.0, 0.0, 15))
 
     def test_forward(self):
         d = api.TimeDecorator(api.Simulator())
@@ -52,19 +52,14 @@ class BasicTestSuite(unittest.TestCase):
 
         self.assertEqual(d.position(), start_pos)
         d.forward(350)
-        self.assertEqual(d.position(), (10.0, 0.0, 15))
+        self.assertEqual(d.position(), (6.0, 0.0, 15))
 
         d.tick()
-        self.assertEqual(d.position(), (20.0, 0.0, 15))
+        self.assertEqual(d.position(), (12.0, 0.0, 15))
 
         d.tick()
-        self.assertEqual(d.position(), (30.0, 0.0, 15))
+        self.assertEqual(d.position(), (18.0, 0.0, 15))
 
-        d.tick()
-        self.assertEqual(d.position(), (40.0, 0.0, 15))
-
-        d.tick()
-        self.assertEqual(d.position(), (50.0, 0.0, 15))
 
     def test_backward(self):
         d = api.TimeDecorator(api.Simulator())
@@ -72,19 +67,13 @@ class BasicTestSuite(unittest.TestCase):
 
         self.assertEqual(d.position(), start_pos)
         d.backward(350)
-        self.assertEqual(d.position(), (-10.0, 0.0, 15))
+        self.assertEqual(d.position(), (-6.0, 0.0, 15))
 
         d.tick()
-        self.assertEqual(d.position(), (-20.0, 0.0, 15))
+        self.assertEqual(d.position(), (-12.0, 0.0, 15))
 
         d.tick()
-        self.assertEqual(d.position(), (-30.0, 0.0, 15))
-
-        d.tick()
-        self.assertEqual(d.position(), (-40.0, 0.0, 15))
-
-        d.tick()
-        self.assertEqual(d.position(), (-50, 0.0, 15))
+        self.assertEqual(d.position(), (-18.0, 0.0, 15))
 
     def test_next_command(self):
         d = api.TimeDecorator(api.Simulator())

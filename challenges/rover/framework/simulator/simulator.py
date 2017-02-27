@@ -4,18 +4,17 @@ import math
 
 class Simulator:
     """
-    Simulator for the robot and positional system. With a given RADIUS (radius of the robot in cm),
-    POSITION_FACTOR (factor between robot distance and positional system) and TACHO_COUNT_CM_RATIO
-    (factor between robot distance and cm).
+    Simulator for the robot and positional system.
     """
     # round x/y position
-    ROUND_DIGITS = 2
+    ROUND_DIGITS = 0
     # The radius of the robot in cm
     RADIUS_CM = 7
     # factor robot distance (tacho counts) to cm (20 tacho counts ca. 1 cm)
     TACHO_COUNT_CM_FACTOR = 20
-    # factor between robot distance (tacho counts) and x/y positional system
-    POSITION_FACTOR = 2
+    # factor between robot distance and x/y positional system
+    # WORLD DISTANCE = POSITION FACTOR * ROBOT DISTANCE
+    POSITION_FACTOR = 3.328125
 
     def __init__(self, x=0, y=0, r=15, angle=0):
         """
@@ -25,8 +24,8 @@ class Simulator:
         :param r: the radius
         :param angle: the starting angle in degrees.
         """
-        self.__x = x * self.POSITION_FACTOR
-        self.__y = y * self.POSITION_FACTOR
+        self.__x = x
+        self.__y = y
         self.__r = r
         self.__angle = angle
 
@@ -43,8 +42,8 @@ class Simulator:
         :param distance: the distance the robot should move forward.
         :return: None
         """
-        x = math.cos(math.radians(self.__angle)) * distance
-        y = math.sin(math.radians(self.__angle)) * distance
+        x = math.cos(math.radians(self.__angle)) * distance / self.POSITION_FACTOR
+        y = math.sin(math.radians(self.__angle)) * distance / self.POSITION_FACTOR
         self.__x += x
         self.__y += y
         self.__left_distance += distance
@@ -56,8 +55,8 @@ class Simulator:
         :param distance: the distance the robot should move backward.
         :return: None
         """
-        x = math.cos(math.radians(self.__angle)) * distance
-        y = math.sin(math.radians(self.__angle)) * distance
+        x = math.cos(math.radians(self.__angle)) * distance / self.POSITION_FACTOR
+        y = math.sin(math.radians(self.__angle)) * distance / self.POSITION_FACTOR
         self.__x -= x
         self.__y -= y
         self.__left_distance -= distance
@@ -108,7 +107,7 @@ class Simulator:
         The current position adn radius (x,y,r) from the robot.
         :return: the x, y coordinates and radius as tuple
         """
-        return round(self.__x * 1 / self.POSITION_FACTOR, self.ROUND_DIGITS), round(self.__y * 1/self.POSITION_FACTOR, self.ROUND_DIGITS), self.__r
+        return int(round(self.__x, self.ROUND_DIGITS)), int(round(self.__y, self.ROUND_DIGITS)), self.__r
 
     def stop(self):
         """
