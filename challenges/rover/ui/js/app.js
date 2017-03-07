@@ -206,7 +206,18 @@ function onMessageArrived(message) {
 
 var currentGame = new Vue({
     el: '#currentGame',
-    data: viewState
+    data: viewState,
+    methods: {
+        cancel: function() {
+            var message = new Paho.MQTT.Message(JSON.stringify({
+                "command": "cancel",
+                "args": []
+            }));
+
+            message.destinationName = "gamemaster";
+            client.send(message);
+        }
+    }
 });
 
 var leaderboard = new Vue({

@@ -137,6 +137,10 @@ class TournamentRadio:
         logging.info("Starting game for player %s" % player)
         self.tournament.start_game()
 
+    def cancel(self, topic):
+        logging.info("Cancel game")
+        self.tournament.finish_game()
+
 LOOP_TIMEOUT = 0.1
 LOOP_CYCLE_TIME_SEC = 0.5
 last_cycle_time = time.time()
