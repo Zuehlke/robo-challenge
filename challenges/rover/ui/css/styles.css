@@ -5,6 +5,12 @@
     border:1px solid;
 }
 
+#debug_layer {
+    text-align: center;
+    color: black;
+    border:1px solid;
+}
+
 
 .container-full {
     margin-left: 10px;
