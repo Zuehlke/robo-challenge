@@ -1,104 +1,142 @@
 # -*- coding: utf-8 -*-
 import unittest
-import simulator as api
+import common as api
+
+MIN = 5
+MAX = 10
+
+
+class TestWrapper:
+    @api.min(MIN)
+    def min_value(self, value):
+        return value
+
+    @api.max(MAX)
+    def max_value(self, value):
+        return value
+
+    @api.max(MAX)
+    @api.min(MIN)
+    def range(self, value):
+        return value
+
+    @api.check_int
+    def integer(self, value):
+        return value
+
+    @api.check_int
+    @api.min(MIN)
+    @api.max(MAX)
+    def int_range(self, value):
+        return value
 
 
 class BasicTestSuite(unittest.TestCase):
 
-    def test_init(self):
-        d = api.TimeDecorator(api.Simulator())
-        self.assertIsNotNone(d.simulator)
+    def test_min_not_ok(self):
+        t = TestWrapper()
 
-    def test_method_delegate(self):
-        d = api.TimeDecorator(api.Simulator())
-        self.assertIsNotNone(d.position())
-        self.assertIsNotNone(d.state())
-        self.assertIsNotNone(d.angle())
-        self.assertIsNone(d.stop())
-
-    def test_method_not_implemented(self):
-        d = api.TimeDecorator(api.Simulator())
         try:
-            d.foo()
+            t.min_value(MIN - 1)
             self.fail("Exception not thrown")
-        except AttributeError:
+        except ValueError as e:
             pass
 
-    def test_forward_whole_distance(self):
-        d = api.TimeDecorator(api.Simulator())
-        start_pos = (0.0, 0.0, 15)
+    def test_min_ok(self):
+        t = TestWrapper()
 
-        self.assertEqual(d.position(), start_pos)
-        d.forward(10)
-        self.assertEqual(d.position(), (3.0, 0.0, 15))
+        self.assertEqual(MIN, t.min_value(MIN))
 
-        d.tick()
-        self.assertEqual(d.position(), (3.0, 0.0, 15))
+    def test_min_is_float(self):
+        t = TestWrapper()
+        self.assertEqual(MIN, t.min_value(5.0))
 
-    def test_backward_whole_distance(self):
-        d = api.TimeDecorator(api.Simulator())
-        start_pos = (0.0, 0.0, 15)
+    def test_min_float_not_ok(self):
+        t = TestWrapper()
 
-        self.assertEqual(d.position(), start_pos)
-        d.backward(10)
-        self.assertEqual(d.position(), (-3.0, 0.0, 15))
+        try:
+            t.min_value(4.9)
+            self.fail("Exception not thrown")
+        except ValueError as e:
+            pass
 
-        d.tick()
-        self.assertEqual(d.position(), (-3.0, 0.0, 15))
+    def test_max_ok(self):
+        t = TestWrapper()
 
-    def test_forward(self):
-        d = api.TimeDecorator(api.Simulator())
-        start_pos = (0.0, 0.0, 15)
+        self.assertEqual(MAX, t.max_value(MAX))
 
-        self.assertEqual(d.position(), start_pos)
-        d.forward(350)
-        self.assertEqual(d.position(), (6.0, 0.0, 15))
+    def test_max_not_ok(self):
+        t = TestWrapper()
 
-        d.tick()
-        self.assertEqual(d.position(), (12.0, 0.0, 15))
+        try:
+            t.max_value(MAX + 1)
+            self.fail("Exception not thrown")
+        except ValueError as e:
+            pass
 
-        d.tick()
-        self.assertEqual(d.position(), (18.0, 0.0, 15))
+    def test_range_ok(self):
+        t = TestWrapper()
+        self.assertEqual(MAX, t.range(MAX))
+        self.assertEqual(MIN, t.range(MIN))
 
+    def test_range_not_ok(self):
+        t = TestWrapper()
 
-    def test_backward(self):
-        d = api.TimeDecorator(api.Simulator())
-        start_pos = (0.0, 0.0, 15)
+        try:
+            t.range(MAX + 1)
+            self.fail("Exception not thrown")
+        except ValueError as e:
+            pass
 
-        self.assertEqual(d.position(), start_pos)
-        d.backward(350)
-        self.assertEqual(d.position(), (-6.0, 0.0, 15))
+        try:
+            t.range(MIN - 1)
+            self.fail("Exception not thrown")
+        except ValueError as e:
+            pass
 
-        d.tick()
-        self.assertEqual(d.position(), (-12.0, 0.0, 15))
+    def test_integer_ok(self):
+        t = TestWrapper()
 
-        d.tick()
-        self.assertEqual(d.position(), (-18.0, 0.0, 15))
+        self.assertEqual(1, t.integer(1))
 
-    def test_next_command(self):
-        d = api.TimeDecorator(api.Simulator())
-        start_pos = (0.0, 0.0, 15)
+    def test_integer_nok(self):
+        t = TestWrapper()
 
-        self.assertEqual(d.position(), start_pos)
-        d.forward(978)
+        try:
+            t.integer(1.0)
+            self.fail("Exception not thrown")
+        except ValueError as e:
+            pass
 
-        self.assertEqual(d.next, {'command': 'forward', 'value': 958})
-        d.tick()
-        self.assertEqual(d.next, {'command': 'forward', 'value': 938})
+    def test_int_range(self):
+        t = TestWrapper()
 
-        d.forward(350)
-        self.assertEqual(d.next, {'command': 'forward', 'value': 330})
+        self.assertEqual(MAX, t.int_range(MAX))
+        self.assertEqual(MIN, t.int_range(MIN))
+        
+    def test_int_range_nok(self):
+        t = TestWrapper()
 
-        d.reset()
-        self.assertEqual(d.next, {'command': None, 'value': 0})
+        try:
+            t.int_range(MAX + 1)
+            self.fail("Exception not thrown")
+        except ValueError as e:
+            pass
 
-        d.forward(600)
-        self.assertEqual(d.next, {'command': 'forward', 'value': 580})
+        try:
+            t.int_range(MIN - 1)
+            self.fail("Exception not thrown")
+        except ValueError as e:
+            pass
 
-        d.backward(300)
-        self.assertEqual(d.next, {'command': 'backward', 'value': 280})
+        try:
+            t.int_range(MIN + 0.0)
+            self.fail("Exception not thrown")
+        except ValueError as e:
+            pass
 
-        d.tick()
-        self.assertEqual(d.next, {'command': 'backward', 'value': 260})
-
-
+        try:
+            t.int_range(MAX + 0.0)
+            self.fail("Exception not thrown")
+        except ValueError as e:
+            pass

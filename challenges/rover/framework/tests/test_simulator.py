@@ -80,20 +80,20 @@ class BasicTestSuite(unittest.TestCase):
 
         sim.left(angle)
         sim.forward(distance)
-        sim.backward(distance/2)
+        sim.backward(int(distance/2))
         sim.right(angle * 2)
 
         self.compare_pos(sim.position(), self.__turtle.position())
 
-        self.__turtle.backward(distance * 1.5)
-        sim.backward(distance * 1.5)
+        self.__turtle.backward(distance * 3)
+        sim.backward(distance * 3)
 
         self.compare_pos(sim.position(), self.__turtle.position())
 
-        self.__turtle.right(angle * 92)
+        self.__turtle.right(340)
         self.__turtle.forward(distance)
 
-        sim.right(angle * 92)
+        sim.right(340)
         sim.forward(distance)
 
         self.compare_pos(sim.position(), self.__turtle.position())
