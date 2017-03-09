@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import ev3dev.ev3 as ev3
+import common
 
 
 class Robot:
@@ -9,6 +10,11 @@ class Robot:
     """
 
     DEFAULT_SPEED = 100
+
+    MAX_DIST = 5000
+    MIN_DIST = 0
+    MAX_ANGLE = 360
+    MIN_ANGLE = 0
 
     def __init__(self):
         """
@@ -48,6 +54,9 @@ class Robot:
         self.gyro_sensor.mode = 'GYRO-G&A'
         self.speed = self.DEFAULT_SPEED
 
+    @common.check_int
+    @common.max(MAX_DIST)
+    @common.min(MIN_DIST)
     def forward(self, distance):
         """
         Move the robot forward by a given distance.
@@ -58,6 +67,9 @@ class Robot:
         for m in self.motors:
             m.run_to_rel_pos(position_sp=distance, speed_sp=self.DEFAULT_SPEED)
 
+    @common.check_int
+    @common.max(MAX_DIST)
+    @common.min(MIN_DIST)
     def backward(self, distance):
         """
         Move the robot backward by a given distance.
@@ -68,6 +80,9 @@ class Robot:
         for m in self.motors:
             m.run_to_rel_pos(position_sp=-distance, speed_sp=self.DEFAULT_SPEED)
 
+    @common.check_int
+    @common.max(MAX_ANGLE)
+    @common.min(MIN_ANGLE)
     def right(self, angle):
         """
         Turn the robot right by a given angle (degrees).
@@ -86,6 +101,9 @@ class Robot:
 
         self.stop()
 
+    @common.check_int
+    @common.max(MAX_ANGLE)
+    @common.min(MIN_ANGLE)
     def left(self, angle):
         """
         Turn the robot left by a given angle (degrees).

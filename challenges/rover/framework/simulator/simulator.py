@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
 import math
-
+import common
 
 class Simulator:
     """
     Simulator for the robot and positional system.
     """
+
+    MAX_DIST = 5000
+    MIN_DIST = 0
+    MAX_ANGLE = 360
+    MIN_ANGLE = 0
+
     # round x/y position
     ROUND_DIGITS = 0
     # The radius of the robot in cm
@@ -36,6 +42,9 @@ class Simulator:
         self.__left_distance = 0
         self.__right_distance = 0
 
+    @common.check_int
+    @common.max(MAX_DIST)
+    @common.min(MIN_DIST)
     def forward(self, distance):
         """
         Move the robot forward by a given distance.
@@ -49,6 +58,9 @@ class Simulator:
         self.__left_distance += distance
         self.__right_distance += distance
 
+    @common.check_int
+    @common.max(MAX_DIST)
+    @common.min(MIN_DIST)
     def backward(self, distance):
         """
         Move the robot backward by a given distance.
@@ -62,6 +74,9 @@ class Simulator:
         self.__left_distance -= distance
         self.__right_distance -= distance
 
+    @common.check_int
+    @common.max(MAX_ANGLE)
+    @common.min(MIN_ANGLE)
     def right(self, angle):
         """
         Turn the robot right by a given angle (degrees).
@@ -73,6 +88,9 @@ class Simulator:
         self.__right_distance -= distance
         self.__left_distance += distance
 
+    @common.check_int
+    @common.max(MAX_ANGLE)
+    @common.min(MIN_ANGLE)
     def left(self, angle):
         """
         Turn the robot left by a given angle (degrees).
