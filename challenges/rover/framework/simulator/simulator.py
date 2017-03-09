@@ -2,15 +2,16 @@
 import math
 import common
 
+MAX_DIST = 5000
+MIN_DIST = 0
+MAX_ANGLE = 360
+MIN_ANGLE = 0
+
+
 class Simulator:
     """
     Simulator for the robot and positional system.
     """
-
-    MAX_DIST = 5000
-    MIN_DIST = 0
-    MAX_ANGLE = 360
-    MIN_ANGLE = 0
 
     # round x/y position
     ROUND_DIGITS = 0
@@ -177,6 +178,9 @@ class TimeDecorator:
     def __getattr__(self, name):
         return getattr(self.simulator, name)
 
+    @common.check_int
+    @common.max(MAX_DIST)
+    @common.min(MIN_DIST)
     def forward(self, distance):
         self.next['command'] = 'forward'
 
@@ -187,6 +191,9 @@ class TimeDecorator:
             self.simulator.forward(self.TACHO_COUNT_PER_TICK)
             self.next['value'] = distance - self.TACHO_COUNT_PER_TICK
 
+    @common.check_int
+    @common.max(MAX_DIST)
+    @common.min(MIN_DIST)
     def backward(self, distance):
         self.next['command'] = 'backward'
 
@@ -204,10 +211,16 @@ class TimeDecorator:
     def stop(self):
         self.next = {'command': None, 'value': 0}
 
+    @common.check_int
+    @common.max(MAX_ANGLE)
+    @common.min(MIN_ANGLE)
     def left(self, angle):
         self.simulator.left(angle)
         self.next = {'command': None, 'value': 0}
 
+    @common.check_int
+    @common.max(MAX_ANGLE)
+    @common.min(MIN_ANGLE)
     def right(self, angle):
         self.simulator.right(angle)
         self.next = {'command': None, 'value': 0}
