@@ -65,12 +65,24 @@ function drawRobot(robot, x_max, y_max) {
     ctx.strokeStyle = "#000000";
     ctx.stroke();
 
+
+
     ctx.beginPath();
 
     ctx.arc(x, y, 2, 2 * Math.PI, false);
     ctx.fillStyle = "#000000";
     ctx.fill();
 
+    ctx.beginPath();
+
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, y - r);
+    ctx.lineTo(x, y + r);
+    ctx.moveTo(x, y);
+    ctx.lineTo(x - r , y);
+    ctx.lineTo(x + r , y);
+
+    ctx.stroke();
 
     var cx = x_max / 2;
     var cy = y_max / 2;
@@ -78,13 +90,13 @@ function drawRobot(robot, x_max, y_max) {
 
     ctx.beginPath();
 
-    ctx.moveTo(cx,cy);
-    ctx.lineTo(cx,cy - l);
-    ctx.lineTo(cx,cy + l);
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx, cy - l);
+    ctx.lineTo(cx, cy + l);
 
-    ctx.moveTo(cx,cy);
-    ctx.lineTo(cx - l ,cy);
-    ctx.lineTo(cx + l ,cy);
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx - l , cy);
+    ctx.lineTo(cx + l , cy);
 
 
     ctx.stroke();
