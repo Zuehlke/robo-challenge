@@ -5,7 +5,7 @@ import time
 
 from game import Game
 
-GAME_LENGTH_SECONDS = 60
+GAME_LENGTH_SECONDS = 120
 
 
 class CurrentGame:
