@@ -9,25 +9,27 @@ public class Client implements MqttCallback{
 
     private static final String BROKER = "tcp://127.0.0.1:1883";
 
-    private MqttClient client;
+    /* You need two connections in order to send/receive messages simultaniously */
+    private final MqttClient mqttSender;
+    private final MqttClient mqttListener;
 
-    private Client(MqttClient client) {
-        this.client = client;
+    private Client(MqttClient mqttListener, MqttClient mqttSender) {
+        this.mqttListener = mqttListener;
+        this.mqttSender = mqttSender;
     }
 
     public static void main(String[] args) {
 
         try {
-            MqttClient mqtt = new MqttClient(BROKER, UUID.randomUUID().toString());
-            MqttConnectOptions connOpts = new MqttConnectOptions();
-            mqtt.connect(connOpts);
+            MqttClient listener = createMqttClient();
+            MqttClient sender = createMqttClient();
 
             System.out.println("Connecting to broker: " + BROKER);
 
-            mqtt.setCallback(new Client(mqtt));
+            listener.setCallback(new Client(listener, sender));
 
-            mqtt.subscribe("players/" + PLAYER_NAME + "/#");
-            mqtt.subscribe("robot/state");
+            listener.subscribe("players/" + PLAYER_NAME + "/#");
+            listener.subscribe("robot/state");
 
 
         } catch (Exception e) {
@@ -52,6 +54,13 @@ public class Client implements MqttCallback{
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
 
+    }
+
+    private static MqttClient createMqttClient() throws MqttException {
+        MqttClient mqtt = new MqttClient(BROKER, UUID.randomUUID().toString());
+        MqttConnectOptions connOpts = new MqttConnectOptions();
+        mqtt.connect(connOpts);
+        return mqtt;
     }
 }
 
