@@ -102,7 +102,7 @@ When you are in a running game, you receive the state of the game on the topic
 
 ### <a name="robot-state"></a> Receive state of hardware
 
-The robot will send the current state of the gryro sensor (angle) and the position of the left and right motor to the topic _'robot/state'_. The angle is in degree the robot has turned. Left turns will increase and right turns decrease the angle values. The value of the left_motor and right_motor is the position of the motor in tacho counts. Driving forward will increase and driving backwards will decrease the tacho counts.
+The robot will send the current state of the gryro sensor (angle) and the position of the left and right motor to the topic _'robot/state'_. The angle is in degree the robot has turned. Right turns will increase and left turns decrease the angle values. The value of the left_motor and right_motor is the position of the motor in tacho counts. Driving forward will increase and driving backwards will decrease the tacho counts.
 
 
 ```json
@@ -202,7 +202,7 @@ Example: missing argument
 {"type": "TypeError", "error": "func_wrapper() missing 1 required positional argument: 'value'"}
 ```
 
-## Positional system
+## Positional system and robot state
 
 The world is based on x/y coordinates. Where the left bottom is (0,0) and the upper right corner is (x_max, y_max).  
 
@@ -212,6 +212,10 @@ The robot, the craters and supply items are given as point with x/y coordinates 
 
 ![world](doc/pos.png)
 
-Starting position of the robot is in the center of world. The starting direction is from left to right. Left turns will increase  and right turns decrease the angle value.
+Starting position of the robot is in the center of world. The starting direction is from left to right. Right turns will increase  and left turns decrease the angle value from the gyro sensor.
 
 ![world](doc/angle.png)
+
+Driving forward will increase and driving backwards will decrease the tacho counts.
+
+![world](doc/move.png)
