@@ -28,7 +28,7 @@ It's now your turn to control the robot via messages on the `robot/process` topi
 game finished you receive a message on `players/example/incoming`.
 
 
-![Sequence of commands](doc/Robot Sequence.png)
+![Sequence of commands](doc/robot_sequence.png)
 
 ## <a name="game-master"></a> Communication with the game master
 
