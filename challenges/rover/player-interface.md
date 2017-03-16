@@ -200,7 +200,7 @@ Example: missing argument
 
 ```json
 {"type": "TypeError", "error": "func_wrapper() missing 1 required positional argument: 'value'"}
-```json
+json
 
 
 ## Positional system
