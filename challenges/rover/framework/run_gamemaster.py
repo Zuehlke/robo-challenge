@@ -7,7 +7,7 @@ import logging
 import paho.mqtt.client as mqtt
 
 from game import Point
-from gamemaster import Tournament, PickleTournamentStorage
+from gamemaster import Tournament, JsonTournamentStorage
 from common import TopicAwareCommandDispatcher
 
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
@@ -146,7 +146,7 @@ LOOP_CYCLE_TIME_SEC = 0.5
 last_cycle_time = time.time()
 
 if __name__ == '__main__':
-    storage = PickleTournamentStorage("/framework/tournament.pickle")
+    storage = JsonTournamentStorage("/framework/tournament.json")
     tournament = storage.load_tournament() or Tournament()
 
     with TournamentRadio("broker", 1883, tournament, storage) as radio:

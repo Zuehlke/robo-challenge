@@ -1,6 +1,6 @@
 
 import unittest
-from gamemaster import Tournament, PlayedGame, Rank, PickleTournamentStorage
+from gamemaster import Tournament, PlayedGame, Rank, PickleTournamentStorage, JsonTournamentStorage, PlayedGame
 
 class TournamentTests(unittest.TestCase):
 
@@ -164,3 +164,26 @@ class PickleTournamentStorageTests(unittest.TestCase):
         tournament = storage.load_tournament()
 
         self.assertIsNone(tournament)
+
+
+class JsonTournamentStorageTests(unittest.TestCase):
+    def test_store_json(self):
+        tournament = Tournament()
+
+        tournament.register_player("player1")
+        tournament.prepare_game(    "player1")
+        tournament.start_game()
+        tournament.finish_game()
+
+        tournament.register_player("player2")
+        tournament.prepare_game(    "player2")
+        tournament.start_game()
+        tournament.finish_game()
+
+        storage = JsonTournamentStorage()
+        storage.store_tournament(tournament)
+        tournament = storage.load_tournament()
+
+        self.assertIsNotNone(tournament)
+        self.assertIsNone(tournament.current_game)
+        self.assertEqual(tournament.played_games, [PlayedGame("player1", 0),PlayedGame("player2", 0)])
