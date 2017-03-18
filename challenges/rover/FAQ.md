@@ -16,5 +16,7 @@ There are two ways to solve this:
 ** 9001 (websocket)
 - Use the IP address of the docker machine instead of "localhost". You can find out the IP address of your docker machine using Kitematic (part of the Docker Toolbox).
 
-## Docker cannot find files
-This happens, when the shared folders cannot be properly mounted in VirtualBox. The easiest fix is to reinstall the newest version of VirtualBox and Docker Toolbox.
+## Docker cannot find files when running `docker-compose ... up`
+There are two possible causes for this:
+* This happens, when the shared folders cannot be properly mounted in VirtualBox. The easiest fix is to reinstall the newest version of VirtualBox and Docker Toolbox.
+* You are using a different drive than C: While this is possible (see http://stackoverflow.com/questions/33245036/docker-toolbox-is-there-a-way-to-mount-other-folders-than-from-c-users-windows ) the easiest solutions probably to move things into a folder on the C: drive into a subfolder of the `Users` folder.
