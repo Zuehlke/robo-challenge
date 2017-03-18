@@ -12,9 +12,11 @@ It’s your chance to try different approaches and see which algorithm will do b
 
 
 ### Get started
-First install [Docker](https://www.docker.com/) and checkout this repository. Docker is used to start the simulator and web interface.
+Docker is used to start the simulator and web interface.
 
-__Note:__ Windows try docker-toolbox https://www.docker.com/products/docker-toolbox
+First install [Docker](https://www.docker.com/) and checkout this repository.
+
+__Note:__ For Windows we recommend docker-toolbox https://www.docker.com/products/docker-toolbox (instead of using the docker link above).
 
 ### Interface for Players
 Have a look at the [Interface for Players](player-interface.md) documentation for a detailed overview about all the messages and communication to start the Mars Rover mission.
