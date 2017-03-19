@@ -9,11 +9,11 @@ GAME_LENGTH_SECONDS = 120
 
 
 class CurrentGame:
-    def __init__(self, player, points):
+    def __init__(self, player, game_creator):
         self.player = player
         self.start_time = 0
         self.robot_position = {'x': 0, 'y': 0, 'r': 0}
-        self.game = Game(points)
+        self.game = game_creator.create()
 
     def start(self):
         self.start_time = time.time()
@@ -55,13 +55,16 @@ class Rank:
     def __eq__(self, other):
         return self.player == other.player and self.points == other.points
 
+class DefaultGameCreator:
+    def create(self):
+        return Game()
 
 class Tournament:
-    def __init__(self, points=None):
+    def __init__(self, game_creator=DefaultGameCreator()):
         self.players = []
         self.played_games = []
         self.current_game = None
-        self.points = points
+        self.game_creator = game_creator
 
     def register_player(self, name):
         if name in self.players:
@@ -80,7 +83,7 @@ class Tournament:
             logging.warning("Attempting to prepare game for unknown player: %s" % player)
             return
 
-        self.current_game = CurrentGame(player)
+        self.current_game = CurrentGame(player, self.game_creator)
 
     def start_game(self):
         if self.current_game is None:
