@@ -29,11 +29,11 @@ class JsonTournamentStorage:
         with open(self.filename, 'w') as file:
             json.dump(tournament, file, cls=TournamentEncoder)
 
-    def load_tournament(self):
+    def load_tournament(self, points=None):
         try:
             with open(self.filename, 'r') as file:
                 jsonString = json.load(file)
-                tournament = Tournament()
+                tournament = Tournament(points)
                 tournament.players = jsonString["players"]
                 tournament.played_games = [PlayedGame(g["player"], g["points"]) for g in jsonString["played_games"]]
                 return tournament

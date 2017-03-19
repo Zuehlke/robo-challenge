@@ -146,10 +146,11 @@ LOOP_CYCLE_TIME_SEC = 0.5
 last_cycle_time = time.time()
 
 if __name__ == '__main__':
-    tournamenStorage = JsonTournamentStorage("/framework/tournament.json")
     pointsStorage = JsonPointsStorage("/framework/points.json")
     points = pointsStorage.load_points()
-    tournament = tournamenStorage.load_tournament() or Tournament(points)
+
+    tournamenStorage = JsonTournamentStorage("/framework/tournament.json")
+    tournament = tournamenStorage.load_tournament(points) or Tournament(points)
 
     with TournamentRadio("broker", 1883, tournament, tournamenStorage) as radio:
         while True:
