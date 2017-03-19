@@ -7,7 +7,7 @@ import logging
 import paho.mqtt.client as mqtt
 
 from game import Point
-from gamemaster import Tournament, JsonTournamentStorage
+from gamemaster import Tournament, JsonTournamentStorage, JsonPointsStorage
 from common import TopicAwareCommandDispatcher
 
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
@@ -146,10 +146,12 @@ LOOP_CYCLE_TIME_SEC = 0.5
 last_cycle_time = time.time()
 
 if __name__ == '__main__':
-    storage = JsonTournamentStorage("/framework/tournament.json")
-    tournament = storage.load_tournament() or Tournament()
+    tournamenStorage = JsonTournamentStorage("/framework/tournament.json")
+    pointsStorage = JsonPointsStorage("/framework/points.json")
+    points = pointsStorage.load_points()
+    tournament = tournamenStorage.load_tournament() or Tournament(points)
 
-    with TournamentRadio("broker", 1883, tournament, storage) as radio:
+    with TournamentRadio("broker", 1883, tournament, tournamenStorage) as radio:
         while True:
             radio.game_loop(LOOP_TIMEOUT)
             if time.time() - last_cycle_time > LOOP_CYCLE_TIME_SEC:

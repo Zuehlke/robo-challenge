@@ -32,7 +32,7 @@ class Game:
     The game engine -  master of the points and score
     """
 
-    def __init__(self, n_points=50, ratio_anti_points=0.1, radius=5, max_x=WORLD_WIDTH, max_y=WORLD_HEIGHT, distance=100):
+    def __init__(self, n_points=50, ratio_anti_points=0.1, radius=5, max_x=WORLD_WIDTH, max_y=WORLD_HEIGHT, distance=100, points=None):
 
         self.__max_y = max_y
         self.__max_x = max_x
@@ -46,7 +46,7 @@ class Game:
         self.__y_center = y_center
         self.__distance = distance
 
-        self.__points = self.create_points(n_points, ratio_anti_points, radius, x_center, y_center, distance)
+        self.__points = points or self.create_points(n_points, ratio_anti_points, radius, x_center, y_center, distance)
 
     def reset(self):
         """
@@ -76,7 +76,6 @@ class Game:
         return x, y
 
     def create_points(self, n_points, ratio_anti_points, radius, x_center, y_center, distance):
-
         points = []
 
         for i in range(n_points):
@@ -99,7 +98,6 @@ class Game:
     def create_point(self):
         pass
 
-
     def check(self, x, y, r):
 
         for p in self.__points:
@@ -114,6 +112,3 @@ class Game:
 
     def __str__(self):
         return "points: %s, x: %s, y: %s, r: %s, radius factor: %s" % (self.__n_points, self.__max_x, self.__max_y, self.__radius, self.__radius_factor)
-
-
-

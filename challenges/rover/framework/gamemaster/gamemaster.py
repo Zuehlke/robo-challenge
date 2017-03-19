@@ -9,11 +9,11 @@ GAME_LENGTH_SECONDS = 120
 
 
 class CurrentGame:
-    def __init__(self, player):
+    def __init__(self, player, points):
         self.player = player
         self.start_time = 0
         self.robot_position = {'x': 0, 'y': 0, 'r': 0}
-        self.game = Game()
+        self.game = Game(points)
 
     def start(self):
         self.start_time = time.time()
@@ -57,10 +57,11 @@ class Rank:
 
 
 class Tournament:
-    def __init__(self):
+    def __init__(self, points=None):
         self.players = []
         self.played_games = []
         self.current_game = None
+        self.points = points
 
     def register_player(self, name):
         if name in self.players:
