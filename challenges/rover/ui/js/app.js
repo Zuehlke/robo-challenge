@@ -241,6 +241,16 @@ var leaderboard = new Vue({
             client.send(message);
 
             doUpdate = true;
+        },
+
+        startGame: function(player) {
+            var message = new Paho.MQTT.Message(JSON.stringify({
+                "command": "start"
+            }));
+
+            message.destinationName = "players/" + player;
+            client.send(message);
+
         }
     }
 });

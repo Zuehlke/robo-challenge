@@ -116,7 +116,10 @@
                     <td>{{rank.player}}</td>
                     <td>{{rank.points}}</td>
                     <td><input class="btn" type="button" v-on:click="{{prepareGame(rank.player)}}"
-                               value="Prepare Game"/></td>
+                               value="Prepare Game"/>
+                        <input class="btn" type="button" v-on:click="{{startGame(rank.player)}}"
+                               value="Start Game"/>
+                    </td>
                 </tr>
                 </tbody>
             </table>
